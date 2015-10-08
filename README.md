@@ -48,7 +48,7 @@ jx install express
 ```
 * Installer socket.io
 ```
-jx install socket.ionic
+jx install socket.io
 ```
 
 ## Recuperer le repository
