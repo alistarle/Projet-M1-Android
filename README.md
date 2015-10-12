@@ -35,7 +35,8 @@ Se mettre a la racine du projet ionic
 git init
 git remote add origin https://github.com/alistarle/Projet-M1-Android.git
 git branch --set-upstream master origin/master
-git pull
+rm .gitignore
+git pull origin master
 ```
 
 ## Installer JXCore
