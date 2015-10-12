@@ -26,7 +26,18 @@ ionic start myApp blank
 cd myApp
 ionic platform add android
 ionic platform add ios
+rm -R www
 ```
+
+## Recuperer le repository
+Se mettre a la racine du projet ionic
+```
+git init
+git remote add origin https://github.com/alistarle/Projet-M1-Android.git
+git branch --set-upstream master origin/master
+git pull
+```
+
 ## Installer JXCore
 
 * Installer JXCore : http://jxcore.com/downloads/
@@ -51,14 +62,6 @@ jx install express
 jx install socket.io
 ```
 
-## Recuperer le repository
-Se mettre a la racine du projet ionic
-```
-git init https://github.com/alistarle/Projet-M1-Android
-git remote add origin https://github.com/alistarle/Projet-M1-Android.git
-git reset --hard origin/master
-```
-
 # Utilisation de l'application
 Les fichiers à modifier sont le repertoire www et notamment l'index.html pour le client, et les fichiers www/jxcore avec notamment app.js pour le serveur.
 
@@ -66,3 +69,4 @@ Pour lancer l'application, brancher un téléphone et utiliser la commande
 ```
 ionic run android
 ```
+
