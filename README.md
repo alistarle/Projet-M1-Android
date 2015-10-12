@@ -54,7 +54,9 @@ jx install socket.io
 ## Recuperer le repository
 Se mettre a la racine du projet ionic
 ```
-git clone https://github.com/alistarle/Projet-M1-Android
+git init https://github.com/alistarle/Projet-M1-Android
+git remote add origin https://github.com/alistarle/Projet-M1-Android.git
+git reset --hard origin/master
 ```
 
 # Utilisation de l'application
