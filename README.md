@@ -53,7 +53,6 @@ cordova plugins add io.jxcore.node/
 ```
 
 ## Installer Plugin JXCore 
-* Aller dans le repertoire www/jxcore
 * Installer express
 ```
 jx install express
@@ -62,6 +61,8 @@ jx install express
 ```
 jx install socket.io
 ```
+
+Et ensuite prendre le dossier "node_module" et le déplacer dans www/jxcore.
 
 # Utilisation de l'application
 Les fichiers à modifier sont le repertoire www et notamment l'index.html pour le client, et les fichiers www/jxcore avec notamment app.js pour le serveur.
