@@ -9,19 +9,21 @@
             * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-    <link rel="stylesheet" type="text/css" href="css/styleGame.css">
-    <script src="js/phaser.min.js"></script>
-    <title>Hello World</title>
-</head>
+            -->
+            <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+            <meta name="format-detection" content="telephone=no">
+            <meta name="msapplication-tap-highlight" content="no">
+            <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+            <link rel="stylesheet" type="text/css" href="css/styleGame.css">
+            <script src="js/phaser.min.js"></script>
+            <script src="js/gyro.js"></script>
 
-<body>
-    <script type="text/javascript">
-    window.onload = function() {
+            <title>Hello World</title>
+        </head>
+
+        <body>
+            <script type="text/javascript">
+                window.onload = function() {
 
         //variable game avec resolution
         var game = new Phaser.Game(1080 , 1920, Phaser.AUTO, '', {
@@ -76,7 +78,7 @@
             ball.body.bounce.setTo(1, 1);
             game.input.onDown.add(releaseBall, this);
 
-            game.scoreText = game.add.bitmapText(game.width / 2 - 115, 40, 'flappyfont', game.scorePlayer.toString() + ":" + game.scoreComputer.toString(), 24);
+            game.scoreText = game.add.bitmapText(game.width / 2 - 230, 40, 'flappyfont', game.scorePlayer.toString() + ":" + game.scoreComputer.toString(), 50);
             game.scoreText.visible = true;
 
             this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
@@ -151,7 +153,22 @@
 
         function update() {
             //control par le joueur
+
+            //CONTROL GYROSCOPE
+            gyro.frequency = 50;
+            gyro.startTracking(function(o) {
+                var gyroX = o.gamma*15+ game.width / 2;
+                if(gyroX>0 && gyroX<game.width){
+                    playerBet.x = gyroX;
+                }
+           });
+
+
+            //CONTROL CLASSIQUE
+
+            /*
             playerBet.x = game.input.x;
+
 
             var playerBetHalfWidth = playerBet.width / 2;
 
@@ -160,6 +177,7 @@
             } else if (playerBet.x > game.width - playerBetHalfWidth) {
                 playerBet.x = game.width - playerBetHalfWidth;
             }
+            */
 
             //control par IA
             if (computerBet.x - ball.x < -15) {
@@ -178,7 +196,7 @@
 
         }
     };
-    </script>
+</script>
 </body>
 
 </html>
