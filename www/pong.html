@@ -24,12 +24,14 @@
     window.onload = function() {
 
         //variable game avec resolution
-        var game = new Phaser.Game(1300, 640, Phaser.AUTO, '', {
+        var game = new Phaser.Game(1080 , 1920, Phaser.AUTO, '', {
             preload: preload,
             create: create,
             update: update
         });
 
+        //variable de coordonees 
+        var Y = 1000;
         //scores
         var scorePlayer;
         var scoreCompute0;
@@ -42,8 +44,8 @@
         var scoreText;
 
         //valeurs pouvant être modifiees
-        var computerBetSpeed = 300;
-        var ballSpeed = 300;
+        var computerBetSpeed = 400;
+        var ballSpeed = 400;
         var ballReleased = false;
 
         function preload() {
@@ -62,9 +64,9 @@
 
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            game.add.tileSprite(0, 0, 1300, 640, 'background');
+            game.add.tileSprite(0, 0, 1080, 1920, 'background');
 
-            playerBet = createBet(game.world.centerX, 600);
+            playerBet = createBet(game.world.centerX, 1860);
             computerBet = createBet(game.world.centerX, 20);
             ball = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
             game.physics.arcade.enable(ball);
@@ -106,7 +108,7 @@
             if (ball.y < 15) {
                 setBall();
                 game.scorePlayer++;
-            } else if (ball.y > 625) {
+            } else if (ball.y > 1880) {
                 setBall();
                 game.scoreComputer++;
             }
