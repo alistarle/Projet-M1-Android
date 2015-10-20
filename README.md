@@ -72,3 +72,8 @@ Pour lancer l'application, brancher un téléphone et utiliser la commande
 ionic run android
 ```
 
+# Plugins Cordova à installer
+```
+cordova plugin add cordova-plugin-statusbar
+```
+
