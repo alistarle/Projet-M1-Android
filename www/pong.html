@@ -47,29 +47,28 @@
 
         //valeurs pouvant être modifiees
         var computerBetSpeed = 400;
-        var ballSpeed = 400;
+        var ballSpeed = 500;
         var ballReleased = false;
 
         function preload() {
             //chargement des assets
             game.load.image('bet', 'assets/bet.png');
             game.load.image('ball', 'assets/ball.png');
-            game.load.image('background', 'assets/background.jpg');
             game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
             game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
         }
 
+
         function create() {
             //OnCreate initialisation des objets avec sprites et physique
+
             game.scorePlayer = 0;
             game.scoreComputer = 0;
 
             game.physics.startSystem(Phaser.Physics.ARCADE);
-
-            game.add.tileSprite(0, 0, 1080, 1920, 'background');
-
-            playerBet = createBet(game.world.centerX, 1860);
-            computerBet = createBet(game.world.centerX, 20);
+            game.stage.backgroundColor = '#DDDDDD';
+            playerBet = createBet(game.world.centerX, game.height-80);
+            computerBet = createBet(game.world.centerX, 80);
             ball = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
             game.physics.arcade.enable(ball);
 
@@ -78,10 +77,20 @@
             ball.body.bounce.setTo(1, 1);
             game.input.onDown.add(releaseBall, this);
 
-            game.scoreText = game.add.bitmapText(game.width / 2 - 230, 40, 'flappyfont', game.scorePlayer.toString() + ":" + game.scoreComputer.toString(), 50);
+            game.scoreText = game.add.bitmapText(game.width / 2 - 230, 0, 'flappyfont', game.scorePlayer.toString() + ":" + game.scoreComputer.toString(), 50);
             game.scoreText.visible = true;
 
             this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+
+            gyro.frequency = 2;
+            gyro.startTracking(function(o) {
+                var gyroX = o.gamma*15+ game.width / 2;
+                if(gyroX>0 && gyroX<game.width){
+                    playerBet.x = gyroX;
+                }
+
+           });
+
 
         }
 
@@ -107,10 +116,10 @@
 
         function checkGoal() {
             //si but alors score++
-            if (ball.y < 15) {
+            if (ball.y < 80) {
                 setBall();
                 game.scorePlayer++;
-            } else if (ball.y > 1880) {
+            } else if (ball.y > game.height-80) {
                 setBall();
                 game.scoreComputer++;
             }
@@ -155,15 +164,6 @@
             //control par le joueur
 
             //CONTROL GYROSCOPE
-            gyro.frequency = 50;
-            gyro.startTracking(function(o) {
-                var gyroX = o.gamma*15+ game.width / 2;
-                if(gyroX>0 && gyroX<game.width){
-                    playerBet.x = gyroX;
-                }
-                gyro.stopTracking();
-
-           });
 
 
 
