@@ -16,12 +16,16 @@ angular.module('starter', ['ionic'])
             StatusBar.styleDefault();
         }
     });
-
     ionic.Platform.fullScreen(true,false);
-
 })
 
+.controller('OptionsCtrl', function($scope) {
+    $scope.modeControle;
+})
 
+.controller('MainCtrl', function($scope){
+    $scope.modeControle = 1;
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
@@ -55,4 +59,6 @@ angular.module('starter', ['ionic'])
     })
 
     $urlRouterProvider.otherwise('/home')
-});
+})
+
+
