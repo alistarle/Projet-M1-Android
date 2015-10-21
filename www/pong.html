@@ -3,24 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
+    <link href="css/styleGame.css" rel="stylesheet">
     <script src="js/phaser.min.js"></script>
-    <script src="js/game/pong.js"></script>
     <script src="js/gyro.js"></script>
+    <script src="js/options.js"></script>
     <title>Hello World</title>
 </head>
 
-<body ng-controller="MainCtrl">
+<body>
     <script type="text/javascript">
     window.onload = function() {
-
+        var modeControle = optionsGetModeControle();
         //variable game avec resolution
         var game = new Phaser.Game(1080, 1920, Phaser.AUTO, '', {
             preload: preload,
@@ -90,14 +83,16 @@
 
             emitter.start(false, 30, 5);
 
-            gyro.frequency = 2;
-            gyro.startTracking(function(o) {
-                var gyroX = o.gamma * 15 + game.width / 2;
-                if (gyroX > 0 && gyroX < game.width) {
-                    playerBet.x = gyroX;
-                }
+            if (modeControle == 2) {
+                gyro.frequency = 2;
+                gyro.startTracking(function(o) {
+                    var gyroX = o.gamma * 15 + game.width / 2;
+                    if (gyroX > 0 && gyroX < game.width) {
+                        playerBet.x = gyroX;
+                    }
 
-            });
+                });
+            }
 
             this.scale.startFullScreen(false);
 
@@ -193,18 +188,18 @@
 
             //CONTROL CLASSIQUE
 
-            /*
-            playerBet.x = game.input.x;
+            if (modeControle == 1) {
+                playerBet.x = game.input.x;
 
 
-            var playerBetHalfWidth = playerBet.width / 2;
+                var playerBetHalfWidth = playerBet.width / 2;
 
-            if (playerBet.x < playerBetHalfWidth) {
-                playerBet.x = playerBetHalfWidth;
-            } else if (playerBet.x > game.width - playerBetHalfWidth) {
-                playerBet.x = game.width - playerBetHalfWidth;
+                if (playerBet.x < playerBetHalfWidth) {
+                    playerBet.x = playerBetHalfWidth;
+                } else if (playerBet.x > game.width - playerBetHalfWidth) {
+                    playerBet.x = game.width - playerBetHalfWidth;
+                }
             }
-            */
             trail();
 
             //control par IA

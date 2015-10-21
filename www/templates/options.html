@@ -4,10 +4,10 @@
             <div class="item item-divider ng-binding">
                 Mode de contrôle : {{modeControle}}
             </div>
-            <ion-radio ng-model="modeControle" ng-value="1">
+            <ion-radio ng-click="setModeControle(1)">
                 Avec le doigt
             </ion-radio>
-            <ion-radio ng-model="modeControle" ng-value="2">
+            <ion-radio ng-click="setModeControle(2)">
                 Gyroscope
             </ion-radio>
     </ion-content>
