@@ -12,8 +12,8 @@
 
 <body>
     <script type="text/javascript">
-    window.onload = function() {
-        var modeControle = optionsGetModeControle();
+        //window.onload = function() {
+            var modeControle = optionsGetModeControle();
         //variable game avec resolution
         var game = new Phaser.Game(1080, 1920, Phaser.AUTO, '', {
             preload: preload,
@@ -22,9 +22,9 @@
         });
 
         //couleurs
-        var BallColor = 0xff00ff;
+        var BallColor = 0xcccccc;
         var BetPlayer1Color  = 0x00ffff;
-        var BetPlayer2Color = 0x5522ff;
+        var BetPlayer2Color = 0xff00ff;
         var backgroundColor = 0xffffff;
 
         //skins
@@ -32,8 +32,7 @@
         var skinPlayer2Path='assets/skins/yeux.png'
 
         //variable de coordonees 
-        var marge = 80;
-        var Y = 1000;
+        var marge = 200;
 
         //scores
         var scorePlayer;
@@ -47,7 +46,7 @@
         var scoreText;
 
         //valeurs pouvant être modifiees
-        var computerBetSpeed = 400;
+        var computerBetSpeed = 600;
         var ballSpeed = 500;
         var ballReleased = false;
 
@@ -83,7 +82,7 @@
             ball.body.bounce.setTo(1, 1);
             game.input.onDown.add(releaseBall, this);
 
-            game.scoreText = game.add.bitmapText(game.width / 2 - 230, 0, 'flappyfont', game.scorePlayer.toString() + ":" + game.scoreComputer.toString(), 50);
+            game.scoreText = game.add.bitmapText(game.width / 2 - 230, marge/2, 'flappyfont', game.scorePlayer.toString() + ":" + game.scoreComputer.toString(), 50);
             game.scoreText.visible = true;
 
             this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
@@ -92,11 +91,7 @@
             //create an emitter
             emitter = game.add.emitter(game.world.centerX, game.world.centerY, 400);
             emitter.makeParticles('ball');
-            emitter.forEach(function(particle) {
-            // tint every particle red
-            particle.tint = BallColor;
-            });
-
+            colorEmitter(BallColor);
             emitter.gravity = 200;
             emitter.setAlpha(1, 0, 20);
             emitter.setScale(1, 0, 1, 0, 400);
@@ -116,6 +111,13 @@
 
             this.scale.startFullScreen(false);
 
+
+        }
+
+        function colorEmitter(color){
+            emitter.forEach(function(particle) {
+            particle.tint = color;
+        });
 
         }
 
@@ -171,15 +173,16 @@
                 ball.body.velocity.x = ballSpeed;
                 ball.body.velocity.y = -ballSpeed;
                 ballReleased = true;
+                ball.tint=BallColor;
             }
         }
 
         function checkGoal() {
             //si but alors score++
-            if (ball.y < marge) {
+            if (ball.y < 100) {
                 setBall();
                 game.scorePlayer++;
-            } else if (ball.y > game.height - marge) {
+            } else if (ball.y > game.height-100) {
                 setBall();
                 game.scoreComputer++;
             }
@@ -198,6 +201,8 @@
                 ball.y = game.world.centerY;
                 ball.body.velocity.x = 0;
                 ball.body.velocity.y = 0;
+                ball.tint=BallColor;
+                colorEmitter(BallColor);
                 ballReleased = false;
             }
         }
@@ -205,7 +210,9 @@
         function ballHitsBet(_ball, _bet) {
             //physique balle+raquette
             var diff = 0;
-
+            _ball.tint=_bet.tint;
+            colorEmitter(_ball.tint);
+            emitter.tint
             //gauche
             if (_ball.x < _bet.x) {
                 diff = _bet.x - _ball.x;
@@ -240,16 +247,19 @@
             trail();
 
             //control par IA
-            if (computerBet.x - ball.x < -15) {
-                computerBet.body.velocity.x = computerBetSpeed;
-            } else if (computerBet.x - ball.x > 15) {
-                computerBet.body.velocity.x = -computerBetSpeed;
-            } else {
-                computerBet.body.velocity.x = 0;
-            }
+
             if(ballReleased){
                 emitter.emitParticle();
             }
+                if (computerBet.x - ball.x < -15) {
+                    computerBet.body.velocity.x = computerBetSpeed;
+                } else if (computerBet.x - ball.x > 15) {
+                    computerBet.body.velocity.x = -computerBetSpeed;
+                } else {
+                    computerBet.body.velocity.x = 0;
+
+            }
+        
 
 
             //check des collisions
@@ -259,8 +269,8 @@
 
 
         }
-    };
-    </script>
+    //};
+</script>
 </body>
 
 </html>
