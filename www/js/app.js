@@ -16,12 +16,22 @@ angular.module('starter', ['ionic'])
             StatusBar.styleDefault();
         }
     });
-
-    ionic.Platform.fullScreen(true,false);
-
+    ionic.Platform.fullScreen(true, false);
 })
 
+.controller('OptionsCtrl', function($scope) {
 
+    $scope.modeControle;
+
+    $scope.setModeControle = function(mode) {
+        $scope.modeControle = mode;
+        optionsSetModeControle(mode);
+    }
+})
+
+.controller('MainCtrl', function($scope) {
+    $scope.modeControle = optionsGetModeControle();
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
@@ -65,4 +75,4 @@ angular.module('starter', ['ionic'])
     })
 
     $urlRouterProvider.otherwise('/home')
-});
+})
