@@ -31,7 +31,9 @@
         var skinPlayer2Path="";
 
         //variable de coordonees 
+        var marge = 80;
         var Y = 1000;
+
         //scores
         var scorePlayer;
         var scoreCompute0;
@@ -62,12 +64,11 @@
 
             game.scorePlayer = 0;
             game.scoreComputer = 0;
-
             //OnCreate initialisation des objets avec sprites et physique
             game.physics.startSystem(Phaser.Physics.ARCADE);
             game.stage.backgroundColor = backgroundColor;
-            playerBet = createBet(game.world.centerX, game.height - 80);
-            computerBet = createBet(game.world.centerX, 80);
+            playerBet = createBetBot();
+            computerBet = createBetTop();
             ball = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
 
 
@@ -128,9 +129,9 @@
             emitter.maxParticleSpeed.set(px, py);
         }
 
-        function createBet(x, y) {
+        function createBetTop() {
             //creer une raquette
-            var bet = game.add.sprite(x, y, 'bet');
+            var bet = game.add.sprite(game.world.centerX,  marge, 'bet');
             game.physics.arcade.enable(bet);
             bet.anchor.setTo(0.5, 0.5);
             bet.body.collideWorldBounds = true;
@@ -144,6 +145,23 @@
             return bet;
         }
 
+        function createBetBot() {
+            //creer une raquette
+            var bet = game.add.sprite(game.world.centerX, game.height - marge, 'bet');
+            game.physics.arcade.enable(bet);
+            bet.anchor.setTo(0.5, 0.5);
+            bet.body.collideWorldBounds = true;
+            bet.body.bounce.setTo(1, 1);
+            bet.body.immovable = true;
+            bet.tint = BetColor;
+
+            var skin = game.add.sprite(-100,-20 , 'skinPlayer');
+
+            bet.addChild(skin);
+            return bet;
+        }
+
+
 
         function releaseBall() {
             if (!ballReleased) {
@@ -155,10 +173,10 @@
 
         function checkGoal() {
             //si but alors score++
-            if (ball.y < 80) {
+            if (ball.y < marge) {
                 setBall();
                 game.scorePlayer++;
-            } else if (ball.y > game.height - 80) {
+            } else if (ball.y > game.height - marge) {
                 setBall();
                 game.scoreComputer++;
             }
