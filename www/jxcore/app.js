@@ -47,10 +47,7 @@ jxcore.tasks.addTask(function() {
   });
 
   io.on('connection', function (socket) { //Fonction a executer lors de la connection d'un client
-    clog("Client connected");
-    socket.emit('news', { hello: 'world' });
-    socket.on('message', function (data) {
-      clog(data);
+    socket.on('position', function (data) {
       socket.broadcast.emit("position", data);
     });
   });

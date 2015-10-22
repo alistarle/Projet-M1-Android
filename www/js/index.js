@@ -20,7 +20,7 @@ var inter = setInterval(function() {
   }
 
   var addIp = function(addr) {
-    document.getElementById('ipaddrs').innerHTML += "<li>" + addr + "</li>";
+    document.getElementById('ipaddrs').innerHTML += "<a class='item' href='#''>"+addr+"</a>";
   }
   
   jxcore.isReady(function() {

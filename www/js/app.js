@@ -54,5 +54,15 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/jeux/mode.html'
     })
 
+    $stateProvider.state('jeux-heberger',  {
+        url: '/jeux/heberger',
+        templateUrl: 'templates/jeux/multi/heberger.html'
+    })
+
+    $stateProvider.state('jeux-rejoindre',  {
+        url: '/jeux/rejoindre',
+        templateUrl: 'templates/jeux/multi/rejoindre.html'
+    })
+
     $urlRouterProvider.otherwise('/home')
 });
