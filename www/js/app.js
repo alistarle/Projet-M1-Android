@@ -80,6 +80,14 @@ angular.module('starter', ['ionic'])
         url: '/options/controle',
         templateUrl: 'templates/options/controle.html'
     })
+    $stateProvider.state('jeux-heberger',  {
+        url: '/jeux/heberger',
+        templateUrl: 'templates/jeux/multi/heberger.html'
+    })
+    $stateProvider.state('jeux-rejoindre',  {
+        url: '/jeux/rejoindre',
+        templateUrl: 'templates/jeux/multi/rejoindre.html'
+    })
 
     $urlRouterProvider.otherwise('/home')
 })
