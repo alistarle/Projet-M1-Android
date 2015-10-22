@@ -21,6 +21,15 @@
             update: update
         });
 
+        //couleurs
+        var BallColor = 0xff00ff;
+        var BetColor  = 0x00ffff;
+        var backgroundColor = 0xffffff;
+
+        //skins
+        var skinPlayer1Path='assets/skins/moustache.png';
+        var skinPlayer2Path="";
+
         //variable de coordonees 
         var Y = 1000;
         //scores
@@ -45,6 +54,7 @@
             game.load.image('ball', 'assets/ball.png');
             game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
             game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
+            game.load.image('skinPlayer1',skinPlayer1Path);
         }
 
 
@@ -55,10 +65,13 @@
 
             //OnCreate initialisation des objets avec sprites et physique
             game.physics.startSystem(Phaser.Physics.ARCADE);
-            game.stage.backgroundColor = '#DDDDDD';
+            game.stage.backgroundColor = backgroundColor;
             playerBet = createBet(game.world.centerX, game.height - 80);
             computerBet = createBet(game.world.centerX, 80);
             ball = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
+
+
+            ball.tint = BallColor;
             game.physics.arcade.enable(ball);
 
             ball.anchor.setTo(0.5, 0.5);
@@ -75,7 +88,10 @@
             //create an emitter
             emitter = game.add.emitter(game.world.centerX, game.world.centerY, 400);
             emitter.makeParticles('ball');
-
+            emitter.forEach(function(particle) {
+            // tint every particle red
+            particle.tint = BallColor;
+            });
 
             emitter.gravity = 200;
             emitter.setAlpha(1, 0, 20);
@@ -120,7 +136,11 @@
             bet.body.collideWorldBounds = true;
             bet.body.bounce.setTo(1, 1);
             bet.body.immovable = true;
+            bet.tint = BetColor;
 
+            var skin = game.add.sprite(-100,-20 , 'skinPlayer1');
+
+            bet.addChild(skin);
             return bet;
         }
 
@@ -182,10 +202,6 @@
         function update() {
             //control par le joueur
 
-            //CONTROL GYROSCOPE
-
-
-
             //CONTROL CLASSIQUE
 
             if (modeControle == 1) {
@@ -210,8 +226,9 @@
             } else {
                 computerBet.body.velocity.x = 0;
             }
-            emitter.emitParticle();
-
+            if(ballReleased){
+                emitter.emitParticle();
+            }
 
 
             //check des collisions
