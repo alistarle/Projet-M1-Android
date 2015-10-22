@@ -1,0 +1,9 @@
+<ion-view view-title="Mode de contrôle" ng-controller="OptionsCtrl">
+    <ion-content>
+        <div class="list">
+            <ion-radio ng-repeat="mode in modesControle" ng-click="setModeControle(mode.id)" ng-model="modeControle" ng-value="{{mode.id}}">
+                {{mode.nom}}
+            </ion-radio>
+        </div>
+    </ion-content>
+</ion-view>

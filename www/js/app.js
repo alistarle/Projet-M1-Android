@@ -20,17 +20,27 @@ angular.module('starter', ['ionic'])
 })
 
 .controller('OptionsCtrl', function($scope) {
-
     $scope.modeControle;
+    $scope.modeControleNom;
 
     $scope.setModeControle = function(mode) {
         $scope.modeControle = mode;
-        optionsSetModeControle(mode);
+        optionsSetModeControle($scope.modeControle);
+        $scope.modeControleNom = $scope.modesControle[parseInt($scope.modeControle) - 1].nom;
     }
 })
 
 .controller('MainCtrl', function($scope) {
+    $scope.modesControle = [{
+        id: "1",
+        nom: "Contrôle tactile",
+    }, {
+        id: "2",
+        nom: "Contrôle gyroscope",
+    }];
+
     $scope.modeControle = optionsGetModeControle();
+    $scope.modeControleNom = $scope.modesControle[parseInt($scope.modeControle) - 1].nom;
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -51,6 +61,7 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/about.html'
     })
 
+    //Jeux
     $stateProvider.state('jeux-solo', {
         url: '/jeux/solo',
         templateUrl: 'templates/jeux/solo.html'
@@ -62,6 +73,12 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('jeux-mode', {
         url: '/jeux/mode',
         templateUrl: 'templates/jeux/mode.html'
+    })
+
+    //Options
+    $stateProvider.state('options-controle', {
+        url: '/options/controle',
+        templateUrl: 'templates/options/controle.html'
     })
 
     $urlRouterProvider.otherwise('/home')

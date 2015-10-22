@@ -2,13 +2,16 @@
     <ion-content>
         <div class="list">
             <div class="item item-divider ng-binding">
-                Mode de contrôle : {{modeControle}}
+                Mode de contrôle : {{modeControleNom}}
             </div>
-            <ion-radio ng-click="setModeControle(1)">
-                Avec le doigt
+            <ion-radio ng-repeat="mode in modesControle" ng-click="setModeControle(mode.id)" ng-model="modeControle" ng-value="{{mode.id}}">
+                {{mode.nom}}
             </ion-radio>
-            <ion-radio ng-click="setModeControle(2)">
-                Gyroscope
-            </ion-radio>
+        </div>
+         
+        <a class="item item-icon-left item-icon-right" ui-sref="options-controle">
+            <i class="icon ion-ios-game-controller-b"></i>Mode de contrôle : {{modeControleNom}}
+            <i class="icon ion-arrow-right-c"></i>
+        </a>
     </ion-content>
 </ion-view>
