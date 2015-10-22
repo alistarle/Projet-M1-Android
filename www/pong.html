@@ -23,12 +23,13 @@
 
         //couleurs
         var BallColor = 0xff00ff;
-        var BetColor  = 0x00ffff;
+        var BetPlayer1Color  = 0x00ffff;
+        var BetPlayer2Color = 0x5522ff;
         var backgroundColor = 0xffffff;
 
         //skins
         var skinPlayer1Path='assets/skins/moustache.png';
-        var skinPlayer2Path="";
+        var skinPlayer2Path='assets/skins/yeux.png'
 
         //variable de coordonees 
         var marge = 80;
@@ -57,6 +58,8 @@
             game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
             game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
             game.load.image('skinPlayer1',skinPlayer1Path);
+            game.load.image('skinPlayer2',skinPlayer2Path);
+
         }
 
 
@@ -137,9 +140,9 @@
             bet.body.collideWorldBounds = true;
             bet.body.bounce.setTo(1, 1);
             bet.body.immovable = true;
-            bet.tint = BetColor;
+            bet.tint = BetPlayer2Color;
 
-            var skin = game.add.sprite(-100,-20 , 'skinPlayer1');
+            var skin = game.add.sprite(-100,-20 , 'skinPlayer2');
 
             bet.addChild(skin);
             return bet;
@@ -153,9 +156,9 @@
             bet.body.collideWorldBounds = true;
             bet.body.bounce.setTo(1, 1);
             bet.body.immovable = true;
-            bet.tint = BetColor;
+            bet.tint = BetPlayer1Color;
 
-            var skin = game.add.sprite(-100,-20 , 'skinPlayer');
+            var skin = game.add.sprite(-100,-20 , 'skinPlayer1');
 
             bet.addChild(skin);
             return bet;
