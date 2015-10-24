@@ -19,28 +19,35 @@ angular.module('starter', ['ionic'])
     ionic.Platform.fullScreen(true, false);
 })
 
-.controller('OptionsCtrl', function($scope) {
-    $scope.modeControle;
-    $scope.modeControleNom;
+.controller('MainCtrl', function($scope) {
+    $scope.modesControle = [{
+        id: "0",
+        nom: "Contrôle tactile",
+    }, {
+        id: "1",
+        nom: "Contrôle gyroscope",
+    }];
+
+    $scope.couleurs = [{
+        code : 0xFF0000,
+        nom : "Rouge" 
+    },{
+        code : 0x3300FF,
+        nom : "Bleu" 
+    }];
+
+    //Mode de contrôle
+    $scope.modeControle = optionsGetModeControle();
+    $scope.modeControleNom = $scope.modesControle[parseInt($scope.modeControle)].nom;
 
     $scope.setModeControle = function(mode) {
         $scope.modeControle = mode;
         optionsSetModeControle($scope.modeControle);
-        $scope.modeControleNom = $scope.modesControle[parseInt($scope.modeControle) - 1].nom;
+        $scope.modeControleNom = $scope.modesControle[parseInt($scope.modeControle)].nom;
     }
-})
 
-.controller('MainCtrl', function($scope) {
-    $scope.modesControle = [{
-        id: "1",
-        nom: "Contrôle tactile",
-    }, {
-        id: "2",
-        nom: "Contrôle gyroscope",
-    }];
-
-    $scope.modeControle = optionsGetModeControle();
-    $scope.modeControleNom = $scope.modesControle[parseInt($scope.modeControle) - 1].nom;
+    //Couleur de la balle
+    $scope.couleurBalle = optionsGetCouleurBalle();
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -80,11 +87,16 @@ angular.module('starter', ['ionic'])
         url: '/options/controle',
         templateUrl: 'templates/options/controle.html'
     })
-    $stateProvider.state('jeux-heberger',  {
+    $stateProvider.state('options-couleurBalle', {
+        url: '/options/couleurBalle',
+        templateUrl: 'templates/options/couleurBalle.html'
+    })
+
+    $stateProvider.state('jeux-heberger', {
         url: '/jeux/heberger',
         templateUrl: 'templates/jeux/multi/heberger.html'
     })
-    $stateProvider.state('jeux-rejoindre',  {
+    $stateProvider.state('jeux-rejoindre', {
         url: '/jeux/rejoindre',
         templateUrl: 'templates/jeux/multi/rejoindre.html'
     })

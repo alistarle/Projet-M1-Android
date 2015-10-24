@@ -1,16 +1,11 @@
-<ion-view view-title="Options" ng-controller="OptionsCtrl">
+<ion-view view-title="Options">
     <ion-content>
-        <div class="list">
-            <div class="item item-divider ng-binding">
-                Mode de contrôle : {{modeControleNom}}
-            </div>
-            <ion-radio ng-repeat="mode in modesControle" ng-click="setModeControle(mode.id)" ng-model="modeControle" ng-value="{{mode.id}}">
-                {{mode.nom}}
-            </ion-radio>
-        </div>
-         
         <a class="item item-icon-left item-icon-right" ui-sref="options-controle">
             <i class="icon ion-ios-game-controller-b"></i>Mode de contrôle : {{modeControleNom}}
+            <i class="icon ion-arrow-right-c"></i>
+        </a>
+        <a class="item item-icon-left item-icon-right" ui-sref="options-couleurBalle">
+            <i class="icon ion-android-color-palette"></i>Couleur de la balle : 
             <i class="icon ion-arrow-right-c"></i>
         </a>
     </ion-content>
