@@ -1,4 +1,4 @@
-function Pong(game,modeControle){
+function Pong(game){
 //variable de coordonees 
         this.Y = 1000;
         this.modeControle = optionsGetModeControle();
@@ -11,8 +11,8 @@ function Pong(game,modeControle){
         this.backgroundColor = 0xffffff;
 
         //skins
-        this.skinPlayer1Path='assets/skins/moustache.png';
-        this.skinPlayer2Path='assets/skins/yeux.png'
+        this.skinPlayer1Path='/assets/skins/moustache.png';
+        this.skinPlayer2Path='/assets/skins/yeux.png'
 
         //variable de coordonees 
         this.marge = 200;
@@ -51,10 +51,10 @@ function Pong(game,modeControle){
         };
         Pong.prototype.preload = function () {
             //chargement des assets
-            this.game.load.image('bet', 'assets/bet.png');
-            this.game.load.image('ball', 'assets/ball.png');
-            this.game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
-            this.game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
+            this.game.load.image('bet', '/assets/bet.png');
+            this.game.load.image('ball', '/assets/ball.png');
+            this.game.load.bitmapFont('font', '/assets/flappyfont.png', '/assets/flappyfont.fnt');
+            this.game.load.bitmapFont('flappyfont', '/assets/flappyfont.png', '/assets/flappyfont.fnt');
             this.game.load.image('skinPlayer1',this.skinPlayer1Path);
             this.game.load.image('skinPlayer2',this.skinPlayer2Path);
 
@@ -219,7 +219,7 @@ function Pong(game,modeControle){
 
         Pong.prototype.update = function() {
             //control par le joueur
-
+            console.log("Update !");
             //CONTROL CLASSIQUE
 
             if (this.modeControle == 0) {
@@ -264,6 +264,7 @@ function Pong(game,modeControle){
 
             px *= -1;
             py *= -1;
+            
             this.emitter.emitX = this.ball.x;
             this.emitter.emitY = this.ball.y;
 

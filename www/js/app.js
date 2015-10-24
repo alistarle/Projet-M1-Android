@@ -120,6 +120,12 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/jeux/mode.html'
     })
 
+    //Modes spéciaux
+    $stateProvider.state('jeux-mode-flappypong',{
+        url: '/jeux/mode/flappypong',
+        templateUrl: 'templates/jeux/flappypong.html'
+    })
+
     //Options
     $stateProvider.state('options-controle', {
         url: '/options/controle',
