@@ -19,7 +19,7 @@ angular.module('starter', ['ionic'])
     ionic.Platform.fullScreen(true, false);
 })
 
-.controller('MainCtrl', function($scope) {
+.controller('MainCtrl', function ($scope, $ionicHistory)  {
     $scope.modesControle = [{
         id: "0",
         nom: "Contrôle tactile",
@@ -28,12 +28,12 @@ angular.module('starter', ['ionic'])
         nom: "Contrôle gyroscope",
     }];
 
-    $scope.couleurs = [{
-        code : 0xFF0000,
-        nom : "Rouge" 
-    },{
-        code : 0x3300FF,
-        nom : "Bleu" 
+    $scope.couleurs = [{
+        code: 0xFF0000,
+        nom: "Rouge"
+    }, {
+        code: 0x3300FF,
+        nom: "Bleu"
     }];
 
     //Mode de contrôle
@@ -47,7 +47,45 @@ angular.module('starter', ['ionic'])
     }
 
     //Couleur de la balle
+    $scope.rangCouleurBalle = optionsGetRangCouleurBalle();
     $scope.couleurBalle = optionsGetCouleurBalle();
+    $scope.nomCouleurBalle = $scope.couleurs[parseInt($scope.rangCouleurBalle)].nom;
+
+    $scope.setCouleurBalle = function(rang) {
+        $scope.rangCouleurBalle = rang;
+        $scope.couleurBalle = $scope.couleurs[rang].code;
+        $scope.nomCouleurBalle = $scope.couleurs[rang].nom;
+
+        optionsSetRangCouleurBalle(rang);
+        optionsSetCouleurBalle($scope.couleurBalle);
+    }
+
+    //Couleur de sa barre
+    $scope.rangCouleurBarre = optionsGetRangCouleurBarre();
+    $scope.couleurBalle = optionsGetCouleurBarre();
+    $scope.nomCouleurBarre = $scope.couleurs[parseInt($scope.rangCouleurBarre)].nom;
+
+    $scope.setCouleurBarre = function(rang) {
+        $scope.rangCouleurBarre = rang;
+        $scope.couleurBarre = $scope.couleurs[rang].code;
+        $scope.nomCouleurBarre = $scope.couleurs[rang].nom;
+
+        optionsSetRangCouleurBarre(rang);
+        optionsSetCouleurBarre($scope.couleurBarre);
+    }
+
+    //Pseudo
+    $scope.pseudo = optionsGetPseudo();
+    if ($scope.pseudo == 0) {
+        $scope.pseudo = "Vertilol";
+    }
+    $scope.oldPseudo = $scope.pseudo;
+
+    $scope.setPseudo = function(pseudo) {
+        $scope.pseudo = pseudo;
+        optionsSetPseudo(pseudo);
+        $ionicHistory.goBack();
+    }
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -90,6 +128,14 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('options-couleurBalle', {
         url: '/options/couleurBalle',
         templateUrl: 'templates/options/couleurBalle.html'
+    })
+    $stateProvider.state('options-couleurBarre', {
+        url: '/options/couleurBarre',
+        templateUrl: 'templates/options/couleurBarre.html'
+    })
+    $stateProvider.state('options-pseudo', {
+        url: '/options/pseudo',
+        templateUrl: 'templates/options/pseudo.html'
     })
 
     $stateProvider.state('jeux-heberger', {

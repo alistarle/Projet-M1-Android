@@ -5,8 +5,8 @@ function Pong(game,modeControle){
         this.game = game;
 
         //couleurs
-        this.BallColor = 0xcccccc;
-        this.BetPlayer1Color  = 0x00ffff;
+        this.BallColor = optionsGetCouleurBalle();
+        this.BetPlayer1Color  = optionsGetCouleurBarre();
         this.BetPlayer2Color = 0xff00ff;
         this.backgroundColor = 0xffffff;
 
@@ -32,6 +32,8 @@ function Pong(game,modeControle){
         this.computerBetSpeed = 600;
         this.ballSpeed = 500;
         this.ballReleased = false;
+
+        this.pseudo = optionsGetPseudo();
 
 }
 
@@ -176,7 +178,7 @@ function Pong(game,modeControle){
 
         Pong.prototype.updateScore = function() {
             //refresh affichage du score
-            this.scoreText.setText("player " + this.scorePlayer.toString() + " : " + this.scoreComputer.toString() + " computer");       
+            this.scoreText.setText(this.pseudo + this.scorePlayer.toString() + " : " + this.scoreComputer.toString() + " computer");       
         }
 
         Pong.prototype.setBall = function() {
