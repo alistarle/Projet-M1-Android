@@ -11,8 +11,8 @@ function Pong(game){
         this.backgroundColor = 0xffffff;
 
         //skins
-        this.skinPlayer1Path='/assets/skins/moustache.png';
-        this.skinPlayer2Path='/assets/skins/yeux.png'
+        this.skinPlayer1Path='assets/skins/moustache.png';
+        this.skinPlayer2Path='assets/skins/yeux.png'
 
         //variable de coordonees 
         this.marge = 200;
@@ -51,10 +51,10 @@ function Pong(game){
         };
         Pong.prototype.preload = function () {
             //chargement des assets
-            this.game.load.image('bet', '/assets/bet.png');
-            this.game.load.image('ball', '/assets/ball.png');
-            this.game.load.bitmapFont('font', '/assets/flappyfont.png', '/assets/flappyfont.fnt');
-            this.game.load.bitmapFont('flappyfont', '/assets/flappyfont.png', '/assets/flappyfont.fnt');
+            this.game.load.image('bet', 'assets/bet.png');
+            this.game.load.image('ball', 'assets/ball.png');
+            this.game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
+            this.game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
             this.game.load.image('skinPlayer1',this.skinPlayer1Path);
             this.game.load.image('skinPlayer2',this.skinPlayer2Path);
 
@@ -219,7 +219,7 @@ function Pong(game){
 
         Pong.prototype.update = function() {
             //control par le joueur
-            console.log("Update !");
+            //console.log("Update !");
             //CONTROL CLASSIQUE
 
             if (this.modeControle == 0) {
