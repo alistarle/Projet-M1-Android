@@ -94,7 +94,7 @@ function Pong(game,modeControle){
 
             this.emitter.start(false, 30, 5);
 
-            if (this.modeControle == 2) {
+            if (this.modeControle == 1) {
                 gyro.frequency = 2;
                 gyro.pong = this;
                 gyro.startTracking(function(o) {
@@ -220,7 +220,7 @@ function Pong(game,modeControle){
 
             //CONTROL CLASSIQUE
 
-            if (this.modeControle == 1) {
+            if (this.modeControle == 0) {
                 this.playerBet.x = this.game.input.x;
 
 
