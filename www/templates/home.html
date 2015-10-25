@@ -1,13 +1,30 @@
 <ion-view view-title="PONG">
     <ion-content>
-        <button class="button button-block button-positive" ui-sref="jeux">
-            Jouer !
-        </button>
-        <button class="button button-block button-positive" ui-sref="options">
-            Options
-        </button>
-        <button class="button button-block button-positive" ui-sref="about">
-            A propos
-        </button>
+        <div class="padding" ng-class="{'blur-element' : estPremierLancement()}">
+            <button class="button button-block button-positive" ui-sref="jeux" data-ng-disabled="estPremierLancement()">
+                Jouer !
+            </button>
+            <button class="button button-block button-positive" ui-sref="options" data-ng-disabled="estPremierLancement()">
+                Options
+            </button>
+            <button class="button button-block button-positive" ui-sref="about" data-ng-disabled="estPremierLancement()">
+                A propos
+            </button>
+        </div>
+        <div class="card premierLancement" ng-show="estPremierLancement()">
+            <div class="item item-text-wrap">
+                <p>Bienvenue sur Pong, c'est la première fois que vous lancez le jeux.</p>
+                <p>Veuillez choisir un pseudo.</p>
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Pseudo</span>
+                        <input type="text" placeholder="Entrez votre pseudo" ng-model="pseudo">
+                    </label>
+                    <div class="padding">
+                        <button class="button button-block button-positive" ng-click="setPseudo(pseudo)">Suivant</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

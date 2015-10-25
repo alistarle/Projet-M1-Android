@@ -4,7 +4,8 @@
     var keyRangCouleurBalle = "rangCouleurBalle";
     var keyCouleurBarre = "couleurBarre";
     var keyRangCouleurBarre = "rangCouleurBarre";
-    var keyPseudo = "pseudo"
+    var keyPseudo = "pseudo";
+    var keyPremierLancement = "premierLancementX";
 
     var optionsGet = function(key) {
         if (permanentStorage.getItem(key)) {
@@ -62,10 +63,24 @@
     }
 
     //Pseudo
-     var optionsGetPseudo = function() {
+    var optionsGetPseudo = function() {
         return optionsGet(keyPseudo);
     }
 
     var optionsSetPseudo = function(pseudo) {
         optionsSet(keyPseudo, pseudo);
+    }
+
+    //Premier lancement
+    var optionsGetPremierLancement = function() {
+        var lancement = optionsGet(keyPremierLancement);
+        if (lancement) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    var optionsSetPremierLancement = function() {
+        optionsSet(keyPremierLancement, "Y");
     }

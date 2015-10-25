@@ -19,7 +19,7 @@ angular.module('starter', ['ionic'])
     ionic.Platform.fullScreen(true, false);
 })
 
-.controller('MainCtrl', function ($scope, $ionicHistory)  {
+.controller('MainCtrl', function($scope, $ionicHistory) {
     $scope.modesControle = [{
         id: "0",
         nom: "Contrôle tactile",
@@ -62,7 +62,7 @@ angular.module('starter', ['ionic'])
 
     //Couleur de sa barre
     $scope.rangCouleurBarre = optionsGetRangCouleurBarre();
-    $scope.couleurBalle = optionsGetCouleurBarre();
+    $scope.couleurBarre = $scope.couleurs[parseInt($scope.rangCouleurBarre)].code;
     $scope.nomCouleurBarre = $scope.couleurs[parseInt($scope.rangCouleurBarre)].nom;
 
     $scope.setCouleurBarre = function(rang) {
@@ -77,14 +77,22 @@ angular.module('starter', ['ionic'])
     //Pseudo
     $scope.pseudo = optionsGetPseudo();
     if ($scope.pseudo == 0) {
-        $scope.pseudo = "Vertilol";
+        $scope.pseudo = ""
     }
     $scope.oldPseudo = $scope.pseudo;
 
     $scope.setPseudo = function(pseudo) {
-        $scope.pseudo = pseudo;
-        optionsSetPseudo(pseudo);
-        $ionicHistory.goBack();
+        if (pseudo !== "") {
+            $scope.pseudo = pseudo;
+            $scope.oldPseudo = pseudo;
+            optionsSetPseudo(pseudo);
+            $ionicHistory.goBack();
+            optionsSetPremierLancement();
+        }
+    }
+
+    $scope.estPremierLancement = function() {
+        return optionsGetPremierLancement();
     }
 })
 
@@ -121,7 +129,7 @@ angular.module('starter', ['ionic'])
     })
 
     //Modes spéciaux
-    $stateProvider.state('jeux-mode-flappypong',{
+    $stateProvider.state('jeux-mode-flappypong', {
         url: '/jeux/mode/flappypong',
         templateUrl: 'templates/jeux/flappypong.html'
     })
