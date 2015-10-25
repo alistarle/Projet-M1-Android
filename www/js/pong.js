@@ -70,14 +70,14 @@ function Pong(game){
             this.game.stage.backgroundColor = this.backgroundColor;
             this.playerBet = this.createBetBot();
             this.computerBet = this.createBetTop();
-            this.ball = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
 
+            this.ball = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
             this.ball.tint = this.BallColor;
             this.game.physics.arcade.enable(this.ball);
-
             this.ball.anchor.setTo(0.5, 0.5);
             this.ball.body.collideWorldBounds = true;
             this.ball.body.bounce.setTo(1, 1);
+
             this.game.input.onDown.add(this.releaseBall, this);
 
             this.scoreText = this.game.add.bitmapText(this.game.width / 2 - 230, this.marge/2, 'flappyfont', this.scorePlayer.toString() + ":" + this.scoreComputer.toString(), 50);
@@ -221,7 +221,6 @@ function Pong(game){
             //control par le joueur
             //console.log("Update !");
             //CONTROL CLASSIQUE
-
             if (this.modeControle == 0) {
                 this.playerBet.x = this.game.input.x;
 
