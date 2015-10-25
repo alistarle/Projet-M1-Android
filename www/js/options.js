@@ -5,7 +5,7 @@
     var keyCouleurBarre = "couleurBarre";
     var keyRangCouleurBarre = "rangCouleurBarre";
     var keyPseudo = "pseudo";
-    var keyPremierLancement = "premierLancementX";
+    var keyPremierLancement = "premierLancement";
 
     var optionsGet = function(key) {
         if (permanentStorage.getItem(key)) {

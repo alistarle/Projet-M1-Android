@@ -271,6 +271,7 @@ function Pong(game){
             this.emitter.maxParticleSpeed.set(px, py);
         }
 
+
         Pong.prototype.init = function(){
             this.game = new Phaser.Game(1080, 1920, Phaser.AUTO, '', {
             preload: preload,

@@ -94,6 +94,30 @@ angular.module('starter', ['ionic'])
     $scope.estPremierLancement = function() {
         return optionsGetPremierLancement();
     }
+
+})
+
+.controller('pong-solo', function($scope) {
+    console.log("In controller test");
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        console.log("Loaded");
+        var pong = new Pong();
+
+        pong.init();
+
+
+        var create = function() {
+            pong.create();
+        }
+
+        var preload = function() {
+            pong.preload();
+        }
+
+        var update = function() {
+            pong.update();
+        }
+    })
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
