@@ -131,7 +131,7 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var pong = new Pong();
+        var pong = new FlappyPong();
 
         function create() {
             pong.create();
