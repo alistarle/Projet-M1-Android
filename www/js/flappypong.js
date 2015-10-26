@@ -8,7 +8,7 @@ function FlappyPong(game,modeControle){
 
 	  //dedie a l'animation
 	  this.accumulateTimeAnimationFlappy = 0; // accumulateur de temps dedie a l'arret de l'anim
-	  this.capTimeFlappyAnimation = 1000;//temps d'animation
+	  this.capTimeFlappyAnimation = 1100;//temps d'animation
 	  this.animatingFlappy = false;//booleen qui decrit l'etat de la situation
 	  this.capAnimation1 = 500;//separateur d'anim
 	  this.capAnimation2 = 700;
@@ -21,7 +21,7 @@ FlappyPong.prototype.create = function(){
 	this.super.create.call(this);
 	this.flappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flappy');
 	this.game.physics.arcade.enable(this.flappy);
-	//this.flappy.visible = false;
+	this.flappy.visible = false;
 	this.flappy.anchor.setTo(0.5,0.5);
 	//this.flappy.body.setSize()
 	//this.ball.addChild(this.flappy);
@@ -58,7 +58,8 @@ FlappyPong.prototype.doFlappyUpdate = function(){
 
 //recentre le flappy sur la balle
 FlappyPong.prototype.recenterFlappy = function(){
-	this.flappy.body.center = this.ball.body.center;
+	this.flappy.x = this.ball.x;
+	this.flappy.y = this.ball.y;
 }
 
 
@@ -85,14 +86,15 @@ FlappyPong.prototype.setBall = function(){
 FlappyPong.prototype.resetFlappy = function(){
 	this.animatingFlappy = false;
 	this.flappy.visible = false;
-	this.ball.alpha = 0;
+	this.ball.alpha = 1;
 	this.accumulateTimeFlappy = 0;
 	this.accumulateTimeAnimationFlappy = 0;
 
 }
 
-
+//////////////////////////////////////
 /////////////////////////////Animation
+/////////////////////////////////////
 //debut de l'animation
 FlappyPong.prototype.doFlappy = function(){
 	//	Math.random();
@@ -133,7 +135,10 @@ FlappyPong.prototype.animatePart2 = function(){
 	;
 }
 FlappyPong.prototype.animatePart3 = function(){
-	this.flappy.angle -= 2;
+	this.flappy.angle -= 1;
+	this.ball.body.velocity.x -= Math.cos(this.flappy.angle)*200;
+	this.ball.body.velocity.y -= Math.sin(this.flappy.angle)*1000;
+	//debugger;
 }
 
 FlappyPong.prototype.isAnimPart1 = function(){
