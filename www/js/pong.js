@@ -1,4 +1,8 @@
 function Pong(game){
+
+        this.debug = true;
+
+
 //variable de coordonees 
         this.Y = 1000;
         this.modeControle = optionsGetModeControle();
@@ -27,7 +31,7 @@ function Pong(game){
         this.ball;
 
         this.scoreText;
-
+        this.fps;
         //valeurs pouvant être modifiees
         this.computerBetSpeed = 600;
         this.ballSpeed = 500;
@@ -63,6 +67,7 @@ function Pong(game){
  
         Pong.prototype.create = function() {
             //create !
+            this.game.time.advancedTiming = true;
             this.scorePlayer = 0;
             this.scoreComputer = 0;
             //OnCreate initialisation des objets avec sprites et physique
@@ -82,6 +87,13 @@ function Pong(game){
 
             this.scoreText = this.game.add.bitmapText(this.game.width / 2 - 230, this.marge/2, 'flappyfont', this.scorePlayer.toString() + ":" + this.scoreComputer.toString(), 50);
             this.scoreText.visible = true;
+
+            this.fps = this.game.add.text(50, 50,"Fps : ", {
+                font: "65px Arial",
+                fill: "#ff0044",
+                align: "center"
+            });
+            this.fps.visible = this.debug;
 
             this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 
@@ -249,11 +261,14 @@ function Pong(game){
             }
         
 
-
             //check des collisions
             this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
             this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
             this.checkGoal();
+
+            //debugger;;
+            this.fps.setText('Fps : '+this.game.time.fps.toString());
+            
         }
 
         Pong.prototype.trail = function() {
