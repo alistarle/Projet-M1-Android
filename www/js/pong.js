@@ -253,7 +253,7 @@ Pong.prototype.update = function() {
         }
     }
     this.trail();
-
+ 
     //control par IA
 
     if (this.ballReleased) {

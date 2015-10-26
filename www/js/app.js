@@ -17,7 +17,7 @@ angular.module('starter', ['ionic'])
         }
     });
     ionic.Platform.fullScreen(true, false);
-})
+}) 
 
 .controller('MainCtrl', function($scope, $ionicHistory) {
     $scope.modesControle = [{
