@@ -11,7 +11,7 @@ function FlappyPong(game,modeControle){
 	  this.capTimeFlappyAnimation = 1100;//temps d'animation
 	  this.animatingFlappy = false;//booleen qui decrit l'etat de la situation
 	  this.capAnimation1 = 500;//separateur d'anim
-	  this.capAnimation2 = 700;
+	  this.capAnimation2 = 600;
 }
 FlappyPong.prototype = $.extend(true, {}, Pong.prototype);  
 FlappyPong.prototype.super = Pong.prototype;     
@@ -23,6 +23,10 @@ FlappyPong.prototype.create = function(){
 	this.game.physics.arcade.enable(this.flappy);
 	this.flappy.visible = false;
 	this.flappy.anchor.setTo(0.5,0.5);
+	this.flappy.body.moves = false;
+
+	
+
 	//this.flappy.body.setSize()
 	//this.ball.addChild(this.flappy);
 
@@ -40,6 +44,27 @@ FlappyPong.prototype.update = function(){
 	 this.super.update.call(this);
 	 this.doFlappyUpdate();
 	 if(this.animatingFlappy) this.recenterFlappy();
+
+	 this.game.physics.arcade.collide(this.ball, this.flappy, function(ball, flappy) {
+	        // ... collision code ...
+	        //debugger;
+	    }, function(ball, flappy) {
+	      // if this returns false, then the collision is ignored, so return the value
+	      // of player.body.moves to make non-moving sprites also ignore collision
+	        //debugger;
+	        console.log("collision");
+	      return false;
+	});
+	 this.game.physics.arcade.collide(this.flappy, this.ball, function(flappy, ball) {
+	        // ... collision code ...
+	        //debugger;
+	    }, function(flappy, ball) {
+	      // if this returns false, then the collision is ignored, so return the value
+	      // of player.body.moves to make non-moving sprites also ignore collision
+	        //debugger;
+	        console.log("collision");
+	      return false;
+	});
 
 }
 
@@ -135,9 +160,9 @@ FlappyPong.prototype.animatePart2 = function(){
 	;
 }
 FlappyPong.prototype.animatePart3 = function(){
-	this.flappy.angle -= 1;
-	this.ball.body.velocity.x -= Math.cos(this.flappy.angle)*200;
-	this.ball.body.velocity.y -= Math.sin(this.flappy.angle)*1000;
+	this.flappy.angle -= 2;
+	this.ball.body.velocity.x += Math.cos((this.flappy.angle-90)*(Math.PI/180))*50;
+	this.ball.body.velocity.y += Math.sin((this.flappy.angle-90)*(Math.PI/180))*50;
 	//debugger;
 }
 

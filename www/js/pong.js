@@ -273,7 +273,7 @@ Pong.prototype.update = function() {
     this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
     this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
     this.checkGoal();
-
+    
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
 
