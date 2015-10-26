@@ -150,6 +150,7 @@ angular.module('starter', ['ionic'])
         $ionicLoading.hide();
     });
 })
+//
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
