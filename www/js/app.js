@@ -124,6 +124,33 @@ angular.module('starter', ['ionic'])
     });
 })
 
+.controller('flappypong-solo', function($scope, $ionicLoading) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var pong = new Pong();
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+})
+
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
         url: '/home',
@@ -151,15 +178,15 @@ angular.module('starter', ['ionic'])
         url: '/jeux/multi',
         templateUrl: 'templates/jeux/multi.html'
     })
-    $stateProvider.state('jeux-mode', {
-        url: '/jeux/mode',
-        templateUrl: 'templates/jeux/mode.html'
-    })
 
-    //Modes spéciaux
-    $stateProvider.state('jeux-mode-flappypong', {
-        url: '/jeux/mode/flappypong',
-        templateUrl: 'templates/jeux/flappypong.html'
+    //Solo
+    $stateProvider.state('solo-normal', {
+        url: '/jeux/solo/normal',
+        templateUrl: 'templates/jeux/solo/normal.html'
+    })
+    $stateProvider.state('solo-flappypong', {
+        url: '/jeux/solo/flappypong',
+        templateUrl: 'templates/jeux/solo/flappypong.html'
     })
 
     //Options
