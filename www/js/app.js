@@ -97,27 +97,31 @@ angular.module('starter', ['ionic'])
 
 })
 
-.controller('pong-solo', function($scope) {
-    console.log("In controller test");
+.controller('pong-solo', function($scope, $ionicLoading) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        console.log("Loaded");
         var pong = new Pong();
 
-        pong.init();
-
-
-        var create = function() {
+        function create() {
             pong.create();
         }
 
-        var preload = function() {
+        function preload() {
             pong.preload();
         }
 
-        var update = function() {
+        function update() {
             pong.update();
         }
-    })
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

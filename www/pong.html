@@ -21,11 +21,7 @@
             create: create,
             update: update
         });*/
-        var pong = new Pong();
-        pong.init();
-        
-
-        function create(){
+ function create(){
             pong.create();
         }
         function preload(){
@@ -34,6 +30,11 @@
         function update(){
             pong.update();
         }
+        var pong = new Pong();
+        pong.init(create,preload,update);
+        
+
+       
 
 
     //};
