@@ -100,7 +100,7 @@ Pong.prototype.create = function() {
         gyro.startTracking(function(o) {
             var gyroX = o.gamma * 15 + gyro.pong.game.width / 2;
             if (gyroX > 0 && gyroX < gyro.pong.game.width) {
-                pong.playerBet.x = gyroX;
+                gyro.pong.playerBet.x = gyroX;
             }
 
         });
@@ -112,8 +112,6 @@ Pong.prototype.create = function() {
     this.game.scale.startFullScreen(false);
     $('#gameArea').css('max-height', $(window).height());
     $('#gameArea').css('max-width', $(window).width());
-
-
 }
 
 
