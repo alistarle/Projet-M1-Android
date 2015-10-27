@@ -151,6 +151,35 @@ angular.module('starter', ['ionic'])
         $ionicLoading.hide();
     });
 })
+
+.controller('solo-multipong', function($scope, $ionicLoading) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+         debugger;
+         pong = new MultiPong();
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+})
+
 //
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -189,6 +218,10 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('solo-flappypong', {
         url: '/jeux/solo/flappypong',
         templateUrl: 'templates/jeux/solo/flappypong.html'
+    })
+    $stateProvider.state('solo-multipong', {
+        url: '/jeux/solo/multipong',
+        templateUrl: 'templates/jeux/solo/multipong.html'
     })
 
     //Options
