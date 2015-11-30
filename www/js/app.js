@@ -190,6 +190,33 @@ angular.module('starter', ['ionic'])
     });
 })
 
+.controller('larrypong-solo', function($scope, $ionicLoading) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+         pong = new LarryPong();
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+})
+
 .controller('solo-multipong', function($scope, $ionicLoading) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
@@ -256,6 +283,10 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('solo-flappypong', {
         url: '/jeux/solo/flappypong',
         templateUrl: 'templates/jeux/solo/flappypong.html'
+    })
+    $stateProvider.state('solo-larrypong', {
+        url: '/jeux/solo/larrypong',
+        templateUrl: 'templates/jeux/solo/larrypong.html'
     })
     $stateProvider.state('solo-multipong', {
         url: '/jeux/solo/multipong',
