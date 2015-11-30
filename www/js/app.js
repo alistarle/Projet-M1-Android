@@ -18,7 +18,7 @@ angular.module('starter', ['ionic'])
         }
     });
     ionic.Platform.fullScreen(true, false);
-}) 
+})
 
 .controller('MainCtrl', function($scope, $ionicHistory) {
     $scope.modesControle = [{
@@ -98,6 +98,44 @@ angular.module('starter', ['ionic'])
 
 })
 
+.controller('serveur-controller', function($scope) {
+    pong = new Pong();
+    $scope.$on("$ionicView.beforeEnter", function() {
+        initJXCore(pong);
+        $("#launchGame").click(function() {
+          NetworkManager.notifyLaunch();
+        });
+    });
+    $scope.$on("$ionicView.enter", function() {
+      if(pong.multiplayer) NetworkManager.requestPlayerList();
+      function create() {
+        pong.create();
+      }
+
+      function preload() {
+        pong.preload();
+      }
+
+      function update() {
+        pong.update();
+      }
+      pong.init(create, preload, update, 'gameArea');
+    });
+})
+
+.controller('client-controller', function($scope) {
+    pong = new Pong();
+    $scope.$on("$ionicView.beforeEnter", function() {
+      $("#connectToServeur").click(function() {
+        var ip = $("#serveurIp").val();
+        pong.connectToServer(ip);
+      });
+    });
+    $scope.$on("$ionicView.enter", function() {
+      if(pong.multiplayer) NetworkManager.requestPlayerList();
+    });
+})
+
 .controller('pong-solo', function($scope, $ionicLoading) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
@@ -106,7 +144,7 @@ angular.module('starter', ['ionic'])
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
         pong = new Pong();
-
+        pong.multiplayer = false;
         function create() {
             pong.create();
         }

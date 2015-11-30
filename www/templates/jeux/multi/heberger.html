@@ -1,22 +1,27 @@
-<ion-view view-title="Heberger une partie">
+<ion-view view-title="Heberger une partie" ng-controller="serveur-controller">
     <ion-content>
 		<div id="ipaddrs" class="list">
 		  <div class="item item-divider">
 		    Votre adresse
 		  </div>
 		</div>
-		<div id="hasJoined" class="list">
+		<div class="list">
 		  <div class="item item-divider">
 		    Joueurs dans le lobby
 		  </div>
+      <div id="hasJoined">
+      </div>
 		</div>
+    <button id="launchGame" class="button button-block button-positive" disabled>
+      Lancer la partie
+    </button>
 		<div class="card">
 		  <div class="item item-divider">
 		  	<i id="clrbtn" class="icon ion-trash-b"></i>
 		    Logs JXCore
 		  </div>
 		  <div id="logs" class="item item-text-wrap">
-		    
+
 		  </div>
 		</div>
     </ion-content>

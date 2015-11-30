@@ -25,34 +25,38 @@ var net = os.networkInterfaces();
 
 for (var ifc in net) {
   var addrs = net[ifc];
-  for (var a in addrs) {
-    if (addrs[a].family == "IPv4") {
-      Mobile('addIp').call(addrs[a].address);
+  if (ifc.substring(0, 4) == "wlan") {
+    for (var a in addrs) {
+      if (addrs[a].family == "IPv4") {
+        Mobile('addIp').call(addrs[a].address);
+      }
     }
   }
 }
+
+var client = [];
 
 // run express server under a sub thread
 jxcore.tasks.addTask(function() {
   // requiring utilities again. This function doesn't share any
   // variable from the above thread code.
   var clog = require('./utilities').log;
+  var ready = require('./utilities').ready;
   var express = require('express');
   var app = express();
   var server = require('http').Server(app);
   var io = require('socket.io')(server);
+  var GameServer = require('./server/gameServer');
+  var gameServer = GameServer(io);
 
   app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
   });
 
-  io.on('connection', function (socket) { //Fonction a executer lors de la connection d'un client
-    socket.on('position', function (data) {
-      socket.broadcast.emit("position", data);
-    });
-  });
+  gameServer.start();
 
   server.listen(3000, function () { //Création du serveur express sur le porc 3000
     clog("Express server is started. (port: 3000)");
+    ready();
   });
 });

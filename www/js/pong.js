@@ -3,7 +3,7 @@ function Pong(game) {
     this.debug = true;
 
 
-    //variable de coordonees 
+    //variable de coordonees
     this.Y = 1000;
     this.modeControle = optionsGetModeControle();
     this.game = game;
@@ -18,7 +18,7 @@ function Pong(game) {
     this.skinPlayer1Path = 'assets/skins/moustache.png';
     this.skinPlayer2Path = 'assets/skins/yeux.png'
 
-    //variable de coordonees 
+    //variable de coordonees
     this.marge = 200;
 
     //scores
@@ -33,6 +33,10 @@ function Pong(game) {
     this.scoreText;
     this.fps;
 
+    //Multiplayer vars
+    this.multiplayer = false;
+    this.uid;
+    this.otherPlayers = [];
 
     //valeurs pouvant être modifiees
     this.computerBetSpeed = 600;
@@ -43,6 +47,61 @@ function Pong(game) {
 
 }
 
+Pong.prototype.connectToServer = function(ip) {
+  this.multiplayer = true;
+  this.otherPlayers = [];
+
+  NetworkManager.connect(ip,optionsGetPseudo());
+
+  NetworkManager.onOtherPlayerConnected(function(otherPlayerInfo){
+    this.otherPlayers.push(otherPlayerInfo);
+    syncPlayer(this.otherPlayers);
+  });
+
+  NetworkManager.onOtherPlayerMove(function(movementInfo){
+    /*var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
+    if(otherPlayerToMove){
+      otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
+    }*/
+    pong.computerBet.x = movementInfo.x;
+  });
+
+  NetworkManager.onUpdatePlayerList(function(receivedList){
+    this.otherPlayers = receivedList;
+    syncPlayer(receivedList);
+  });
+
+  NetworkManager.onServerLaunch(function() {
+    function create() {
+      pong.create();
+    }
+
+    function preload() {
+      pong.preload();
+    }
+
+    function update() {
+      pong.update();
+    }
+    pong.init(create, preload, update, 'gameArea');
+  });
+
+  NetworkManager.onServerCanLaunch(function() {
+    $("#launchGame").prop('disabled', false);
+  });
+
+  NetworkManager.onServerCannotLaunch(function() {
+    $("#launchGame").prop('disabled', true);
+  });
+
+  NetworkManager.onServerRoomClosed(function() {
+    alert("Serveur fermé");
+  });
+
+  NetworkManager.onServerRoomFull(function() {
+    alert("Serveur plein");
+  });
+}
 
 Pong.prototype.createBet = function(x, y) {
     //creer une raquette
@@ -117,6 +176,7 @@ Pong.prototype.create = function() {
             var gyroX = o.gamma * 15 + gyro.pong.game.width / 2;
             if (gyroX > 0 && gyroX < gyro.pong.game.width) {
                 gyro.pong.playerBet.x = gyroX;
+                if(this.multiplayer) NetworkManager.notifyMovement({x: gyroX});
             }
 
 
@@ -126,7 +186,7 @@ Pong.prototype.create = function() {
     this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 
 
-    this.game.scale.startFullScreen(false);
+    //this.game.scale.startFullScreen(false);
     $('#gameArea').css('max-height', $(window).height());
     $('#gameArea').css('max-width', $(window).width());
 }
@@ -242,7 +302,7 @@ Pong.prototype.update = function() {
     //CONTROL CLASSIQUE
     if (this.modeControle == 0) {
         this.playerBet.x = this.game.input.x;
-
+        if(this.multiplayer) NetworkManager.notifyMovement({x : this.playerBet.x});
 
         var playerBetHalfWidth = this.playerBet.width / 2;
 
@@ -253,18 +313,19 @@ Pong.prototype.update = function() {
         }
     }
     this.trail();
- 
-    //control par IA
 
-    if (this.ballReleased) {
+    //control par IA
+    if(!this.multiplayer) {
+      if (this.ballReleased) {
         this.emitter.emitParticle();
-    }
-    if (this.computerBet.x - this.ball.x < -15) {
+      }
+      if (this.computerBet.x - this.ball.x < -15) {
         this.computerBet.body.velocity.x = this.computerBetSpeed;
-    } else if (this.computerBet.x - this.ball.x > 15) {
+      } else if (this.computerBet.x - this.ball.x > 15) {
         this.computerBet.body.velocity.x = -this.computerBetSpeed;
-    } else {
+      } else {
         this.computerBet.body.velocity.x = 0;
+      }
     }
 
 
@@ -273,7 +334,7 @@ Pong.prototype.update = function() {
     this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
     this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
     this.checkGoal();
-    
+
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
 

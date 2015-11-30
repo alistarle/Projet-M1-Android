@@ -17,6 +17,16 @@ exports.log = function() {
     process.sendToMain({JXC_SUB:1, method:'log', argv:[msg]});
 };
 
+// this log method is designed to work also under a jxcore sub task
+exports.ready = function() {
+  var msg = util.format.apply(this, arguments);
+
+  if (!process.subThread)
+    Mobile('ready').call();
+  else
+    process.sendToMain({JXC_SUB:1, method:'ready', argv:[]});
+};
+
 if (!process.subThread) {
   // catch the messages from other threads
   jxcore.tasks.on('message', function (threadId, param) {
