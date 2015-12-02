@@ -143,6 +143,7 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        debugger;
         pong = new Pong();
         pong.multiplayer = false;
         function create() {

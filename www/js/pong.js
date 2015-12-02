@@ -63,7 +63,7 @@ Pong.prototype.connectToServer = function(ip) {
     if(otherPlayerToMove){
       otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
     }*/
-    pong.computerBet.x = movementInfo.x;
+    //pong.computerBet.x = movementInfo.x;
   });
 
   NetworkManager.onUpdatePlayerList(function(receivedList){
@@ -148,7 +148,8 @@ Pong.prototype.create = function() {
 
     this.scoreText = this.game.add.bitmapText(this.game.width / 2 - 230, this.marge / 2, 'flappyfont', this.scorePlayer.toString() + ":" + this.scoreComputer.toString(), 50);
     this.scoreText.visible = true;
-
+    this.updateScore();
+    
     this.fps = this.game.add.text(50, 50, "Fps : ", {
         font: "65px Arial",
         fill: "#ff0044",
@@ -244,16 +245,28 @@ Pong.prototype.releaseBall = function() {
 Pong.prototype.checkGoal = function() {
     //si but alors score++
     if (this.ball.y < 100) {
-        this.setBall();
-        this.scorePlayer++;
+        this.goalTop();
+        this.goal();
     } else if (this.ball.y > this.game.height - 100) {
-
-        this.setBall();
-        this.scoreComputer++;
+        this.goalBot();
+        this.goal();
     }
-    this.updateScore();
 
 }
+
+Pong.prototype.goal = function(){
+    this.updateScore();
+    
+}
+Pong.prototype.goalTop = function(){
+    this.setBall();
+    this.scorePlayer++;
+}
+Pong.prototype.goalBot = function(){
+    this.setBall();
+    this.scoreComputer++;
+}
+
 
 Pong.prototype.updateScore = function() {
     //refresh affichage du score

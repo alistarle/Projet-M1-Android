@@ -1,61 +1,61 @@
 function LarryPong(game,modeControle){
 
 	  Pong.apply(this,arguments);
-	  //larry's playground
 }
 
 LarryPong.prototype = $.extend(true, {}, Pong.prototype);  
 LarryPong.prototype.super = Pong.prototype;
 
 LarryPong.prototype.create = function(){
-	/*this.flappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flappy');
-	this.game.physics.arcade.enable(this.flappy);
-	this.flappy.visible = false;
-	this.flappy.anchor.setTo(0.5,0.5);
-	this.flappy.body.moves = false;*/
 
-	
 
-	//this.flappy.body.setSize()
-	//this.ball.addChild(this.flappy);
-
-	this.numberWidthCase = 10;
-	this.numberHeightCase = 10;
-	this.widthPlayground = this.game.width;
-	this.heightPlayground = this.game.height/4;
-
-	this.widthCase = this.widthPlayground / this.numberWidthCase;
-	this.heightCase = this.heightPlayground / this.numberHeightCase;
-
-	this.xPlayground = 0;
-	this.yPlayground = (this.game.height / 2) - (this.heightPlayground / 2);
-
-	var scaleW = this.widthCase / 20;
-	var scaleH = this.heightCase / 20;
-	
-
+	//Background stuff
 	this.playground = {};
-	for(var i = 0 ; i < this.numberWidthCase ; i++){
-		for(var j=0 ; j < this.numberHeightCase ; j++){
+	this.playground.get = function(x,y){
+		return this[x+""+y];
+	}
+
+	this.playground.numberWidthCase = 10;
+	this.playground.numberHeightCase = 10;
+	this.playground.widthPlayground = this.game.width;
+	this.playground.heightPlayground = this.game.height/4;
+
+	this.playground.widthCase = this.playground.widthPlayground / this.playground.numberWidthCase;
+	this.playground.heightCase = this.playground.heightPlayground / this.playground.numberHeightCase;
+
+	this.playground.xPlayground = 0;
+	this.playground.yPlayground = (this.game.height / 2) - (this.playground.heightPlayground / 2);
+
+	var scaleW = this.playground.widthCase / 20;
+	var scaleH = this.playground.heightCase / 20;
+	
+
+	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
+		for(var j=0 ; j < this.playground.numberHeightCase ; j++){
 			var tile = this.game.add.sprite(0,0,'tile');
 			tile.anchor.setTo(0.5, 0.5);
 			tile.scale.setTo(scaleW,scaleH);
-			this.playground[i.toString()+" "+j.toString()] = tile;
+			this.playground[i.toString()+""+j.toString()] = tile;
 		}
 		
 	}
-	for(var i = 0 ; i < this.numberWidthCase ; i++){
-		for(var j = 0 ; j < this.numberHeightCase ; j++){
-			this.playground[i+" "+j].top = this.playground[i+" "+(j-1)];
-			this.playground[i+" "+j].bot = this.playground[i+" "+(j+1)];
-			this.playground[i+" "+j].left = this.playground[(i-1)+" "+j];
-			this.playground[i+" "+j].right = this.playground[(i+1)+" "+j];
-			this.playground[i+" "+j].posY = j;
-			this.playground[i+" "+j].posX = i;
+	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
+		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
+			this.playground.get(i,j).topCase = this.playground.get(i,j-1);
+			this.playground.get(i,j).botCase = this.playground.get(i,j+1);
+			this.playground.get(i,j).leftCase = this.playground.get(i-1,j);
+			this.playground.get(i,j).rightCase = this.playground.get(i+1,j);
+			this.playground.get(i,j).posY = j;
+			this.playground.get(i,j).posX = i;
 		}
 	}
 	this.placementPlayground();
+
 	this.super.create.call(this);
+
+	this.larrys = new Array();
+	this.popLarry();
+
 
 
 }
@@ -64,11 +64,10 @@ LarryPong.prototype.placementPlayground = function(){
 	/*for(var i = 0 ; i < this.numberWidthCase*this.numberHeightCase ; i++){
 		console.log()
 	}*/
-debugger;
-	for(var i = 0 ; i < this.numberWidthCase ; i++){
-		for(var j = 0 ; j < this.numberHeightCase ; j++){
-			this.playground[i+" "+j].x = this.xPlayground + this.widthCase/2 + i * this.widthCase;
-			this.playground[i+" "+j].y = this.yPlayground + this.heightCase/2 + j * this.heightCase;
+	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
+		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
+			this.playground.get(i,j).x = this.playground.xPlayground + this.playground.widthCase/2 + i * this.playground.widthCase;
+			this.playground.get(i,j).y = this.playground.yPlayground + this.playground.heightCase/2 + j * this.playground.heightCase;
 											
 			/*var tile = this.game.add.sprite(this.xPlayground + this.widthCase/2 + i * this.widthCase,
 											this.yPlayground + this.heightCase/2 + j * this.heightCase,
@@ -115,4 +114,28 @@ LarryPong.prototype.update = function(){
 	      return false;
 	});*/
 
+}
+
+LarryPong.prototype.setBall = function(){
+	this.super.setBall.call(this);
+	this.popLarry();	
+}
+
+LarryPong.prototype.goal = function() {
+	this.super.goal.call(this);
+	this.killLarrys();
+	this.popLarry();
+}
+LarryPong.prototype.killLarrys = function(){
+	while(this.larrys.length != 0){
+		this.larrys.pop().kill();
+
+	}
+}
+
+LarryPong.prototype.popLarry = function() {
+	this.larrys.push(new LarryHead(this.game,
+		this.playground.get(
+			this.game.rnd.integerInRange(0,this.playground.numberWidthCase-1),
+			this.game.rnd.integerInRange(0, this.playground.numberHeightCase-1))));
 }

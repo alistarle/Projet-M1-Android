@@ -1,8 +1,8 @@
-function LarryHead(game){
-	debugger;
+function LarryHead(game,tile){
 	this.game = game;
 	this.playground = game.playground;
-	this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'LarryHead');
+	this.self = this.game.add.sprite(tile.x, tile.y, 'larryhead');
+	this.frame = 0;
 }
 
 LarryHead.prototype.randomPlacement = function(){
@@ -17,13 +17,16 @@ LarryHead.prototype.onHitBall = function(){
 	;
 }
 
+LarryHead.prototype.kill = function(){
+	this.self.kill();
+}
 
 
 
 function LarryBody(game){
 	this.game = game;
 	this.suivant;
-	this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'LarryBody');
+	this.self = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'LarryBody');
 }
 
 LarryBody.prototype.growBody = function() {
@@ -38,4 +41,7 @@ LarryBody.prototype.placement = function (){
 	if(this.suivant != undefined){
 		this.suivant.placement();
 	}
+}
+LarryBody.prototype.kill = function (){
+	this.self.kill();
 }
