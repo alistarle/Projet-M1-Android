@@ -40,7 +40,8 @@ FlappyPong.prototype.preload = function(){
 }
 
 FlappyPong.prototype.update = function(){
-	
+	 console.log("Flappypong.js");
+
 	 this.super.update.call(this);
 	 this.doFlappyUpdate();
 	 if(this.animatingFlappy) this.recenterFlappy();
