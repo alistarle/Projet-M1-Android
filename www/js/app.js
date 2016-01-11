@@ -6,19 +6,19 @@
 var pong;
 
 angular.module('starter', ['ionic'])
-.run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-        }
-        if (window.StatusBar) {
-            StatusBar.styleDefault();
-        }
-    });
-    ionic.Platform.fullScreen(true, false);
-})
+    .run(function($ionicPlatform) {
+        $ionicPlatform.ready(function() {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+            }
+            if (window.StatusBar) {
+                StatusBar.styleDefault();
+            }
+        });
+        ionic.Platform.fullScreen(true, false);
+    })
 
 .controller('MainCtrl', function($scope, $ionicHistory) {
     $scope.modesControle = [{
@@ -36,6 +36,15 @@ angular.module('starter', ['ionic'])
         code: 0x3300FF,
         nom: "Bleu"
     }];
+
+
+
+    $scope.$on('$ionicView.loaded', function() {
+        if ($scope.estPremierLancement()) {
+            $scope.setCouleurBalle(0);
+            $scope.setCouleurBarre(0)
+        }
+    })
 
     //Mode de contrôle
     $scope.modeControle = optionsGetModeControle();
@@ -84,6 +93,7 @@ angular.module('starter', ['ionic'])
 
     $scope.setPseudo = function(pseudo) {
         if (pseudo !== "") {
+            $scope.setCouleurBarre
             $scope.pseudo = pseudo;
             $scope.oldPseudo = pseudo;
             optionsSetPseudo(pseudo);
@@ -103,36 +113,37 @@ angular.module('starter', ['ionic'])
     $scope.$on("$ionicView.beforeEnter", function() {
         initJXCore(pong);
         $("#launchGame").click(function() {
-          NetworkManager.notifyLaunch();
+            NetworkManager.notifyLaunch();
         });
     });
     $scope.$on("$ionicView.enter", function() {
-      if(pong.multiplayer) NetworkManager.requestPlayerList();
-      function create() {
-        pong.create();
-      }
+        if (pong.multiplayer) NetworkManager.requestPlayerList();
 
-      function preload() {
-        pong.preload();
-      }
+        function create() {
+            pong.create();
+        }
 
-      function update() {
-        pong.update();
-      }
-      pong.init(create, preload, update, 'gameArea');
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
     });
 })
 
 .controller('client-controller', function($scope) {
     pong = new Pong();
     $scope.$on("$ionicView.beforeEnter", function() {
-      $("#connectToServeur").click(function() {
-        var ip = $("#serveurIp").val();
-        pong.connectToServer(ip);
-      });
+        $("#connectToServeur").click(function() {
+            var ip = $("#serveurIp").val();
+            pong.connectToServer(ip);
+        });
     });
     $scope.$on("$ionicView.enter", function() {
-      if(pong.multiplayer) NetworkManager.requestPlayerList();
+        if (pong.multiplayer) NetworkManager.requestPlayerList();
     });
 })
 
@@ -143,9 +154,9 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        debugger;
         pong = new Pong();
         pong.multiplayer = false;
+
         function create() {
             pong.create();
         }
@@ -161,6 +172,10 @@ angular.module('starter', ['ionic'])
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
+    });
+
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
     });
 })
 
@@ -171,7 +186,7 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-         pong = new FlappyPong();
+        pong = new FlappyPong();
 
         function create() {
             pong.create();
@@ -188,6 +203,9 @@ angular.module('starter', ['ionic'])
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
     });
 })
 
@@ -198,7 +216,7 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-         pong = new LarryPong();
+        pong = new LarryPong();
 
         function create() {
             pong.create();
@@ -215,6 +233,9 @@ angular.module('starter', ['ionic'])
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
     });
 })
 
@@ -225,8 +246,7 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-         debugger;
-         pong = new MultiPong();
+        pong = new MultiPong();
 
         function create() {
             pong.create();
@@ -244,9 +264,40 @@ angular.module('starter', ['ionic'])
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
     });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
 })
 
-//
+.controller('normal-mutlilocal', function($scope, $ionicLoading) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        pong = new PongMultiLocalNormal();
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
@@ -275,6 +326,11 @@ angular.module('starter', ['ionic'])
         url: '/jeux/multi',
         templateUrl: 'templates/jeux/multi.html'
     })
+    $stateProvider.state('jeux-multilocal', {
+        url: '/jeux/multilocal',
+        templateUrl: 'templates/jeux/multilocal.html'
+    })
+
 
     //Solo
     $stateProvider.state('solo-normal', {
@@ -292,6 +348,12 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('solo-multipong', {
         url: '/jeux/solo/multipong',
         templateUrl: 'templates/jeux/solo/multipong.html'
+    })
+
+    //Mutlijoueur local
+    $stateProvider.state('multilocal-normal', {
+        url: '/jeux/multilocal/normal',
+        templateUrl: 'templates/jeux/multilocal/normal.html'
     })
 
     //Options

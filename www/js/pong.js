@@ -179,8 +179,6 @@ Pong.prototype.create = function() {
                 gyro.pong.playerBet.x = gyroX;
                 if(this.multiplayer) NetworkManager.notifyMovement({x: gyroX});
             }
-
-
         });
     }
 
@@ -313,6 +311,8 @@ Pong.prototype.update = function() {
     //control par le joueur
     //console.log("Update !");
     //CONTROL CLASSIQUE
+    console.log("Pong.js");
+
     if (this.modeControle == 0) {
         this.playerBet.x = this.game.input.x;
         if(this.multiplayer) NetworkManager.notifyMovement({x : this.playerBet.x});
