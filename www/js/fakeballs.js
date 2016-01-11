@@ -6,8 +6,7 @@ function FakeBallsPong(game,modeControle){
 		this.tabEmitters=[];
 		this.cpt=0;
 		this.accumulateTimeBall =0;
-    	this.capTimeBall = 300;
-   		this.timeStartBall = 1000;
+   		this.timeStartBall = 2000;
 
 }
 FakeBallsPong.prototype = $.extend(true, {}, Pong.prototype);  
@@ -28,6 +27,7 @@ FakeBallsPong.prototype.preload = function(){
 FakeBallsPong.prototype.update = function(){
 	this.super.update.call(this);
 	this.doFakeBallUpdate();
+	this.checkgoalsFakeBalls();
 
 }
 
@@ -43,12 +43,17 @@ FakeBallsPong.prototype.createFakeBall = function(){
     return fakeBall;
 }
 
-FlappyPong.prototype.setBall = function(){
-	this.super.setBall.call(this);
+FakeBallsPong.prototype.initFakeBalls = function(){
+	console.log("OKOKOK");
 	for(var i = 0; i<this.tabFakeBalls.length;i++){
-		tabEmitters[i].destroy();
-		tabFakeBalls[i].destroy();
+		this.tabFakeBalls[i].body=null;
+		this.tabFakeBalls[i].destroy();
+		this.tabEmitters[i].destroy();
 	}
+
+	this.tabFakeBalls=[];this.tabEmitters=[];
+
+
 }
 
 FakeBallsPong.prototype.doFakeBallUpdate = function(){
@@ -86,12 +91,13 @@ FakeBallsPong.prototype.colorMultiEmitter = function(_color,_emitter) {
 }
 
 
-FakeBallsPong.prototype.checkgoals = function(){
-	this.super.checkgoals.call(this);
-	if(this.ballReleased == false){
-		this.setBall();
+FakeBallsPong.prototype.checkgoalsFakeBalls = function(){
+	if(!this.ballReleased){
+		this.initFakeBalls();
 	}
 }
+
+
 FakeBallsPong.prototype.createEmitter = function(){
 	var emitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
     emitter.makeParticles('ball');

@@ -14,6 +14,7 @@ function Pong(game) {
     this.BetPlayer2Color = 0xff00ff;
     this.backgroundColor = 0xffffff;
 
+
     //skins
     this.skinPlayer1Path = 'assets/skins/moustache.png';
     this.skinPlayer2Path = 'assets/skins/yeux.png'
@@ -116,6 +117,7 @@ Pong.prototype.createBet = function(x, y) {
 };
 Pong.prototype.preload = function() {
     //chargement des assets
+    this.game.load.image('background', 'assets/background.gif');
     this.game.load.image('bet', 'assets/bet.png');
     this.game.load.image('ball', 'assets/ball.png');
     this.game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
@@ -123,10 +125,12 @@ Pong.prototype.preload = function() {
     this.game.load.image('skinPlayer1', this.skinPlayer1Path);
     this.game.load.image('skinPlayer2', this.skinPlayer2Path);
 
+
 }
 
 
 Pong.prototype.create = function() {
+
     //create !
     this.game.time.advancedTiming = true;
     this.scorePlayer = 0;
@@ -158,7 +162,6 @@ Pong.prototype.create = function() {
     this.fps.visible = this.debug;
 
     this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-
 
     //create an emitter
     this.emitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
