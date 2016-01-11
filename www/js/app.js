@@ -191,6 +191,34 @@ angular.module('starter', ['ionic'])
     });
 })
 
+.controller('fakeballs-solo', function($scope, $ionicLoading) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+         pong = new FakeBallsPong();
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+})
+
+
 .controller('larrypong-solo', function($scope, $ionicLoading) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
@@ -292,6 +320,10 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('solo-multipong', {
         url: '/jeux/solo/multipong',
         templateUrl: 'templates/jeux/solo/multipong.html'
+    })
+    $stateProvider.state('solo-fakeballs', {
+        url: '/jeux/solo/fakeballs',
+        templateUrl: 'templates/jeux/solo/fakeballs.html'
     })
 
     //Options

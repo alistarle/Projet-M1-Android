@@ -90,7 +90,7 @@ Pong.prototype.connectToServer = function(ip) {
     $("#launchGame").prop('disabled', false);
   });
 
-  NetworkManager.onServerCannotLaunch(function() {
+  NetworkManager.onServerCannotLaunch(function() {
     $("#launchGame").prop('disabled', true);
   });
 
