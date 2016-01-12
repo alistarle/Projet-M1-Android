@@ -327,8 +327,6 @@ Pong.prototype.update = function() {
     //control par le joueur
     //console.log("Update !");
     //CONTROL CLASSIQUE
-    console.log("Pong.js");
-
     if (this.modeControle == 0) {
         this.playerBet.x = this.game.input.x;
         if(this.multiplayer) NetworkManager.notifyMovement({x : this.playerBet.x});
@@ -385,13 +383,14 @@ Pong.prototype.trail = function() {
 }
 
 
-Pong.prototype.init = function(create, preload, update, id) {
+Pong.prototype.init = function(create, preload, update, id,render) {
     $('#gameArea').css('max-height', $(window).height());
     $('#gameArea').css('max-width', $(window).width());
     this.game = new Phaser.Game(1080, 1920, Phaser.AUTO, id, {
         preload: preload,
         create: create,
         update: update,
-        pong: this
+        pong: this,
+        render:render
     });
 }
