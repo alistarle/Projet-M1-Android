@@ -234,6 +234,9 @@ angular.module('starter', ['ionic'])
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
     });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
 })
 
 

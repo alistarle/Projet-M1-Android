@@ -1,13 +1,16 @@
-<ion-view view-title="PONG">
+<ion-view view-title="Menu Principal">
     <ion-content>
+    <div class="item item-body">
+        <img class="full-image" src="img/mainMenu.png"/>
+    </div>
         <div class="padding" ng-class="{'blur-element' : estPremierLancement()}">
-            <button class="button button-block button-positive" ui-sref="jeux" data-ng-disabled="estPremierLancement()">
+            <button class="button button-block button-outline button-positive" ui-sref="jeux" data-ng-disabled="estPremierLancement()">
                 Jouer !
             </button>
-            <button class="button button-block button-positive" ui-sref="options" data-ng-disabled="estPremierLancement()">
+            <button class="button button-block button-outline button-positive" ui-sref="options" data-ng-disabled="estPremierLancement()">
                 Options
             </button>
-            <button class="button button-block button-positive" ui-sref="about" data-ng-disabled="estPremierLancement()">
+            <button class="button button-block  button-outline button-positive" ui-sref="about" data-ng-disabled="estPremierLancement()">
                 A propos
             </button>
         </div>
