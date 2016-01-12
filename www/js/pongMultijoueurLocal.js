@@ -4,26 +4,35 @@ function PongMultiLocalNormal(game, modeControle) {
 
 PongMultiLocalNormal.prototype = $.extend(true, {}, Pong.prototype);
 PongMultiLocalNormal.prototype.super = Pong.prototype;
+var pointers = [];
 
-FlappyPong.prototype.create = function(){
-	this.super.create.call(this);
+PongMultiLocalNormal.prototype.create = function() {
+    this.super.create.call(this);
+    this.game.input.addPointer();
+    this.game.input.addPointer();
+
+    pointers.push(this.game.input.pointer1);
+    pointers.push(this.game.input.pointer2);
 }
 
-FlappyPong.prototype.preload = function(){
-	this.super.preload.call(this);
+PongMultiLocalNormal.prototype.preload = function() {
+    this.super.preload.call(this);
 }
 
 PongMultiLocalNormal.prototype.update = function() {
     //this.super.update.call(this);
-    this.trail();
-    var playerBetHalfWidth = this.playerBet.width / 2;
 
-    if (this.game.input.y >= (this.game.height / 2)) {
-        this.playerBet.x = this.game.input.x;
-    } else {
-        this.computerBet.x = this.game.input.x;
+    this.trail();
+
+    for (var i = 0; i < pointers.length; i++) {
+        if (pointers[i].y >= (this.game.height / 2)) {
+            this.playerBet.x = pointers[i].x;
+        } else {
+            this.computerBet.x = pointers[i].x;
+        }
     }
 
+    var playerBetHalfWidth = this.playerBet.width / 2;
     if (this.playerBet.x < playerBetHalfWidth) {
         this.playerBet.x = playerBetHalfWidth;
     } else if (this.playerBet.x > this.game.width - playerBetHalfWidth) {
@@ -44,4 +53,14 @@ PongMultiLocalNormal.prototype.update = function() {
 
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
+}
+
+
+PongMultiLocalNormal.prototype.render = function() {
+	console.log("lol");
+    //  Just renders out the pointer data when you touch the canvas
+    this.game.debug.pointer(this.game.input.mousePointer);
+    this.game.debug.pointer(this.game.input.pointer1);
+    this.game.debug.pointer(this.game.input.pointer2);
+
 }
