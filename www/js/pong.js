@@ -11,14 +11,16 @@ function Pong(game) {
     //couleurs
     this.BallColor = optionsGetCouleurBalle();
     this.BetPlayer1Color = optionsGetCouleurBarre();
-    this.BetPlayer2Color = 0xff00ff;
+    this.BetPlayer2Color = 0xff0000;
     this.backgroundColor = 0xffffff;
 
 
     //skins
     this.skinPlayer1Path = 'assets/skins/moustache.png';
-    this.skinPlayer2Path = 'assets/skins/yeux.png'
+    this.skinPlayer2Path = 'assets/skins/rayures.png'
 
+    //sounds
+    this.soundPlayer1;
     //variable de coordonees
     this.marge = 200;
 
@@ -117,6 +119,8 @@ Pong.prototype.createBet = function(x, y) {
 };
 Pong.prototype.preload = function() {
     //chargement des assets
+    this.game.load.audio('soundPlayer1', 'assets/sound/chevre.wav');
+    this.game.load.audio('soundPlayer2', 'assets/sound/chat.wav');
     this.game.load.image('background', 'assets/background.gif');
     this.game.load.image('bet', 'assets/bet.png');
     this.game.load.image('ball', 'assets/ball.png');
@@ -135,6 +139,10 @@ Pong.prototype.create = function() {
     this.game.time.advancedTiming = true;
     this.scorePlayer = 0;
     this.scoreComputer = 0;
+    //sounds
+
+    this.soundPlayer1 = this.game.add.audio('soundPlayer1');
+    this.soundPlayer2 = this.game.add.audio('soundPlayer2');
     //OnCreate initialisation des objets avec sprites et physique
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = this.backgroundColor;
@@ -290,6 +298,11 @@ Pong.prototype.setBall = function() {
 }
 
 Pong.prototype.ballHitsBet = function(_ball, _bet) {
+    if(_bet.tint == this.BetPlayer1Color)
+        this.soundPlayer1.play();
+    if(_bet.tint == this.BetPlayer2Color)
+        this.soundPlayer2.play();
+
     //physique balle+raquette
     var diff = 0;
     _ball.tint = _bet.tint;
