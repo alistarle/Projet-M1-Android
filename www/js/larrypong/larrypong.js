@@ -1,7 +1,5 @@
 function LarryPong(game,modeControle){
-
 	  Pong.apply(this,arguments);
-
 }
 
 LarryPong.prototype = $.extend(true, {}, Pong.prototype);  
@@ -11,7 +9,7 @@ LarryPong.prototype.preload = function(){
 	this.super.preload.call(this);
 	this.game.load.image('tile', 'assets/tile.png');
 	this.game.load.spritesheet('larryhead', 'assets/larryhead.png',48,50,6);
-	this.game.load.spritesheet('larrybody', 'assets/larrybody.png',36,34,4);
+	this.game.load.spritesheet('larrybody', 'assets/larrybody.png',31,30,8);
 	this.game.load.image('potion','assets/potion.png');
 }
 
@@ -55,6 +53,8 @@ LarryPong.prototype.render = function(){
 		this.game.debug.body(this.larrys[i].self);
 	}*/
 	//this.game.debug.body(this.playground.get(0,0));
+
+	//this.game.debug.body(this.ball);
 
 }
 
@@ -126,4 +126,8 @@ LarryPong.prototype.popLarry = function() {
 			this.game.rnd.integerInRange(0,this.playground.numberWidthCase-1),
 			this.game.rnd.integerInRange(0, this.playground.numberHeightCase-1)))
 	);
+}
+LarryPong.prototype.remove = function(larry) {
+	var i = this.larrys.indexOf(larry);
+	this.larrys.splice(i,1);
 }

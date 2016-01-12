@@ -393,4 +393,6 @@ Pong.prototype.init = function(create, preload, update, id,render) {
         pong: this,
         render:render
     });
+    this.game.pong = this;
+
 }
