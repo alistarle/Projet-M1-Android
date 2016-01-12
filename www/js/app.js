@@ -260,10 +260,8 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
-        function render(){
-            pong.render();
-        }
-        pong.init(create, preload, update, 'gameArea',render);
+       
+        pong.init(create, preload, update, 'gameArea');
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
@@ -293,6 +291,7 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
+        
         pong.init(create, preload, update, 'gameArea');
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
@@ -310,7 +309,6 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        debugger;
         pong = new PongMultiLocalNormal();
 
         function create() {
@@ -323,6 +321,9 @@ angular.module('starter', ['ionic'])
 
         function update() {
             pong.update();
+        }
+        function render(){
+            pong.render();
         }
         pong.init(create, preload, update, 'gameArea');
     });
