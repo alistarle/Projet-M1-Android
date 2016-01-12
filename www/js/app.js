@@ -421,6 +421,12 @@ angular.module('starter', ['ionic'])
         url: '/jeux/rejoindre',
         templateUrl: 'templates/jeux/multi/rejoindre.html'
     })
+    //config partie
+    $stateProvider.state('solo-config', {
+        url: '/jeux/solo/config',
+        templateUrl: 'templates/jeux/solo/config.html'
+    })
+
 
     $urlRouterProvider.otherwise('/home')
 })
