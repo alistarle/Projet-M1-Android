@@ -216,7 +216,7 @@ angular.module('starter', ['ionic'])
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-         pong = new FakeBallsPong();
+        pong = new FakeBallsPong();
 
         function create() {
             pong.create();
@@ -260,10 +260,11 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
-       function render(){
+
+        function render() {
             pong.render();
         }
-        pong.init(create, preload, update, 'gameArea',render);
+        pong.init(create, preload, update, 'gameArea', render);
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
@@ -293,7 +294,7 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
-        
+
         pong.init(create, preload, update, 'gameArea');
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
@@ -324,7 +325,8 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
-        function render(){
+
+        function render() {
             pong.render();
         }
         pong.init(create, preload, update, 'gameArea');
@@ -335,6 +337,95 @@ angular.module('starter', ['ionic'])
     $scope.$parent.$parent.$on("$ionicView.leave", function() {
         pong.game.destroy();
     });
+})
+
+
+.controller('jeux-config', function($scope) {
+    $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong"];
+    $scope.joueurs = ["Joueur", "IA facile", "IA normale", "IA difficile"];
+
+    $scope.joueurHaut = 0;
+    $scope.joueurBas = 1;
+    $scope.nbPoints = 5;
+    $scope.mode = 0;
+
+    $scope.url;
+
+    var urlBase = "#/jeux/";
+    var urlModes = ["normal", "flappypong", "multipong", "larrypong", "fakeballs"];
+    var urlJoueurs = ["solo", "multilocal"];
+
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        constructionUrl();
+    });
+
+    function constructionUrl() {
+        var j;
+        if ($scope.joueurBas == 0) {
+            j = 1;
+        } else {
+            j = 0;
+        }
+        $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode];
+        console.log($scope.url);
+    }
+
+    $scope.clicJoueurMoins = function(pos) {
+        if (pos == 0) {
+            $scope.joueurHaut -= 1;
+            if ($scope.joueurHaut < 0) {
+                $scope.joueurHaut = $scope.joueurs.length - 1;
+            }
+        } else if (pos == 1) {
+            $scope.joueurBas -= 1;
+            if ($scope.joueurBas < 0) {
+                $scope.joueurBas = $scope.joueurs.length - 1;
+            }
+        }
+        constructionUrl();
+    }
+    $scope.clicJoueurPlus = function(pos) {
+        if (pos == 0) {
+            $scope.joueurHaut += 1;
+            if ($scope.joueurHaut >= $scope.joueurs.length) {
+                $scope.joueurHaut = 0;
+            }
+        } else if (pos == 1) {
+            $scope.joueurBas += 1;
+            if ($scope.joueurBas >= $scope.joueurs.length) {
+                $scope.joueurBas = 0;
+            }
+        }
+        constructionUrl();
+    }
+
+    $scope.clicPointsMoins = function() {
+        if ($scope.nbPoints > 1) {
+            $scope.nbPoints -= 1;
+        }
+        constructionUrl();
+    }
+
+    $scope.clicPointsPlus = function() {
+        $scope.nbPoints += 1;
+        constructionUrl();
+    }
+
+    $scope.clicModePlus = function() {
+        $scope.mode += 1;
+        if ($scope.mode >= $scope.modes.length) {
+            $scope.mode = 0;
+        }
+        constructionUrl();
+    }
+
+    $scope.clicModeMoins = function() {
+        $scope.mode -= 1;
+        if ($scope.mode < 0) {
+            $scope.mode = $scope.modes.length - 1;
+        }
+        constructionUrl();
+    }
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -421,10 +512,10 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/jeux/multi/heberger.html'
     })
     $stateProvider.state('jeux-rejoindre', {
-        url: '/jeux/rejoindre',
-        templateUrl: 'templates/jeux/multi/rejoindre.html'
-    })
-    //config partie
+            url: '/jeux/rejoindre',
+            templateUrl: 'templates/jeux/multi/rejoindre.html'
+        })
+        //config partie
     $stateProvider.state('solo-config', {
         url: '/jeux/solo/config',
         templateUrl: 'templates/jeux/solo/config.html'

@@ -8,11 +8,11 @@ var pointers = [];
 
 PongMultiLocalNormal.prototype.create = function() {
     this.super.create.call(this);
-    this.game.input.addPointer();
-    this.game.input.addPointer();
 
-    pointers.push(this.game.input.pointer1);
-    pointers.push(this.game.input.pointer2);
+    // this.game.input.addPointer();
+    //this.game.input.addPointer();
+
+    pointers = this.game.input.pointers;
 }
 
 PongMultiLocalNormal.prototype.preload = function() {
@@ -25,10 +25,14 @@ PongMultiLocalNormal.prototype.update = function() {
     this.trail();
 
     for (var i = 0; i < pointers.length; i++) {
-        if (pointers[i].y >= (this.game.height / 2)) {
-            this.playerBet.x = pointers[i].x;
-        } else {
-            this.computerBet.x = pointers[i].x;
+        if (pointers[i].isDown) {
+
+
+            if (pointers[i].y >= (this.game.height / 2)) {
+                this.playerBet.x = pointers[i].x;
+            } else {
+                this.computerBet.x = pointers[i].x;
+            }
         }
     }
 
@@ -57,7 +61,7 @@ PongMultiLocalNormal.prototype.update = function() {
 
 
 PongMultiLocalNormal.prototype.render = function() {
-	console.log("lol");
+    console.log("lol");
     //  Just renders out the pointer data when you touch the canvas
     this.game.debug.pointer(this.game.input.mousePointer);
     this.game.debug.pointer(this.game.input.pointer1);
