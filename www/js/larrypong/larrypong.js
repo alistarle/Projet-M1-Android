@@ -48,13 +48,21 @@ LarryPong.prototype.placementPlayground = function(){
 }*/
 
 LarryPong.prototype.render = function(){
-	//this.game.debug.body(this.potion.self);
-	/*for(var i = 0 ; i < this.larrys.length ; i++){
+	/*this.game.debug.body(this.potion.self);
+	for(var i = 0 ; i < this.larrys.length ; i++){
 		this.game.debug.body(this.larrys[i].self);
-	}*/
-	//this.game.debug.body(this.playground.get(0,0));
-
+	}
+	this.game.debug.body(this.playground.get(0,0));
+	this.game.debug.body(this.playground.get(1,1));
 	//this.game.debug.body(this.ball);
+
+	this.numberWidthCase = 6;
+	this.numberHeightCase = 6;
+	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
+		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
+			this.game.debug.body(this.playground.get(i,j));
+		}
+	}*/
 
 }
 
@@ -63,42 +71,12 @@ LarryPong.prototype.pushLarry = function(larry){
 }
 
 LarryPong.prototype.update = function(){
-	
-	this.game.physics.arcade.enable(this.larrys[0]);
-	this.game.physics.arcade.enable(this.potion);
+	//this.ball.y = 100;
+	//this.game.physics.arcade.enable(this.larrys[0]);
+	//this.game.physics.arcade.enable(this.potion);
 	 this.super.update.call(this);
 	 this.playground.update();
 	 this.larrys.forEach(function(e,i,tab){e.update();});
-
-	 //this.game.physics.arcade.collide(this.larrys[0], this.ball,function(){debugger;}, null, this);
-
-	 /*for(var i = 0 ; i < this.playground.length ; i++){
-		for(var j = 0 ; j < this.playground[i].length ; j++){
-			this.game.physics.arcade.collide(this.larrys[0], this.playground[i][j], function(e1, e2) {
-			        // ... collision code ...
-			        debugger;
-			    }, function(e1, e2) {
-			      // if this returns false, then the collision is ignored, so return the value
-			      // of player.body.moves to make non-moving sprites also ignore collision
-			        debugger;
-			        console.log("collision");
-			      return false;
-			},this);
-		}
-	}*/
-	    //this.game.physics.arcade.collide(this.ball, this.larrys[0].self, function(){debugger;}, null, this);
-
-	/*this.game.physics.arcade.collide(this.larrys[0].self, this.potion.self, function(e1, e2) {
-			        // ... collision code ...
-			        debugger;
-			    }, function(e1, e2) {
-			      // if this returns false, then the collision is ignored, so return the value
-			      // of player.body.moves to make non-moving sprites also ignore collision
-			        debugger;
-			        console.log("collision");
-			      return false;
-			},this);
-	 */
 
 }
 

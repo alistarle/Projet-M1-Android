@@ -31,8 +31,8 @@ function Playground(larrypong){
 			tile.scale.setTo(scaleW,scaleH);
 			this.playground[i][j] = tile;
 			this.game.physics.enable(tile, Phaser.Physics.ARCADE);
-			tile.body.width = 1;
-			tile.body.height = 1;
+			tile.body.width = (tile.width * 2)/ 10;
+			tile.body.height = (tile.height * 2)/ 10;
 			//this.set(i,j,tile);//playground[i.toString()+""+j.toString()] = tile;
 		}
 		
