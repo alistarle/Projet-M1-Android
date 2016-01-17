@@ -45,6 +45,8 @@ function Pong(mode, nbPoints) {
     this.playerBet;
     this.computerBet;
     this.ball;
+    this.iaBall;
+    this.iaBallIsComplete;
 
     this.scoreText;
     this.fps;
@@ -78,7 +80,7 @@ Pong.prototype.connectToServer = function(ip) {
         /*var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
         if(otherPlayerToMove){
           otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
-        }*/
+      }*/
         //pong.computerBet.x = movementInfo.x;
     });
 
@@ -169,6 +171,14 @@ Pong.prototype.create = function() {
     this.ball.body.collideWorldBounds = true;
     this.ball.body.bounce.setTo(1, 1);
 
+    this.iaBall = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
+    this.iaBall.tint = this.BallColor;
+    this.game.physics.arcade.enable(this.iaBall);
+    this.iaBall.anchor.setTo(0.5, 0.5);
+    this.iaBall.body.collideWorldBounds = true;
+    this.iaBall.body.bounce.setTo(1, 1);
+
+
     this.game.input.onDown.add(this.releaseBall, this);
 
     this.scoreText = this.game.add.bitmapText(this.game.width / 2 - 230, this.marge / 2, 'flappyfont', this.scorePlayer.toString() + ":" + this.scoreComputer.toString(), 50);
@@ -181,6 +191,7 @@ Pong.prototype.create = function() {
         align: "center"
     });
     this.fps.visible = this.debug;
+    this.iaBall.visible = this.debug;
 
     this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 
@@ -271,6 +282,9 @@ Pong.prototype.releaseBall = function() {
         this.ball.body.velocity.y = -this.ballSpeed;
         this.ballReleased = true;
         this.ball.tint = this.BallColor;
+
+        this.iaBall.body.velocity.x = this.ballSpeed*4;
+        this.iaBall.body.velocity.y = -this.ballSpeed*4;
     }
 }
 
@@ -282,6 +296,17 @@ Pong.prototype.checkGoal = function() {
     } else if (this.ball.y > this.game.height - 100) {
         this.goalBot();
         this.goal();
+    }
+
+    if (this.iaBall.y < this.marge + 50 ) {
+        this.iaBallIsComplete = true;
+        this.iaBall.body.velocity.x =0;
+        this.iaBall.body.velocity.y =0;
+    } else if (this.iaBall.y > this.game.height - this.marge - 50) {
+        this.iaBallIsComplete = true;
+        this.iaBall.body.velocity.x =0;
+        this.iaBall.body.velocity.y =0;
+
     }
 
 }
@@ -316,6 +341,13 @@ Pong.prototype.setBall = function() {
         this.ball.tint = this.BallColor;
         this.colorEmitter(this.BallColor);
         this.ballReleased = false;
+
+        this.iaBall.body.velocity.x = 0;
+        this.iaBall.body.velocity.y = 0;
+        this.iaBall.x = this.ball.x;
+        this.iaBall.y = this.ball.y;
+        this.iaBallIsComplete = false;
+
     }
 
 }
@@ -332,9 +364,9 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
     this.colorEmitter(_ball.tint);
     this.emitter.tint
         //gauche
-    if (_ball.x < _bet.x) {
-        diff = _bet.x - _ball.x;
-        _ball.body.velocity.x = (-10 * diff);
+        if (_ball.x < _bet.x) {
+            diff = _bet.x - _ball.x;
+            _ball.body.velocity.x = (-10 * diff);
         //droite
     } else if (_ball.x > _bet.x) {
         diff = _ball.x - _bet.x;
@@ -343,6 +375,13 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
         //The ball hit the center of the racket, let's add a little bit of a tragic accident(random) of his movement
         _ball.body.velocity.x = 2 + Math.random() * 8;
     }
+
+    this.iaBall.x = _ball.x;
+    this.iaBall.y = _ball.y;
+    this.iaBall.body.velocity.x=_ball.body.velocity.x*2;
+    this.iaBall.body.velocity.y=_ball.body.velocity.y*2;
+    this.iaBallIsComplete =false;
+
 
 }
 
@@ -359,26 +398,73 @@ Pong.prototype.update = function() {
                 x: this.playerBet.x
             });
 
-            var playerBetHalfWidth = this.playerBet.width / 2;
+                var playerBetHalfWidth = this.playerBet.width / 2;
 
-            if (this.playerBet.x < playerBetHalfWidth) {
-                this.playerBet.x = playerBetHalfWidth;
-            } else if (this.playerBet.x > this.game.width - playerBetHalfWidth) {
-                this.playerBet.x = this.game.width - playerBetHalfWidth;
+                if (this.playerBet.x < playerBetHalfWidth) {
+                    this.playerBet.x = playerBetHalfWidth;
+                } else if (this.playerBet.x > this.game.width - playerBetHalfWidth) {
+                    this.playerBet.x = this.game.width - playerBetHalfWidth;
+                }
             }
-        }
 
         //control par IA
         if (!this.multiplayer) {
-            if (this.ballReleased) {
-                this.emitter.emitParticle();
-            }
-            if (this.computerBet.x - this.ball.x < -15) {
-                this.computerBet.body.velocity.x = this.computerBetSpeed;
-            } else if (this.computerBet.x - this.ball.x > 15) {
-                this.computerBet.body.velocity.x = -this.computerBetSpeed;
-            } else {
-                this.computerBet.body.velocity.x = 0;
+            if(this.difficulte==0){
+
+                if (this.ballReleased) {
+                    this.emitter.emitParticle();
+                }
+                if (this.computerBet.x - this.ball.x < -15) {
+                    this.computerBet.body.velocity.x = this.computerBetSpeed;
+                } else if (this.computerBet.x - this.ball.x > 15) {
+                    this.computerBet.body.velocity.x = -this.computerBetSpeed;
+                } else {
+                    this.computerBet.body.velocity.x = 0;
+                }
+
+
+
+            }else{
+                if(this.difficulte==1){
+                    if (this.ballReleased) {
+                        this.emitter.emitParticle();
+                    }
+                    if (this.computerBet.x - this.ball.x < -15) {
+                        this.computerBet.body.velocity.x = this.computerBetSpeed*2;
+                    } else if (this.computerBet.x - this.ball.x > 15) {
+                        this.computerBet.body.velocity.x = -this.computerBetSpeed*2;
+                    } else {
+                        this.computerBet.body.velocity.x = 0;
+                    }
+
+
+
+                }else{
+                    //debug true a enlever
+                    if((this.difficulte==2)||(true)){
+
+
+                        if(this.iaBallIsComplete){
+
+                            if (this.ballReleased) {
+                                this.emitter.emitParticle();
+                            }
+                            if (this.computerBet.x - this.iaBall.x < -15) {
+                                this.computerBet.body.velocity.x = this.computerBetSpeed;
+                            } else if (this.computerBet.x - this.iaBall.x > 15) {
+                                this.computerBet.body.velocity.x = -this.computerBetSpeed;
+                            } else {
+                                this.computerBet.body.velocity.x = 0;
+                            }
+                        }else {
+                            this.computerBet.body.velocity.x = 0;
+                        }
+
+
+                    }
+                }
+
+
             }
         }
 
@@ -410,6 +496,7 @@ Pong.prototype.update = function() {
     //check des collisions
     this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
     this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
+
     this.checkGoal();
 
     //debugger;;

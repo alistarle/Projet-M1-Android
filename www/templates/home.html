@@ -1,8 +1,9 @@
 <ion-view view-title="Menu Principal">
 <ion-content>
-<div class="item item-body">
-    <img class="full-image" src="img/mainMenu.png"/>
+<div class=" item-image">
+    <img class="full-image"src="img/mainMenu.png"/>
 </div>
+<div>
 <div class="padding" ng-class="{'blur-element' : estPremierLancement()}">
     <button class="button button-block button-outline button-positive" ui-sref="jeux" data-ng-disabled="estPremierLancement()">
         Jouer !
@@ -17,7 +18,8 @@
     <button class="button button-block  button-outline button-positive" ui-sref="solo-config" data-ng-disabled="estPremierLancement()">
         Test Config
     </button>
-
+    </div>
+</div>
 </div>
 <div class="card premierLancement" ng-show="estPremierLancement()">
     <div class="item item-text-wrap">
