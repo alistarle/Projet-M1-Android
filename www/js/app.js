@@ -147,16 +147,20 @@ angular.module('starter', ['ionic'])
     });
 })
 
-.controller('pong-solo', function($scope, $ionicLoading) {
+.controller('pong-solo', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        pong = new Pong();
+        var difficulte = $stateParams.difficulte;
+        var nbPoints = $stateParams.nbPoints;
+
+        pong = new Pong(difficulte, nbPoints);
         pong.multiplayer = false;
 
+
         function create() {
             pong.create();
         }
@@ -179,14 +183,18 @@ angular.module('starter', ['ionic'])
     });
 })
 
-.controller('flappypong-solo', function($scope, $ionicLoading) {
+.controller('flappypong-solo', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        pong = new FlappyPong();
+        var difficulte = $stateParams.difficulte;
+        var nbPoints = $stateParams.nbPoints;
+
+
+        pong = new FlappyPong(difficulte, nbPoints);
 
         function create() {
             pong.create();
@@ -209,14 +217,18 @@ angular.module('starter', ['ionic'])
     });
 })
 
-.controller('fakeballs-solo', function($scope, $ionicLoading) {
+.controller('fakeballs-solo', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        pong = new FakeBallsPong();
+        var difficulte = $stateParams.difficulte;
+        var nbPoints = $stateParams.nbPoints;
+
+
+        pong = new FakeBallsPong(difficulte, nbPoints);
 
         function create() {
             pong.create();
@@ -240,14 +252,18 @@ angular.module('starter', ['ionic'])
 })
 
 
-.controller('larrypong-solo', function($scope, $ionicLoading) {
+.controller('larrypong-solo', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        pong = new LarryPong();
+        var difficulte = $stateParams.difficulte;
+        var nbPoints = $stateParams.nbPoints;
+
+
+        pong = new LarryPong(difficulte, nbPoints);
 
         function create() {
             pong.create();
@@ -274,14 +290,18 @@ angular.module('starter', ['ionic'])
     });
 })
 
-.controller('solo-multipong', function($scope, $ionicLoading) {
+.controller('solo-multipong', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        pong = new MultiPong();
+        var difficulte = $stateParams.difficulte;
+        var nbPoints = $stateParams.nbPoints;
+
+
+        pong = new MultiPong(difficulte, nbPoints);
 
         function create() {
             pong.create();
@@ -305,14 +325,15 @@ angular.module('starter', ['ionic'])
     });
 })
 
-.controller('normal-mutlilocal', function($scope, $ionicLoading) {
+.controller('normal-mutlilocal', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        pong = new PongMultiLocalNormal();
+        var nbPoints = $stateParams.nbPoints;
+        pong = new Pong(3, nbPoints);
 
         function create() {
             pong.create();
@@ -325,9 +346,36 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
 
-        function render() {
-            pong.render();
+.controller('flappypong-multilocal', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var nbPoints = $stateParams.nbPoints;
+        pong = new FlappyPong(3, nbPoints);
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
         }
         pong.init(create, preload, update, 'gameArea');
     });
@@ -339,6 +387,98 @@ angular.module('starter', ['ionic'])
     });
 })
 
+.controller('larrypong-multilocal', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var nbPoints = $stateParams.nbPoints;
+        pong = new LarryPong(3, nbPoints);
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
+
+.controller('fakeballs-multilocal', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var nbPoints = $stateParams.nbPoints;
+        pong = new FakeBallsPong(3, nbPoints);
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
+
+.controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var nbPoints = $stateParams.nbPoints;
+        pong = new MultiPong(3, nbPoints);
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
 
 .controller('jeux-config', function($scope) {
     $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong"];
@@ -366,7 +506,11 @@ angular.module('starter', ['ionic'])
         } else {
             j = 0;
         }
-        $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode];
+        if (j == 0) { // Solo
+            $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?difficulte=" + ($scope.joueurBas - 1) + "&nbPoints=" + $scope.nbPoints;
+        } else {
+            $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?nbPoints=" + $scope.nbPoints;
+        }
         console.log($scope.url);
     }
 
@@ -463,30 +607,46 @@ angular.module('starter', ['ionic'])
 
     //Solo
     $stateProvider.state('solo-normal', {
-        url: '/jeux/solo/normal',
+        url: '/jeux/solo/normal?:difficulte&:nbPoints',
         templateUrl: 'templates/jeux/solo/normal.html'
     })
     $stateProvider.state('solo-flappypong', {
-        url: '/jeux/solo/flappypong',
+        url: '/jeux/solo/flappypong?:difficulte&:nbPoints',
         templateUrl: 'templates/jeux/solo/flappypong.html'
     })
     $stateProvider.state('solo-larrypong', {
-        url: '/jeux/solo/larrypong',
+        url: '/jeux/solo/larrypong?:difficulte&:nbPoints',
         templateUrl: 'templates/jeux/solo/larrypong.html'
     })
     $stateProvider.state('solo-multipong', {
-        url: '/jeux/solo/multipong',
+        url: '/jeux/solo/multipong?:difficulte&:nbPoints',
         templateUrl: 'templates/jeux/solo/multipong.html'
     })
     $stateProvider.state('solo-fakeballs', {
-        url: '/jeux/solo/fakeballs',
+        url: '/jeux/solo/fakeballs?:difficulte&:nbPoints',
         templateUrl: 'templates/jeux/solo/fakeballs.html'
     })
 
     //Mutlijoueur local
     $stateProvider.state('multilocal-normal', {
-        url: '/jeux/multilocal/normal',
+        url: '/jeux/multilocal/normal?:nbPoints',
         templateUrl: 'templates/jeux/multilocal/normal.html'
+    })
+    $stateProvider.state('multilocal-flappypong', {
+        url: '/jeux/multilocal/flappypong?:nbPoints',
+        templateUrl: 'templates/jeux/multilocal/flappypong.html'
+    })
+    $stateProvider.state('multilocal-larrypong', {
+        url: '/jeux/multilocal/larrypong?:nbPoints',
+        templateUrl: 'templates/jeux/multilocal/larrypong.html'
+    })
+    $stateProvider.state('multilocal-multipong', {
+        url: '/jeux/multilocal/multipong?:nbPoints',
+        templateUrl: 'templates/jeux/multilocal/multipong.html'
+    })
+    $stateProvider.state('multilocal-fakeballs', {
+        url: '/jeux/multilocal/fakeballs?:nbPoints',
+        templateUrl: 'templates/jeux/multilocal/fakeballs.html'
     })
 
     //Options

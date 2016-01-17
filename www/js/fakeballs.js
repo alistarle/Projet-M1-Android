@@ -1,4 +1,4 @@
-function FakeBallsPong(game,modeControle){
+function FakeBallsPong(mode,nbPoints){
 
 	  Pong.apply(this,arguments);
 

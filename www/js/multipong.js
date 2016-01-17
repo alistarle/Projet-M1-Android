@@ -1,4 +1,4 @@
-function MultiPong(game,modeControle){
+function MultiPong(mode,nbPoints){
 
 	  Pong.apply(this,arguments);
 

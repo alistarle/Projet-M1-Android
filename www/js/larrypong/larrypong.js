@@ -1,4 +1,4 @@
-function LarryPong(game,modeControle){
+function LarryPong(mode, nbPoints){
 	  Pong.apply(this,arguments);
 }
 
