@@ -484,8 +484,8 @@ angular.module('starter', ['ionic'])
     $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong"];
     $scope.joueurs = ["Joueur", "IA facile", "IA normale", "IA difficile"];
 
-    $scope.joueurHaut = 0;
-    $scope.joueurBas = 1;
+    $scope.joueurHaut = 1;
+    $scope.joueurBas = 0;
     $scope.nbPoints = 5;
     $scope.mode = 0;
 
@@ -501,7 +501,7 @@ angular.module('starter', ['ionic'])
 
     function constructionUrl() {
         var j;
-        if ($scope.joueurBas == 0) {
+        if ($scope.joueurHaut == 0) {
             j = 1;
         } else {
             j = 0;
