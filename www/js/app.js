@@ -507,7 +507,7 @@ angular.module('starter', ['ionic'])
             j = 0;
         }
         if (j == 0) { // Solo
-            $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?difficulte=" + ($scope.joueurBas - 1) + "&nbPoints=" + $scope.nbPoints;
+            $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?difficulte=" + ($scope.joueurHaut - 1) + "&nbPoints=" + $scope.nbPoints;
         } else {
             $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?nbPoints=" + $scope.nbPoints;
         }
