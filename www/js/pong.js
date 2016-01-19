@@ -6,6 +6,9 @@ function Pong(mode, nbPoints) {
     if (mode < 3) {
         this.difficulte = mode;
         this.multiLocal = false;
+        if((mode==2)&&((this instanceof LarryPong)||(this instanceof FlappyPong))){
+            this.difficulte = 1;
+        }
     } else {
         this.multiLocal = true;
         this.pointers = [];
@@ -136,7 +139,7 @@ Pong.prototype.preload = function() {
     //chargement des assets
     this.game.load.audio('soundPlayer1', 'assets/sound/chevre.wav');
     this.game.load.audio('soundPlayer2', 'assets/sound/chat.wav');
-    this.game.load.image('background', 'assets/background.gif');
+    this.game.load.image('background', 'assets/background.jpg');
     this.game.load.image('bet', 'assets/bet.png');
     this.game.load.image('ball', 'assets/ball.png');
     this.game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
@@ -151,11 +154,11 @@ Pong.prototype.preload = function() {
 Pong.prototype.create = function() {
 
     //create !
+    this.game.add.tileSprite(0, 0, 1080, 1920, 'background');
     this.game.time.advancedTiming = true;
     this.scorePlayer = 0;
     this.scoreComputer = 0;
     //sounds
-
     this.soundPlayer1 = this.game.add.audio('soundPlayer1');
     this.soundPlayer2 = this.game.add.audio('soundPlayer2');
     //OnCreate initialisation des objets avec sprites et physique
@@ -171,13 +174,15 @@ Pong.prototype.create = function() {
     this.ball.body.collideWorldBounds = true;
     this.ball.body.bounce.setTo(1, 1);
 
-    this.iaBall = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
-    this.iaBall.tint = this.BallColor;
-    this.game.physics.arcade.enable(this.iaBall);
-    this.iaBall.anchor.setTo(0.5, 0.5);
-    this.iaBall.body.collideWorldBounds = true;
-    this.iaBall.body.bounce.setTo(1, 1);
-
+    if(this.difficulte==2){
+        this.iaBall = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
+        this.iaBall.tint = this.BallColor;
+        this.game.physics.arcade.enable(this.iaBall);
+        this.iaBall.anchor.setTo(0.5, 0.5);
+        this.iaBall.body.collideWorldBounds = true;
+        this.iaBall.body.bounce.setTo(1, 1);
+        this.iaBall.visible = this.debug;
+    }
 
     this.game.input.onDown.add(this.releaseBall, this);
 
@@ -185,13 +190,14 @@ Pong.prototype.create = function() {
     this.scoreText.visible = true;
     this.updateScore();
 
+
+
     this.fps = this.game.add.text(50, 50, "Fps : ", {
         font: "65px Arial",
         fill: "#ff0044",
         align: "center"
     });
     this.fps.visible = this.debug;
-    this.iaBall.visible = this.debug;
 
     this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 
@@ -218,6 +224,7 @@ Pong.prototype.create = function() {
             }
         });
     }
+
 
     this.game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 
@@ -283,8 +290,10 @@ Pong.prototype.releaseBall = function() {
         this.ballReleased = true;
         this.ball.tint = this.BallColor;
 
-        this.iaBall.body.velocity.x = this.ballSpeed*4;
-        this.iaBall.body.velocity.y = -this.ballSpeed*4;
+        if(this.difficulte==2){
+            this.iaBall.body.velocity.x = this.ballSpeed*4;
+            this.iaBall.body.velocity.y = -this.ballSpeed*4; 
+        }
     }
 }
 
@@ -298,17 +307,18 @@ Pong.prototype.checkGoal = function() {
         this.goal();
     }
 
-    if (this.iaBall.y < this.marge + 50 ) {
-        this.iaBallIsComplete = true;
-        this.iaBall.body.velocity.x =0;
-        this.iaBall.body.velocity.y =0;
-    } else if (this.iaBall.y > this.game.height - this.marge - 50) {
-        this.iaBallIsComplete = true;
-        this.iaBall.body.velocity.x =0;
-        this.iaBall.body.velocity.y =0;
+    if(this.difficulte==2){
+        if (this.iaBall.y < this.marge + 50 ) {
+            this.iaBallIsComplete = true;
+            this.iaBall.body.velocity.x =0;
+            this.iaBall.body.velocity.y =0;
+        } else if (this.iaBall.y > this.game.height - this.marge - 50) {
+            this.iaBallIsComplete = true;
+            this.iaBall.body.velocity.x =0;
+            this.iaBall.body.velocity.y =0;
 
+        }
     }
-
 }
 
 Pong.prototype.goal = function() {
@@ -342,12 +352,13 @@ Pong.prototype.setBall = function() {
         this.colorEmitter(this.BallColor);
         this.ballReleased = false;
 
-        this.iaBall.body.velocity.x = 0;
-        this.iaBall.body.velocity.y = 0;
-        this.iaBall.x = this.ball.x;
-        this.iaBall.y = this.ball.y;
-        this.iaBallIsComplete = false;
-
+        if(this.difficulte==2){
+            this.iaBall.body.velocity.x = 0;
+            this.iaBall.body.velocity.y = 0;
+            this.iaBall.x = this.ball.x;
+            this.iaBall.y = this.ball.y;
+            this.iaBallIsComplete = false;
+        }
     }
 
 }
@@ -376,12 +387,13 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
         _ball.body.velocity.x = 2 + Math.random() * 8;
     }
 
-    this.iaBall.x = _ball.x;
-    this.iaBall.y = _ball.y;
-    this.iaBall.body.velocity.x=_ball.body.velocity.x*2;
-    this.iaBall.body.velocity.y=_ball.body.velocity.y*2;
-    this.iaBallIsComplete =false;
-
+    if(this.difficulte==2){
+        this.iaBall.x = _ball.x;
+        this.iaBall.y = _ball.y;
+        this.iaBall.body.velocity.x=_ball.body.velocity.x*5;
+        this.iaBall.body.velocity.y=_ball.body.velocity.y*5;
+        this.iaBallIsComplete =false;
+    }
 
 }
 
@@ -440,8 +452,7 @@ Pong.prototype.update = function() {
 
 
                 }else{
-                    //debug true a enlever
-                    if((this.difficulte==2)||(true)){
+                    if(this.difficulte==2){
 
 
                         if(this.iaBallIsComplete){
@@ -463,8 +474,6 @@ Pong.prototype.update = function() {
 
                     }
                 }
-
-
             }
         }
 

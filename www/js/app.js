@@ -31,10 +31,28 @@ angular.module('starter', ['ionic'])
 
     $scope.couleurs = [{
         code: 0xFF0000,
-        nom: "Rouge"
+        nom: "Rouge",
+        hexa: "#FF0000"
     }, {
-        code: 0x3300FF,
-        nom: "Bleu"
+        code: 0x0000FF,
+        nom: "Bleu",
+        hexa : "#0000FF"
+    },{
+        code: 0xFFEB3B,
+        nom: "Jaune",
+        hexa : "#FFEB3B"
+    },{
+        code: 0xF57F17,
+        nom: "Orange",
+        hexa: "#F57F17"
+    },{
+        code: 0x673AB7,
+        nom: "Violet",
+        hexa: "#573AB7"
+    },{
+        code: 0x76FF03,
+        nom: "Vert",
+        hexa: "#76FF03"
     }];
 
 
