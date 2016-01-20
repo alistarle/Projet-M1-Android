@@ -85,7 +85,7 @@ LarryPong.prototype.setBall = function(){
 	this.popLarry();	
 }
 
-LarryPong.prototype.goal = function() {
+LarryPong.prototype.initGame = function() {
 	this.super.goal.call(this);
 	this.killLarrys();
 	this.popLarry();

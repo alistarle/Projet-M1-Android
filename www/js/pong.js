@@ -298,14 +298,8 @@ Pong.prototype.releaseBall = function() {
 }
 
 Pong.prototype.checkGoal = function() {
-    //si but alors score++
-    if (this.ball.y < 100) {
-        this.goalTop();
-        this.goal();
-    } else if (this.ball.y > this.game.height - 100) {
-        this.goalBot();
-        this.goal();
-    }
+    
+    this.checkIfGoal();
 
     if(this.difficulte==2){
         if (this.iaBall.y < this.marge + 50 ) {
@@ -321,7 +315,18 @@ Pong.prototype.checkGoal = function() {
     }
 }
 
-Pong.prototype.goal = function() {
+Pong.prototype.checkIfGoal = function(){
+    //si but alors score++
+    if (this.ball.y < 100) {
+        this.goalTop();
+        this.reinitGame();
+    } else if (this.ball.y > this.game.height - 100) {
+        this.goalBot();
+        this.reinitGame();
+    }
+}
+
+Pong.prototype.reinitGame = function() {
     this.updateScore();
 
 }
@@ -503,13 +508,7 @@ Pong.prototype.update = function() {
     }
 
     //check des collisions
-<<<<<<< HEAD
     this.collideCheck();
-=======
-    this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
-    this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
-
->>>>>>> 947018a57de894a97987392b1f17dc2736a44c62
     this.checkGoal();
 
     //debugger;;
