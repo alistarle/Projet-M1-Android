@@ -308,7 +308,7 @@ angular.module('starter', ['ionic'])
     });
 })
 
-.controller('solo-multipong', function($scope, $ionicLoading, $stateParams) {
+.controller('multipong-solo', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
             template: 'Chargement...'
@@ -320,6 +320,40 @@ angular.module('starter', ['ionic'])
 
 
         pong = new MultiPong(difficulte, nbPoints);
+
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+
+        pong.init(create, preload, update, 'gameArea');
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
+
+.controller('underattackedpong-solo', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var difficulte = $stateParams.difficulte;
+        var nbPoints = $stateParams.nbPoints;
+
+        pong = new UnderAttackedPong(difficulte, nbPoints);
 
         function create() {
             pong.create();
@@ -499,7 +533,7 @@ angular.module('starter', ['ionic'])
 })
 
 .controller('jeux-config', function($scope) {
-    $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong"];
+    $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong", "UnderAttackedPong"];
     $scope.joueurs = ["Joueur", "IA facile", "IA normale", "IA difficile"];
 
     $scope.joueurHaut = 1;
@@ -510,7 +544,7 @@ angular.module('starter', ['ionic'])
     $scope.url;
 
     var urlBase = "#/jeux/";
-    var urlModes = ["normal", "flappypong", "multipong", "larrypong", "fakeballs"];
+    var urlModes = ["normal", "flappypong", "multipong", "larrypong", "fakeballs","underattackedpong"];
     var urlJoueurs = ["solo", "multilocal"];
 
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
@@ -644,6 +678,10 @@ angular.module('starter', ['ionic'])
         url: '/jeux/solo/fakeballs?:difficulte&:nbPoints',
         templateUrl: 'templates/jeux/solo/fakeballs.html'
     })
+    $stateProvider.state('solo-underattackedpong', {
+        url: '/jeux/solo/underattackedpong?:difficulte&:nbPoints',
+        templateUrl: 'templates/jeux/solo/underattackedpong.html'
+    })
 
     //Mutlijoueur local
     $stateProvider.state('multilocal-normal', {
@@ -665,6 +703,10 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('multilocal-fakeballs', {
         url: '/jeux/multilocal/fakeballs?:nbPoints',
         templateUrl: 'templates/jeux/multilocal/fakeballs.html'
+    })
+    $stateProvider.state('multilocal-underattackedpong', {
+        url: '/jeux/multilocal/underattackedpong?:nbPoints',
+        templateUrl: 'templates/jeux/multilocal/underattackedpong.html'
     })
 
     //Options
