@@ -1,9 +1,10 @@
-<ion-view view-title="Couleur de la barre">
+<ion-view view-title="Couleurs">
     <ion-content>
-        <div class="list">
+        <ul class="list">
            <ion-radio ng-repeat="couleur in couleurs" ng-click="setCouleurBarre($index)" ng-model="rangCouleurBarre" ng-value="{{$index}}">
-                {{couleur.nom}}
+                <canvas width="20px" height="20px" style="border-style:inset;border: 1px solid rgba(0,0,0,.2);border-radius:4px;float:left;background-color:{{couleur.hexa}};"></canvas>
+                <div style="float: right;">{{couleur.nom}}</div>
             </ion-radio>
-        </div>
+        </ul>
     </ion-content>
 </ion-view>
