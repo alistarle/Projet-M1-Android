@@ -358,13 +358,17 @@ Pong.prototype.update = function() {
 
 
     //check des collisions
-    this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
-    this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
+    this.collideCheck();
     this.checkGoal();
 
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
 
+}
+
+Pong.prototype.collideCheck = function(){
+    this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
+    this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
 }
 
 Pong.prototype.trail = function() {
