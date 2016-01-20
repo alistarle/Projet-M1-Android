@@ -294,17 +294,14 @@ Pong.prototype.checkGoal = function() {
     this.checkIfGoal();
 
     if(this.difficulte==2){
-        if (this.iaBall.y < this.marge + 100 ) {
+        if (this.iaBall.y < this.marge + 50 ) {
             this.iaBallIsComplete = true;
             this.iaBall.body.velocity.x =0;
             this.iaBall.body.velocity.y =0;
-            this.iaBall.body.y=this.game.world.centerY;
-        } else if (this.iaBall.y > this.game.height - this.marge - 100) {
+        } else if (this.iaBall.y > this.game.height - this.marge - 50) {
             this.iaBallIsComplete = true;
             this.iaBall.body.velocity.x =0;
             this.iaBall.body.velocity.y =0;
-            this.iaBall.body.y=0;
-                        this.iaBall.body.y=this.game.world.centerY;
 
 
         }
