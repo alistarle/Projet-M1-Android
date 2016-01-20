@@ -290,14 +290,8 @@ Pong.prototype.releaseBall = function() {
 }
 
 Pong.prototype.checkGoal = function() {
-    //si but alors score++
-    if (this.ball.y < 100) {
-        this.goalTop();
-        this.goal();
-    } else if (this.ball.y > this.game.height - 100) {
-        this.goalBot();
-        this.goal();
-    }
+    
+    this.checkIfGoal();
 
     if(this.difficulte==2){
         if (this.iaBall.y < this.marge + 100 ) {
@@ -317,7 +311,18 @@ Pong.prototype.checkGoal = function() {
     }
 }
 
-Pong.prototype.goal = function() {
+Pong.prototype.checkIfGoal = function(){
+    //si but alors score++
+    if (this.ball.y < 100) {
+        this.goalTop();
+        this.reinitGame();
+    } else if (this.ball.y > this.game.height - 100) {
+        this.goalBot();
+        this.reinitGame();
+    }
+}
+
+Pong.prototype.reinitGame = function() {
     this.updateScore();
 
 }
@@ -499,14 +504,17 @@ Pong.prototype.update = function() {
     }
 
     //check des collisions
-    this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
-    this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
-
+    this.collideCheck();
     this.checkGoal();
 
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
 
+}
+
+Pong.prototype.collideCheck = function(){
+    this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);
+    this.game.physics.arcade.collide(this.ball, this.computerBet, this.ballHitsBet, null, this);
 }
 
 Pong.prototype.trail = function() {
