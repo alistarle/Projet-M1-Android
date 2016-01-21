@@ -7,11 +7,15 @@ function LarryHead(larrypong, tile) {
 
     this.larrybody = [];
 
-    this.scaleW = (tile.width / this.self.width);
+    this.playground.scaleSpriteToTile(this.self);
+    this.scaleW = this.self.scale.x;
+    this.scaleH = this.self.scale.y;
+    //debugger;
+    /*this.scaleW = (tile.width / this.self.width);
     this.scaleH = (tile.height / this.self.height);
     this.self.scale.setTo(this.scaleW, this.scaleH);
 
-
+debugger;*/
     this.self.anchor.x = 0.5;
     this.self.anchor.y = 0.5;
 

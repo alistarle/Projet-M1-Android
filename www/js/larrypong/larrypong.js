@@ -15,10 +15,10 @@ LarryPong.prototype.preload = function(){
 
 LarryPong.prototype.create = function(){
 
-
-	this.playground = new Playground(this);
 	this.super.create.call(this);
 
+	this.playground = new LarryPongPlayground(this);
+	this.ball.bringToTop();
 	this.potion = new Potion(this);
 
 

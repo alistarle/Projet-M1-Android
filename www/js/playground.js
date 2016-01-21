@@ -1,10 +1,10 @@
-function Playground(larrypong){	
-	this.pong = larrypong;
-	this.game = larrypong.game;
+function Playground(pong,widthCase,heightCase){	
+	this.pong = pong;
+	this.game = pong.game;
 
 
-	this.numberWidthCase = 6;
-	this.numberHeightCase = 6;
+	this.numberWidthCase = widthCase;
+	this.numberHeightCase = heightCase;
 
 	this.playground = new Array(this.numberWidthCase);
 	for(var i = 0 ; i < this.numberWidthCase ; i++){
@@ -72,16 +72,17 @@ Playground.prototype.placementPlayground = function(){
 			this.playground[i][j].y = this.yPlayground +
 			 this.heightCase/2 + j * this.heightCase;
 
-			 /*this.get(i,j).x = this.xPlayground +
-			 this.widthCase/2 + i * this.widthCase;
-
-			this.get(i,j).y = this.yPlayground +
-			 this.heightCase/2 + j * this.heightCase;*/
-
 		}
 	}
 }
 
 Playground.prototype.update = function(){
 	//console.log("Update playground");
+}
+
+Playground.prototype.scaleSpriteToTile = function(sprite){
+	var tile = this.get(0,0);
+	var scaleW = (tile.width / sprite.width);
+    var scaleH = (tile.height / sprite.height);
+    sprite.scale.setTo(scaleW,scaleH);
 }
