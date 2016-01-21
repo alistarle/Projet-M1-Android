@@ -32,8 +32,8 @@ function Pong(mode, nbPoints) {
 
 
     //skins
-    this.skinPlayer1Path = 'assets/skins/moustache.png';
-    this.skinPlayer2Path = 'assets/skins/rayures.png'
+    //this.skinPlayer1Path = 'assets/skins/moustache.png';
+    //this.skinPlayer2Path = 'assets/skins/rayures.png'
 
     //sounds
     this.soundPlayer1;
@@ -137,15 +137,15 @@ Pong.prototype.createBet = function(x, y) {
 };
 Pong.prototype.preload = function() {
     //chargement des assets
-    this.game.load.audio('soundPlayer1', 'assets/sound/chevre.wav');
-    this.game.load.audio('soundPlayer2', 'assets/sound/chat.wav');
+    this.game.load.audio('soundPlayer1', 'assets/sound/RE.wav');
+    this.game.load.audio('soundPlayer2', 'assets/sound/DO.wav');
     this.game.load.image('background', 'assets/background.jpg');
     this.game.load.image('bet', 'assets/bet.png');
     this.game.load.image('ball', 'assets/ball.png');
     this.game.load.bitmapFont('font', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
     this.game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
-    this.game.load.image('skinPlayer1', this.skinPlayer1Path);
-    this.game.load.image('skinPlayer2', this.skinPlayer2Path);
+    //this.game.load.image('skinPlayer1', this.skinPlayer1Path);
+    //this.game.load.image('skinPlayer2', this.skinPlayer2Path);
 
 
 }
@@ -259,10 +259,6 @@ Pong.prototype.createBetTop = function() {
     bet.body.bounce.setTo(1, 1);
     bet.body.immovable = true;
     bet.tint = this.BetPlayer2Color;
-
-    var skin = this.game.add.sprite(-100, -20, 'skinPlayer2');
-
-    bet.addChild(skin);
     return bet;
 }
 
@@ -275,10 +271,6 @@ Pong.prototype.createBetBot = function() {
     bet.body.bounce.setTo(1, 1);
     bet.body.immovable = true;
     bet.tint = this.BetPlayer1Color;
-
-    var skin = this.game.add.sprite(-100, -20, 'skinPlayer1');
-
-    bet.addChild(skin);
     return bet;
 }
 
@@ -310,6 +302,7 @@ Pong.prototype.checkGoal = function() {
             this.iaBallIsComplete = true;
             this.iaBall.body.velocity.x =0;
             this.iaBall.body.velocity.y =0;
+
 
         }
     }
