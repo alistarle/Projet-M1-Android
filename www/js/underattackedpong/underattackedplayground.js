@@ -11,7 +11,7 @@ UnderAttackedPlayground.prototype.super = Playground.prototype;
 
 
 UnderAttackedPlayground.prototype.spawnTop = function(runner){
-	var tileY = this.game.rnd.integerInRange(0, this.numberHeightCase/2);
+	var tileY = this.game.rnd.integerInRange(0, (this.numberHeightCase/2)-1);
 	var tileX;
 	runner.direction == 'left' ? tileX = this.numberWidthCase-1 : tileX = 0;
 	var tile = this.get(tileX,tileY);
@@ -27,7 +27,7 @@ UnderAttackedPlayground.prototype.spawnTop = function(runner){
 }
 
 UnderAttackedPlayground.prototype.spawnBot= function(runner){
-	var tileY = this.game.rnd.integerInRange(5, this.numberHeightCase-1);
+	var tileY = this.game.rnd.integerInRange((this.numberHeightCase/2), this.numberHeightCase-1);
 	var tileX;
 	runner.direction == 'left' ? tileX = this.numberWidthCase-1 : tileX = 0;
 	var tile = this.get(tileX,tileY);
