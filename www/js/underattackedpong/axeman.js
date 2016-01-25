@@ -24,3 +24,11 @@ Axeman.prototype.getPattern = function(){
 		return ['goRight','goBot','goBot','goRight','goTop','goTop'];
 	}
 }
+
+Axeman.prototype.getHealth = function(){
+	return 1;
+}
+
+Axeman.prototype.getSpeed = function(){
+	return 225;
+}

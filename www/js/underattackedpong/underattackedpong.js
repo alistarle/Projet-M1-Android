@@ -22,6 +22,7 @@ UnderAttackedPong.prototype.preload = function(){
 	this.game.load.spritesheet('grunt', 'assets/grunt2.png',66,66);
 	this.game.load.spritesheet('axeman', 'assets/axeman.png',65,65);
 	this.game.load.spritesheet('peon', 'assets/peon2.png',54,54);
+	this.game.load.spritesheet('ogre', 'assets/ogre2.png',73,73);
 	this.game.load.image('tile', 'assets/tileW2.png');
 	this.game.load.spritesheet('explosion', 'assets/explosion.png',480/5,288/3);
 
@@ -41,8 +42,8 @@ UnderAttackedPong.prototype.render = function(){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
 			this.game.debug.body(this.playground.get(i,j));
 		}
-	}*/
-	
+	}
+	*/
 
 }
 
@@ -82,13 +83,16 @@ UnderAttackedPong.prototype.create = function(){
 	this.playground = new UnderAttackedPlayground(this);
 	this.timers.push(new TimerFire(this,1500));
 
-	this.timers.push(new TimerGrunt(this,3000));
+	this.timers.push(new TimerGrunt(this,2000));
 	this.timers.push(new TimerGrunt(this,7000));
 
 	this.timers.push(new TimerPeon(this,4000));
 	this.timers.push(new TimerPeon(this,6500));
 
 	this.timers.push(new TimerAxeman(this,2500));
+
+	this.timers.push(new TimerOgre(this,10000));
+	//this.timers[1].accum = 10000;
 
 }
 
@@ -157,11 +161,6 @@ UnderAttackedPong.prototype.removeCannonBall = function(cannonBall){
 //////////////////removes/
 
 UnderAttackedPong.prototype.reinitGame = function() {
-	//this.super.reinitGame.call(this);
-	this.timerSpawnPeonAccum = 0;
-	this.timerSpawnGruntAccum = 0;
-	this.timerFireAccum = 0;
-
 	this.whipeRunners();
 	this.whipeCannonBalls();
 	this.whipeExplosions();

@@ -1,4 +1,4 @@
-function Playground(pong,widthCase,heightCase){	
+function Playground(pong,widthCase,heightCase,widthZone,heightZone){	
 	this.pong = pong;
 	this.game = pong.game;
 
@@ -11,8 +11,8 @@ function Playground(pong,widthCase,heightCase){
 		this.playground[i] = new Array(this.numberHeightCase);
 	}
 
-	this.widthPlayground = this.game.width;
-	this.heightPlayground = this.game.height/4;
+	this.widthPlayground = widthZone;
+	this.heightPlayground = heightZone;
 
 	this.widthCase = this.widthPlayground / this.numberWidthCase;
 	this.heightCase = this.heightPlayground / this.numberHeightCase;

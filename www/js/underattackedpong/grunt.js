@@ -1,7 +1,5 @@
 function Grunt(pong,direction,playground){
 	Runner.call(this, pong,direction,playground, 'grunt',1.5,1.5);
-	this.health = 2;
-	this.speed = 175;
 	this.myAnimations = {
         'walkright': this.animations.add('walkright',[2,7,12,17,22], true),
         'walkleft': this.animations.add('walkleft', [2,7,12,17,22], true),
@@ -21,4 +19,11 @@ Grunt.prototype.getPattern = function(){
 	else{
 		return ['goRight'];
 	}
+}
+Grunt.prototype.getHealth = function(){
+	return 2;
+}
+
+Grunt.prototype.getSpeed = function(){
+	return 175;
 }

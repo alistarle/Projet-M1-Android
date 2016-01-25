@@ -16,7 +16,7 @@ TimerFire.prototype.createCannonBall = function(x,y,velocityY){
 	cannonBall.anchor.setTo(0.5, 0.5);
     cannonBall.tint = 0x000000;
     this.game.physics.arcade.enable(cannonBall);
-    cannonBall.body.width = (cannonBall.width * 2)/ 5;
+    cannonBall.body.width = (cannonBall.width * 3)/ 5;
     cannonBall.body.height = (cannonBall.height * 2) / 5;
     cannonBall.body.velocity.y = velocityY;
     cannonBall.pong = this.pong;

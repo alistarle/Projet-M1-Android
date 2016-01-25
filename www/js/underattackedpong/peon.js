@@ -1,7 +1,5 @@
 function Peon(pong,direction,playground){
 	Runner.call(this, pong,direction,playground, 'peon',1,1);
-	this.speed = 250;
-	this.health = 1;
 	this.myAnimations = {
         'walkright': this.animations.add('walkright',[2,7,12,17,22], true),
         'walkleft': this.animations.add('walkleft', [2,7,12,17,22], true),
@@ -28,4 +26,12 @@ Peon.prototype.getPattern = function(){
 }
 Peon.prototype.patternBidon = function(){
 	console.log("mdr");
+}
+
+Peon.prototype.getHealth = function(){
+	return 1;
+}
+
+Peon.prototype.getSpeed = function(){
+	return 250;
 }

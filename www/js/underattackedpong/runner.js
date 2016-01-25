@@ -31,14 +31,70 @@ function Runner(pong,direction,playground,skin,scaleWPlayground,scaleHPlayground
 	this.tileObjective;
 	this.tileCurrent;
 
-	this.speed = 1;
-	this.health = 1;
+	this.health = this.maxHealth = this.getHealth();
+	/*this.health = 450;
+	this.maxHealth = 500;*/
+	this.speed = this.getSpeed();
+
+	//this.rect = new Phaser.Rectangle(this.x, this.y, this.width, this.height);
+	this.healthBarWidth = 50;
+	this.healthBar = this.game.add.graphics(0,0);
+    this.healthBar.lineStyle(2, 0x00FF00, 1);
+    this.healthBar.beginFill(0x00FF00, 1);
+    this.healthBar.drawRect(-this.healthBarWidth/2,-Math.abs(this.height/4), this.healthBarWidth, 4);    
+    this.healthBar.endFill();
+
+
+   
+
+	this.addChild(this.healthBar);
+
 }
 Runner.prototype = Object.create(Phaser.Sprite.prototype);
 Runner.prototype.constructor = Runner;
 
+Runner.prototype.updateLifeBar = function(){
+	if(this.healthBar.graphicsData.length >= 4){
+		//debugger;
+		//this.healthBar.graphicsData.splice(3,1);
+		//debugger;
+		
+	}
+
+	//this.takeDamage();
+ 	//
+//this.healthBar.clear();
+
+	//this.healthBar = this.game.add.graphics(0,0);
+    /*this.healthBar.lineStyle(2, 0x00FF00, 1);
+    this.healthBar.beginFill(0x00FF00, 1);
+    this.healthBar.drawRect(-this.healthBarWidth/2,-Math.abs(this.height/4), this.healthBarWidth, 4);    
+    this.healthBar.endFill();*/
+	//this.addChild(this.healthBar);
+	;
+	var widthRedBar = this.healthBarWidth - (this.health/this.maxHealth)*(this.healthBarWidth);
+	var xRedBar = -this.healthBarWidth/2 + this.healthBarWidth - widthRedBar;
+    this.healthBar.lineStyle(2, 0x00FF00, 1);
+	this.healthBar.beginFill(0xFF0000, 1);
+	this.healthBar.drawRect(xRedBar,-Math.abs(this.height/4), widthRedBar, 4);
+	this.healthBar.endFill();
+	
+
+		//this.healthBar.beginFill(0xFF0000, 1);
+		/*this.test= 40;
+			this.test+=1;
+	this.healthBar.endFill();*/
+	/*this.healthBar.graphicsData[1].shape.x= xRedBar;
+	this.healthBar.graphicsData[1].shape.width= widthRedBar;*/
+
+	this.healthBar.dirty = true;
+	this.healthBar.fresh =true;
+
+}
 
 Runner.prototype.update = function(){
+	this.normalizeHealth();
+	this.updateLifeBar();
 	this.locate();
 	if(this.isAlive()){
 		this.followPattern();
@@ -53,6 +109,11 @@ Runner.prototype.update = function(){
 		}, this.pong);
 	}
 
+}
+
+Runner.prototype.normalizeHealth = function(){
+	if(this.health < 0)
+		this.health = 0;
 }
 
 Runner.prototype.locate = function(){
@@ -191,4 +252,14 @@ Runner.prototype.goRight = function() {
 	this.animations.play('walkright', 5, true);
 	this.scale.setTo(Math.abs(this.scale.x),this.scale.y);
 	return false;
+}
+
+
+
+Runner.prototype.getHealth = function(){
+	console.log("Gethealth not overriden");
+}
+
+Runner.prototype.getSpeed = function(){
+	console.log("Gethealth not overriden");
 }

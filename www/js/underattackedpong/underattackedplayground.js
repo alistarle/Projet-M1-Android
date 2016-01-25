@@ -1,5 +1,5 @@
 function UnderAttackedPlayground(pong){
-	Playground.call(this,pong,7,7);
+	Playground.call(this,pong,12,12,pong.game.width,(pong.game.height*7)/10);
 
 
 	
