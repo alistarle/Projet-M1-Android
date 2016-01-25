@@ -48,7 +48,7 @@ LarryPong.prototype.placementPlayground = function(){
 }*/
 
 LarryPong.prototype.render = function(){
-	/*this.game.debug.body(this.potion.self);
+	this.game.debug.body(this.potion.self);
 	for(var i = 0 ; i < this.larrys.length ; i++){
 		this.game.debug.body(this.larrys[i].self);
 	}
@@ -62,7 +62,7 @@ LarryPong.prototype.render = function(){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
 			this.game.debug.body(this.playground.get(i,j));
 		}
-	}*/
+	}
 
 }
 

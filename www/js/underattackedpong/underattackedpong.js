@@ -2,25 +2,12 @@ function UnderAttackedPong(mode,nbPoints){
 
 	Pong.apply(this,arguments);
 
-	//temps pour chaque cannon avant le tire
-	this.timerFireRate = 1500;
-	this.speedCannonBall = 400;
-	this.explosionRadius = 200;
-
-	//temps avant debut de pop
-	this.timerSpawnPeonRate = 1000;
-	this.timerSpawnGruntRate = 5000;
-
-
-	//temps entre chaque pop
-	this.timerSpawnPeonAccum = 0;
-	this.timerspawnGruntAccum = 0;
-	this.timerFireAccum = 0;
-
-
+	this.timers = [];
 	this.runners = [];
 	this.cannonBalls = [];
 	this.explosions = [];
+
+	this.explosionRadius = 350;
 }
 
 UnderAttackedPong.prototype = $.extend(true, {}, Pong.prototype);  
@@ -31,12 +18,31 @@ UnderAttackedPong.prototype.super = Pong.prototype;
 
 UnderAttackedPong.prototype.preload = function(){
 	this.super.preload.call(this);
-	//this.game.load.spritesheet('grunt', 'assets/grunt.png',48,50,6);
 	this.game.load.spritesheet('cannon', 'assets/Cannon.png',120,108,3);
-	this.game.load.spritesheet('grunt', 'assets/grunt.png',120,108,3);
-	this.game.load.spritesheet('peon', 'assets/peon.png',51,40);
-	this.game.load.image('tile', 'assets/tile.png');
+	this.game.load.spritesheet('grunt', 'assets/grunt2.png',66,66);
+	this.game.load.spritesheet('axeman', 'assets/axeman.png',65,65);
+	this.game.load.spritesheet('peon', 'assets/peon2.png',54,54);
+	this.game.load.image('tile', 'assets/tileW2.png');
 	this.game.load.spritesheet('explosion', 'assets/explosion.png',480/5,288/3);
+
+}
+
+UnderAttackedPong.prototype.render = function(){
+	/*console.log("RENDER");
+
+	this.runners.forEach(function(e,i,a){
+		this.game.debug.body(e)
+	},this);
+	this.cannonBalls.forEach(function(e,i,a){
+		this.game.debug.body(e)
+	},this);
+
+	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
+		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
+			this.game.debug.body(this.playground.get(i,j));
+		}
+	}*/
+	
 
 }
 
@@ -74,35 +80,25 @@ UnderAttackedPong.prototype.createBetBot = function() {
 UnderAttackedPong.prototype.create = function(){
 	this.super.create.call(this);
 	this.playground = new UnderAttackedPlayground(this);
-	this.ball.bringToTop();
+	this.timers.push(new TimerFire(this,1500));
+
+	this.timers.push(new TimerGrunt(this,3000));
+	this.timers.push(new TimerGrunt(this,7000));
+
+	this.timers.push(new TimerPeon(this,4000));
+	this.timers.push(new TimerPeon(this,6500));
+
+	this.timers.push(new TimerAxeman(this,2500));
 
 }
 
 UnderAttackedPong.prototype.update = function(){
 	this.super.update.call(this);
-
-	var accum = this.game._deltaTime;
-	this.timerSpawnPeonAccum += accum;
-	this.timerSpawnGruntAccum += accum;
-	this.timerFireAccum += accum
-
 	this.testOutOfBounds();
 	this.testCollision();
-
-	if(this.timerSpawnPeonAccum > this.timerSpawnPeonRate){
-		this.spawnPeon();
-		this.timerSpawnPeonAccum -= this.timerSpawnPeonRate;
-	}
-
-	if(this.timerSpawnGruntAccum > this.timerSpawnGruntRate){
-		this.spawnGrunt();
-		this.timerSpawnGruntAccum -= this.timerSpawnGruntRate;
-	}
-
-	if(this.timerFireAccum > this.timerFireRate){
-		this.fire();
-		this.timerFireAccum -= this.timerFireRate;
-	}
+	this.timers.forEach(function(e,i,a){
+		e.update();
+	},this);
 
 	this.runners.forEach(function(e,a){
 		e.update();
@@ -110,45 +106,21 @@ UnderAttackedPong.prototype.update = function(){
 	},this);
 }
 
-//cannons tirent
-UnderAttackedPong.prototype.fire = function() {
-	console.log("Feu !");
-	this.createCannonBall(this.playerBet.x,this.playerBet.y-this.playerBet.height+20,-this.speedCannonBall);
-	this.createCannonBall(this.computerBet.x,this.computerBet.y,this.speedCannonBall);
-}
-UnderAttackedPong.prototype.createCannonBall = function(x,y,velocityY){
-	var cannonBall = this.game.add.sprite(x,y, 'ball');
-	cannonBall.anchor.setTo(0.5, 0.5);
-    cannonBall.tint = 0x000000;
-    this.game.physics.arcade.enable(cannonBall);
-    cannonBall.body.width = (cannonBall.width * 3)/ 5;
-    cannonBall.body.height = (cannonBall.height * 3) / 5;
-    cannonBall.body.velocity.y = velocityY;
-    this.cannonBalls.push(cannonBall);
-}
 
 
 
-//spawn grunt
-UnderAttackedPong.prototype.spawnGrunt = function() {
-	console.log("Spawn grunt");
-	
-	//placementBot(new Grunt());
-	//placementTop(new Grunt());
-}
 
-//spawn peon
-UnderAttackedPong.prototype.spawnPeon = function() {
-	console.log("Spawn peon");
-	this.runners.push(new Peon(this,'right',this.playground));
-	this.runners.push(new Peon(this,'left',this.playground));
-}
+
 
 
 UnderAttackedPong.prototype.addRunner = function(runner){
 	this.runners.push(runner);
 }
 
+
+
+
+////////////////////whipes
 //enleve les runners
 UnderAttackedPong.prototype.whipeRunners = function(){
 	this.runners.forEach(function(e,a){
@@ -169,13 +141,20 @@ UnderAttackedPong.prototype.whipeExplosions = function(){
 	});
 	this.explosions = [];
 }
+/////////////////////whipes//
 
+
+
+
+//////////////////removes
 UnderAttackedPong.prototype.removeRunner = function(runner){
 	this.runners.splice(this.runners.indexOf(runner),1);
 }
 UnderAttackedPong.prototype.removeCannonBall = function(cannonBall){
 	this.cannonBalls.splice(this.cannonBalls.indexOf(cannonBall),1);
 }
+
+//////////////////removes/
 
 UnderAttackedPong.prototype.reinitGame = function() {
 	//this.super.reinitGame.call(this);
@@ -186,6 +165,9 @@ UnderAttackedPong.prototype.reinitGame = function() {
 	this.whipeRunners();
 	this.whipeCannonBalls();
 	this.whipeExplosions();
+	this.timers.forEach(function(e,i,a){
+		e.reset();
+	});
 }
 
 
@@ -199,6 +181,7 @@ UnderAttackedPong.prototype.testOutOfBounds = function(){
 	},this);
 	this.cannonBalls.forEach(function(e,a){
 		if(this.isOutOfBounds(e)){
+			console.log("Cannon ball out of bound");
 			this.removeCannonBall(e);
 			e.destroy();
 		}
@@ -206,16 +189,16 @@ UnderAttackedPong.prototype.testOutOfBounds = function(){
 }
 
 UnderAttackedPong.prototype.isOutOfBounds = function(sprite){
-	if(this.x < 0-Math.abs(this.width)){
+	if(sprite.x < 0-Math.abs(sprite.width)-50){
 		return true;
 	}
-	if(this.x > this.game.width+Math.abs(this.width)){
+	if(sprite.x > this.game.width+Math.abs(sprite.width)+50){
 		return true;
 	}
-	if(this.y < 0-Math.abs(this.height)){
+	if(sprite.y < 0-Math.abs(sprite.height)-50){		
 		return true;
 	}
-	if(this.y > this.game.height-Math.abs(this.height)){
+	if(sprite.y > this.game.height+Math.abs(sprite.height)+50){		
 		return true;
 	}
 	return false;
@@ -229,8 +212,9 @@ UnderAttackedPong.prototype.testCollision = function(){
 
 		    }, function(cannonBall, runner) {
 		      if(runner.isAlive()){
-		      	runner.pong.createExplosion(runner.x,runner.y);
+		      	runner.pong.createExplosion(cannonBall.x,cannonBall.y);
 		      	runner.takeDamage();
+		      	runner.pong.removeCannonBall(cannonBall);
 		      	cannonBall.destroy();
 		      }
 		      return false;
@@ -242,16 +226,16 @@ UnderAttackedPong.prototype.testCollision = function(){
 
 UnderAttackedPong.prototype.createExplosion = function(x,y){
 	var explo = this.game.add.sprite(x, y, 'explosion');
-	explo.animations.add('explosion',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], false);
-	explo.play('explosion',15);
+	explo.animations.add('explosion',[0,1,2,3,4], false);
+	explo.play('explosion',30);
 	explo.animations.currentAnim.onComplete.add(function (sprite,anim) {
 		console.log('animation complete');
 		sprite.destroy();
 	}, this);
 	this.explosions.push(explo);
 	explo.anchor.setTo(0.5, 0.5);
-	var scaleW = ((this.explosionRadius*2) / explo.width);
-    var scaleH = ((this.explosionRadius*2) / explo.height);
+	var scaleW = ((this.explosionRadius) / explo.width);
+    var scaleH = ((this.explosionRadius) / explo.height);
     explo.scale.setTo(scaleW,scaleH);
 	var circle = new Phaser.Circle(x, y, this.explosionRadius);
 	//circle.beginFill(0xFF0000, 1);
@@ -261,4 +245,9 @@ UnderAttackedPong.prototype.createExplosion = function(x,y){
 		}
 	},circle);
 
+}
+
+UnderAttackedPong.prototype.releaseBall = function() {
+
+    
 }

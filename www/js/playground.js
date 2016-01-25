@@ -84,5 +84,11 @@ Playground.prototype.scaleSpriteToTile = function(sprite){
 	var tile = this.get(0,0);
 	var scaleW = (tile.width / sprite.width);
     var scaleH = (tile.height / sprite.height);
+    if(sprite.scaleWPlayground != undefined){
+    	scaleW *= sprite.scaleWPlayground;
+    }
+    if(sprite.scaleHPlayground != undefined){
+    	scaleH *= sprite.scaleHPlayground;
+    }
     sprite.scale.setTo(scaleW,scaleH);
 }

@@ -1,5 +1,5 @@
 function UnderAttackedPlayground(pong){
-	Playground.call(this,pong,8,8);
+	Playground.call(this,pong,7,7);
 
 
 	
@@ -11,7 +11,7 @@ UnderAttackedPlayground.prototype.super = Playground.prototype;
 
 
 UnderAttackedPlayground.prototype.spawnTop = function(runner){
-	var tileY = this.game.rnd.integerInRange(0, (this.numberHeightCase/2)-1);
+	var tileY = this.game.rnd.integerInRange(1, (this.numberHeightCase/2)-1);
 	var tileX;
 	runner.direction == 'left' ? tileX = this.numberWidthCase-1 : tileX = 0;
 	var tile = this.get(tileX,tileY);
@@ -27,7 +27,7 @@ UnderAttackedPlayground.prototype.spawnTop = function(runner){
 }
 
 UnderAttackedPlayground.prototype.spawnBot= function(runner){
-	var tileY = this.game.rnd.integerInRange((this.numberHeightCase/2), this.numberHeightCase-1);
+	var tileY = this.game.rnd.integerInRange((this.numberHeightCase/2), this.numberHeightCase-2);
 	var tileX;
 	runner.direction == 'left' ? tileX = this.numberWidthCase-1 : tileX = 0;
 	var tile = this.get(tileX,tileY);

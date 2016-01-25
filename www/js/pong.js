@@ -508,6 +508,9 @@ Pong.prototype.update = function() {
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
 
 }
+Pong.prototype.controllerStuff = function(){
+    
+}
 
 Pong.prototype.collideCheck = function(){
     this.game.physics.arcade.collide(this.ball, this.playerBet, this.ballHitsBet, null, this);

@@ -1,7 +1,7 @@
-function Grunt(pong,direction,playground){
-	Runner.call(this, pong,direction,playground, 'grunt',1.5,1.5);
-	this.health = 2;
-	this.speed = 175;
+function Axeman(pong,direction,playground){
+	Runner.call(this, pong,direction,playground, 'axeman',1.25,1.25);
+	this.health = 1;
+	this.speed = 225;
 	this.myAnimations = {
         'walkright': this.animations.add('walkright',[2,7,12,17,22], true),
         'walkleft': this.animations.add('walkleft', [2,7,12,17,22], true),
@@ -9,16 +9,18 @@ function Grunt(pong,direction,playground){
         'walkdown': this.animations.add('walkdown', [4,9,14,19,24,29], true),
         'dead': this.animations.add('dead',[45,47,49],false)
     };
+    this.direction2 = "goBot";
+
 }
-Grunt.prototype = Object.create(Runner.prototype);
-Grunt.prototype.constructor = Grunt;
+Axeman.prototype = Object.create(Runner.prototype);
+Axeman.prototype.constructor = Axeman;
 
 
-Grunt.prototype.getPattern = function(){
+Axeman.prototype.getPattern = function(){
 	if(this.direction == 'left'){
-		return ['goLeft'];
+		return ['goLeft','goTop','goTop','goLeft','goBot','goBot'];
 	}
 	else{
-		return ['goRight'];
+		return ['goRight','goBot','goBot','goRight','goTop','goTop'];
 	}
 }
