@@ -69,60 +69,60 @@ function Pong(mode, nbPoints) {
 }
 
 Pong.prototype.connectToServer = function(ip) {
-    this.multiplayer = true;
-    this.otherPlayers = [];
+  this.multiplayer = true;
+  this.otherPlayers = [];
 
-    NetworkManager.connect(ip, optionsGetPseudo());
+  NetworkManager.connect(ip,optionsGetPseudo(),optionsGetCouleurBarre());
 
-    NetworkManager.onOtherPlayerConnected(function(otherPlayerInfo) {
-        this.otherPlayers.push(otherPlayerInfo);
-        syncPlayer(this.otherPlayers);
-    });
+  NetworkManager.onOtherPlayerConnected(function(otherPlayerInfo){
+    this.otherPlayers.push(otherPlayerInfo);
+    syncPlayer(this.otherPlayers);
+  });
 
-    NetworkManager.onOtherPlayerMove(function(movementInfo) {
-        /*var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
-        if(otherPlayerToMove){
-          otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
-      }*/
-        //pong.computerBet.x = movementInfo.x;
-    });
+  NetworkManager.onOtherPlayerMove(function(movementInfo){
+    var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
+    if(otherPlayerToMove){
+      otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
+    }
+    pong.computerBet.x = movementInfo.x;
+  });
 
-    NetworkManager.onUpdatePlayerList(function(receivedList) {
-        this.otherPlayers = receivedList;
-        syncPlayer(receivedList);
-    });
+  NetworkManager.onUpdatePlayerList(function(receivedList){
+    this.otherPlayers = receivedList;
+    syncPlayer(receivedList);
+  });
 
-    NetworkManager.onServerLaunch(function() {
-        function create() {
-            pong.create();
-        }
+  NetworkManager.onServerLaunch(function() {
+    function create() {
+      pong.create();
+    }
 
-        function preload() {
-            pong.preload();
-        }
+    function preload() {
+      pong.preload();
+    }
 
-        function update() {
-            pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-    });
+    function update() {
+      pong.update();
+    }
+    pong.init(create, preload, update, 'gameArea');
+  });
 
-    NetworkManager.onServerCanLaunch(function() {
-        $("#launchGame").prop('disabled', false);
-    });
+  NetworkManager.onServerCanLaunch(function() {
+    $("#launchGame").prop('disabled', false);
+  });
 
-    NetworkManager.onServerCannotLaunch(function() {
-        $("#launchGame").prop('disabled', true);
-    });
+  NetworkManager.onServerCannotLaunch(function() {
+    $("#launchGame").prop('disabled', true);
+  });
 
-    NetworkManager.onServerRoomClosed(function() {
-        alert("Serveur fermé");
-    });
+  NetworkManager.onServerRoomClosed(function() {
+    alert("Serveur fermé");
+  });
 
-    NetworkManager.onServerRoomFull(function() {
-        alert("Serveur plein");
-    });
-}
+  NetworkManager.onServerRoomFull(function() {
+    alert("Serveur plein");
+  });
+};
 
 Pong.prototype.createBet = function(x, y) {
     //creer une raquette
@@ -189,8 +189,6 @@ Pong.prototype.create = function() {
     this.scoreText = this.game.add.bitmapText(this.game.width / 2 - 230, this.marge / 2, 'flappyfont', this.scorePlayer.toString() + ":" + this.scoreComputer.toString(), 50);
     this.scoreText.visible = true;
     this.updateScore();
-
-
 
     this.fps = this.game.add.text(50, 50, "Fps : ", {
         font: "65px Arial",
@@ -284,13 +282,13 @@ Pong.prototype.releaseBall = function() {
 
         if(this.difficulte==2){
             this.iaBall.body.velocity.x = this.ballSpeed*4;
-            this.iaBall.body.velocity.y = -this.ballSpeed*4; 
+            this.iaBall.body.velocity.y = -this.ballSpeed*4;
         }
     }
 }
 
 Pong.prototype.checkGoal = function() {
-    
+
     this.checkIfGoal();
 
     if(this.difficulte==2){
@@ -509,7 +507,7 @@ Pong.prototype.update = function() {
 
 }
 Pong.prototype.controllerStuff = function(){
-    
+
 }
 
 Pong.prototype.collideCheck = function(){
@@ -544,5 +542,4 @@ Pong.prototype.init = function(create, preload, update, id, render) {
         render: render
     });
     this.game.pong = this;
-
 }

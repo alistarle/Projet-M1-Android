@@ -65,6 +65,7 @@ function onClientConnected(client){
     if(client.id == idHost) {
       //client.emit('SERVER_LAUNCH');
       client.broadcast.emit('SERVER_LAUNCH');
+      client.broadcast.to(idHost).emit("SERVER_LAUNCH")
     }
   }
 

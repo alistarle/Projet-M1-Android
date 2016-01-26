@@ -134,23 +134,38 @@ angular.module('starter', ['ionic'])
             NetworkManager.notifyLaunch();
         });
     });
-    $scope.$on("$ionicView.enter", function() {
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
         if (pong.multiplayer) NetworkManager.requestPlayerList();
+        pong.launch = function() {
+          alert("test");
+        }
+    });
+})
 
+  .controller('serveur-controller', function($scope) {
+    pong = new Pong();
+    $scope.$on("$ionicView.beforeEnter", function() {
+      initJXCore(pong);
+      $("#launchGame").click(function() {
         function create() {
-            pong.create();
+          pong.create();
         }
 
         function preload() {
-            pong.preload();
+          pong.preload();
         }
 
         function update() {
-            pong.update();
+          pong.update();
         }
         pong.init(create, preload, update, 'gameArea');
+        NetworkManager.notifyLaunch();
+      });
     });
-})
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+      if (pong.multiplayer) NetworkManager.requestPlayerList();
+    });
+  })
 
 .controller('client-controller', function($scope) {
     pong = new Pong();
