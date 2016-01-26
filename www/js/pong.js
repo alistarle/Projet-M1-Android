@@ -54,7 +54,7 @@ Pong.prototype.connectToServer = function(ip) {
   this.multiplayer = true;
   this.otherPlayers = [];
 
-  NetworkManager.connect(ip,optionsGetPseudo());
+  NetworkManager.connect(ip,optionsGetPseudo(),optionsGetCouleurBarre());
 
   NetworkManager.onOtherPlayerConnected(function(otherPlayerInfo){
     this.otherPlayers.push(otherPlayerInfo);
@@ -62,11 +62,11 @@ Pong.prototype.connectToServer = function(ip) {
   });
 
   NetworkManager.onOtherPlayerMove(function(movementInfo){
-    /*var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
+    var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
     if(otherPlayerToMove){
       otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
-    }*/
-    //pong.computerBet.x = movementInfo.x;
+    }
+    pong.computerBet.x = movementInfo.x;
   });
 
   NetworkManager.onUpdatePlayerList(function(receivedList){
@@ -75,6 +75,7 @@ Pong.prototype.connectToServer = function(ip) {
   });
 
   NetworkManager.onServerLaunch(function() {
+    alert("On lance le jeu");
     function create() {
       pong.create();
     }
@@ -87,6 +88,7 @@ Pong.prototype.connectToServer = function(ip) {
       pong.update();
     }
     pong.init(create, preload, update, 'gameArea');
+    $("#lobby").hide();
   });
 
   NetworkManager.onServerCanLaunch(function() {
@@ -161,7 +163,7 @@ Pong.prototype.create = function() {
     this.scoreText = this.game.add.bitmapText(this.game.width / 2 - 230, this.marge / 2, 'flappyfont', this.scorePlayer.toString() + ":" + this.scoreComputer.toString(), 50);
     this.scoreText.visible = true;
     this.updateScore();
-    
+
     this.fps = this.game.add.text(50, 50, "Fps : ", {
         font: "65px Arial",
         fill: "#ff0044",
@@ -265,7 +267,7 @@ Pong.prototype.checkGoal = function() {
 
 Pong.prototype.goal = function(){
     this.updateScore();
-    
+
 }
 Pong.prototype.goalTop = function(){
     this.setBall();

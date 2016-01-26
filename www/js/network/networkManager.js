@@ -15,12 +15,13 @@ var onServerCannotLaunchCallback;
 
 var PORT = 3000;
 
-var mainPlayer = { name: "", uid: "", x: ""};
+var mainPlayer = { name: "", uid: "", x: "", color: ""};
 
 var NetworkManager = {
   connected: false,
-  connect: function (ip, player) {
+  connect: function (ip, player, color) {
     mainPlayer.name = player;
+    mainPlayer.color = color;
     serverSocket = io.connect('http://'+ip+':'+PORT);
     serverSocket.on('connect', onConnectedToServer);
 
