@@ -8,3 +8,4 @@
 /www/jxcore/node_modules
 !README.md
 !.gitignore
+!diapo.key

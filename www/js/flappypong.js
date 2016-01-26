@@ -1,4 +1,4 @@
-function FlappyPong(game,modeControle){
+function FlappyPong(mode, nbPoints){
 
 	  Pong.apply(this,arguments);
 
@@ -40,8 +40,6 @@ FlappyPong.prototype.preload = function(){
 }
 
 FlappyPong.prototype.update = function(){
-	 console.log("Flappypong.js");
-
 	 this.super.update.call(this);
 	 this.doFlappyUpdate();
 	 if(this.animatingFlappy) this.recenterFlappy();
@@ -53,7 +51,6 @@ FlappyPong.prototype.update = function(){
 	      // if this returns false, then the collision is ignored, so return the value
 	      // of player.body.moves to make non-moving sprites also ignore collision
 	        //debugger;
-	        console.log("collision");
 	      return false;
 	});
 	 this.game.physics.arcade.collide(this.flappy, this.ball, function(flappy, ball) {
@@ -63,7 +60,6 @@ FlappyPong.prototype.update = function(){
 	      // if this returns false, then the collision is ignored, so return the value
 	      // of player.body.moves to make non-moving sprites also ignore collision
 	        //debugger;
-	        console.log("collision");
 	      return false;
 	});
 

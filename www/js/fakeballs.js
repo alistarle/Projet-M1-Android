@@ -1,4 +1,4 @@
-function FakeBallsPong(game,modeControle){
+function FakeBallsPong(mode,nbPoints){
 
 	  Pong.apply(this,arguments);
 
@@ -122,7 +122,7 @@ FakeBallsPong.prototype.determineIfFakeBall = function(){
 }
 
 FakeBallsPong.prototype.doFakeBall = function(){
-	if(this.cpt < 10){
+	if(this.tabFakeBalls.length < 10){
 		this.cpt++;
     var fakeBall = this.createFakeBall();
     this.tabFakeBalls.push(fakeBall);
