@@ -1,5 +1,15 @@
 /* Empty. Add your own CSS if you like */
 
+.col-config {
+    height: 50px;
+}
+
+.col-config-mid {}
+
+.col-config-mid>h2 {
+    display: inline;
+}
+
 .center {
     text-align: center;
 }
