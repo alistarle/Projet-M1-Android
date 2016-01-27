@@ -20,7 +20,7 @@ angular.module('starter', ['ionic'])
         ionic.Platform.fullScreen(true, false);
     })
 
-.controller('MainCtrl', function($scope, $ionicHistory) {
+.controller('MainCtrl', function($scope, $ionicHistory, $timeout) {
     $scope.modesControle = [{
         id: "0",
         nom: "Contrôle tactile",
@@ -36,31 +36,100 @@ angular.module('starter', ['ionic'])
     }, {
         code: 0x0000FF,
         nom: "Bleu",
-        hexa : "#0000FF"
-    },{
+        hexa: "#0000FF"
+    }, {
         code: 0xFFEB3B,
         nom: "Jaune",
-        hexa : "#FFEB3B"
-    },{
+        hexa: "#FFEB3B"
+    }, {
         code: 0xF57F17,
         nom: "Orange",
         hexa: "#F57F17"
-    },{
+    }, {
         code: 0x673AB7,
         nom: "Violet",
         hexa: "#573AB7"
-    },{
+    }, {
         code: 0x76FF03,
         nom: "Vert",
         hexa: "#76FF03"
     }];
 
+    $scope.sons = [{
+        type: "piano",
+        nom: "DO",
+        fichier: "assets/sound/DO.wav"
+    }, {
+        type: "piano",
+        nom: "DO#",
+        fichier: "assets/sound/DODiese.wav"
+    }, {
+        type: "piano",
+        nom: "RE",
+        fichier: "assets/sound/RE.wav"
+    }, {
+        type: "piano",
+        nom: "RE#",
+        fichier: "assets/sound/REDiese.wav"
+    }, {
+        type: "piano",
+        nom: "MI",
+        fichier: "assets/sound/MI.wav"
+    }, {
+        type: "piano",
+        nom: "FA",
+        fichier: "assets/sound/FA.wav"
+    }, {
+        type: "animaux",
+        nom: "Chat",
+        fichier: "assets/sound/chat.wav"
+    }];
 
+
+    $scope.getSons = function(type) {
+        var listeSons = [];
+        for (var i = 0; i < $scope.sons.length; i++) {
+            if ($scope.sons[i].type == type) {
+                listeSons.push($scope.sons[i]);
+            }
+        }
+        return listeSons;
+    }
+
+    $scope.sons_piano = $scope.getSons('piano');
+    $scope.sons_animaux = $scope.getSons('animaux');
+    //Sons
+    $scope.rangSons = optionsGetRangSons();
+    $scope.sonsSelec = optionsGetSonsSelec();
+    $scope.nomSonsSelec = $scope.sons[parseInt($scope.rangSons)].nom;
+
+
+    $scope.setSons = function(rang) {
+        console.log('appel');
+        $scope.rangSons = rang;
+        $scope.sonsSelec = $scope.sons[rang].fichier;
+        $scope.nomSonsSelec = $scope.sons[parseInt($scope.rangSons)].nom;
+
+        optionsSetRangSons(rang);
+        optionsSetSonsSelec($scope.sonsSelec);
+
+        $scope.$apply;
+        setTimeout(function() {
+            $scope.playSons();
+        }, 100);
+
+    }
+
+    $scope.playSons = function() {
+        var target = document.getElementById('audio');
+        target.play();
+    }
 
     $scope.$on('$ionicView.loaded', function() {
         if ($scope.estPremierLancement()) {
             $scope.setCouleurBalle(0);
-            $scope.setCouleurBarre(0)
+            $scope.setCouleurBarre(0);
+            $scope.setSons(0);
         }
     })
 
@@ -124,6 +193,7 @@ angular.module('starter', ['ionic'])
         return optionsGetPremierLancement();
     }
 
+
 })
 
 .controller('serveur-controller', function($scope) {
@@ -137,35 +207,35 @@ angular.module('starter', ['ionic'])
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
         if (pong.multiplayer) NetworkManager.requestPlayerList();
         pong.launch = function() {
-          alert("test");
+            alert("test");
         }
     });
 })
 
-  .controller('serveur-controller', function($scope) {
+.controller('serveur-controller', function($scope) {
     pong = new Pong();
     $scope.$on("$ionicView.beforeEnter", function() {
-      initJXCore(pong);
-      $("#launchGame").click(function() {
-        function create() {
-          pong.create();
-        }
+        initJXCore(pong);
+        $("#launchGame").click(function() {
+            function create() {
+                pong.create();
+            }
 
-        function preload() {
-          pong.preload();
-        }
+            function preload() {
+                pong.preload();
+            }
 
-        function update() {
-          pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-        NetworkManager.notifyLaunch();
-      });
+            function update() {
+                pong.update();
+            }
+            pong.init(create, preload, update, 'gameArea');
+            NetworkManager.notifyLaunch();
+        });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
-      if (pong.multiplayer) NetworkManager.requestPlayerList();
+        if (pong.multiplayer) NetworkManager.requestPlayerList();
     });
-  })
+})
 
 .controller('client-controller', function($scope) {
     pong = new Pong();
@@ -381,10 +451,11 @@ angular.module('starter', ['ionic'])
         function update() {
             pong.update();
         }
+
         function render() {
             pong.render();
         }
-        pong.init(create, preload, update, 'gameArea',render);
+        pong.init(create, preload, update, 'gameArea', render);
     });
     $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
         $ionicLoading.hide();
@@ -424,6 +495,27 @@ angular.module('starter', ['ionic'])
         pong.game.destroy();
     });
 })
+
+.controller('fin', function($scope, $stateParams, $ionicHistory) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicHistory.clearHistory();
+        $scope.gagnant = $stateParams.gagnant;
+
+        $ionicHistory.nextViewOptions({
+            disableAnimate: false,
+            disableBack: true
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {});
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {});
+})
+
+.controller('homeCtrl', function($scope, $ionicHistory, $rootScope) {
+    $scope.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicHistory.clearHistory();
+    });
+})
+
 
 .controller('flappypong-multilocal', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
@@ -561,7 +653,7 @@ angular.module('starter', ['ionic'])
     $scope.url;
 
     var urlBase = "#/jeux/";
-    var urlModes = ["normal", "flappypong", "multipong", "larrypong", "fakeballs","underattackedpong"];
+    var urlModes = ["normal", "flappypong", "multipong", "larrypong", "fakeballs", "underattackedpong"];
     var urlJoueurs = ["solo", "multilocal"];
 
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
@@ -672,6 +764,11 @@ angular.module('starter', ['ionic'])
         url: '/jeux/multilocal',
         templateUrl: 'templates/jeux/multilocal.html'
     })
+    $stateProvider.state('jeux-fin', {
+        url: '/jeux/fin?:gagnant',
+        templateUrl: 'templates/jeux/fin.html'
+    })
+
 
 
     //Solo
@@ -743,6 +840,11 @@ angular.module('starter', ['ionic'])
         url: '/options/pseudo',
         templateUrl: 'templates/options/pseudo.html'
     })
+    $stateProvider.state('options-sons', {
+        url: '/options/sons',
+        templateUrl: 'templates/options/sons.html'
+    })
+
 
     $stateProvider.state('jeux-heberger', {
         url: '/jeux/heberger',

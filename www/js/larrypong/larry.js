@@ -173,11 +173,14 @@ LarryHead.prototype.move = function() {
             this.self.body.velocity.x = -this.speed;
             this.self.body.velocity.y = 0;
             this.self.animations.play('walkright', 3, true);
+            this.self.scale.setTo(-Math.abs(this.self.scale.x),this.self.scale.y);
 
         } else {
             this.self.body.velocity.x = this.speed;
             this.self.body.velocity.y = 0;
             this.self.animations.play('walkleft', 3, true);
+            this.self.scale.setTo(Math.abs(this.self.scale.x),this.self.scale.y);
+
         }
     } else if (this.tileCurrent.posY != this.tileObjective.posY) {;
         if (this.tileCurrent.posY < this.tileObjective.posY) {

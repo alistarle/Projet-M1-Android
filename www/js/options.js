@@ -5,6 +5,9 @@
     var keyCouleurBarre = "couleurBarre";
     var keyRangCouleurBarre = "rangCouleurBarre";
     var keyPseudo = "pseudo";
+    var keySonsSelec = "sonsSelec";
+    var keyRangSons = "rangSons";
+
     var keyPremierLancement = "premierLancement";
 
     var optionsGet = function(key) {
@@ -69,6 +72,20 @@
 
     var optionsSetPseudo = function(pseudo) {
         optionsSet(keyPseudo, pseudo);
+    }
+
+    //Sons
+    var optionsGetSonsSelec = function() {
+        return optionsGet(keySonsSelec);
+    }
+    var optionsGetRangSons = function() {
+        return optionsGet(keyRangSons);
+    }
+    var optionsSetSonsSelec = function(sons) {
+        optionsSet(keySonsSelec, sons);
+    }
+    var optionsSetRangSons = function(rang) {
+        optionsSet(keyRangSons, rang);
     }
 
     //Premier lancement
