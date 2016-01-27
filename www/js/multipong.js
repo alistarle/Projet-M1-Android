@@ -100,6 +100,14 @@ MultiPong.prototype.collideCheck = function(){
 
 }
 
+MultiPong.prototype.ballHitsBet = function(_ball, _bet){
+	this.super.update.call(this);
+	_ball.tint=_bet.tint;
+	for(var i = 0 ; i < this.balls.length ; i++){
+		this.colorMultiEmitter(this.balls[i].tint,this.tabEmitters[i]);
+	}
+}
+
 
 
 
@@ -139,7 +147,7 @@ MultiPong.prototype.addBall = function(){
 	newBall.body.collideWorldBounds = true;
 	newBall.body.bounce.setTo(1, 1);
 	this.balls.push(newBall);
-	this.createEmitter();
+	this.createEmitter(newBall);
 }
 
 MultiPong.prototype.reinitGame = function(){
@@ -171,10 +179,10 @@ MultiPong.prototype.multiTrail = function(_emitter,_ball) {
 	_emitter.maxParticleSpeed.set(px, py);
 }
 
-MultiPong.prototype.createEmitter = function(){
+MultiPong.prototype.createEmitter = function(newBall){
 	var emitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
 	emitter.makeParticles('ball');
-	this.colorMultiEmitter(this.ball.tint,emitter);
+	this.colorMultiEmitter(newBall.tint,emitter);
 	emitter.gravity = 200;
 	emitter.setAlpha(1, 0, 20);
 	emitter.setScale(1, 0, 1, 0, 400);

@@ -25,7 +25,7 @@ function Pong(mode, nbPoints) {
     this.game;
 
     //couleurs
-    this.BallColor = optionsGetCouleurBalle();
+    this.BallColor = 0xff0000;
     this.BetPlayer1Color = optionsGetCouleurBarre();
     this.BetPlayer2Color = 0xff0000;
     this.backgroundColor = 0xffffff;
@@ -146,15 +146,13 @@ Pong.prototype.preload = function() {
     this.game.load.bitmapFont('flappyfont', 'assets/flappyfont.png', 'assets/flappyfont.fnt');
     //this.game.load.image('skinPlayer1', this.skinPlayer1Path);
     //this.game.load.image('skinPlayer2', this.skinPlayer2Path);
-
-
 }
 
 
 Pong.prototype.create = function() {
 
     //create !
-    this.game.add.tileSprite(0, 0, 1080, 1920, 'background');
+    //this.game.add.tileSprite(0, 0, 1080, 1920, 'background');
     this.game.time.advancedTiming = true;
     this.scorePlayer = 0;
     this.scoreComputer = 0;
