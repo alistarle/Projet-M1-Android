@@ -30,7 +30,6 @@ MultiPong.prototype.create = function() {
 MultiPong.prototype.doMultiPongUpdate = function(){
 	if(this.ballReleased){
 		this.accumulateTimeMultiPong += this.game._deltaTime;
-		console.log("Le accum est ", this.accumulateTimeMultiPong);
 		if(this.accumulateTimeMultiPong > this.timePopBall){
 			if(this.balls.length < this.MAX_BALLS){
 				this.addBall();

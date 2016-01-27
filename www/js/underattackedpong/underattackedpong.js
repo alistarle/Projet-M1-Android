@@ -7,6 +7,11 @@ function UnderAttackedPong(mode,nbPoints){
 	this.cannonBalls = [];
 	this.explosions = [];
 
+	this.pointWin = 200;
+	this.point1 = 0;
+	this.point2 = 0;
+	this.scoreText2 = undefined;
+
 	this.explosionRadius = 350;
 }
 
@@ -79,8 +84,25 @@ UnderAttackedPong.prototype.createBetBot = function() {
     bet.addChild(skin);
     return bet;
 }
+
+
+UnderAttackedPong.prototype.updateScore2 = function(){
+	//this.scoreText2.setText(this.point1.toString()+' / '+this.pointWin.toString()+'	'+this.point2.toString()+' / '+this.pointWin.toString());
+	var string = this.point1.toString() + " " + this.pointWin.toString() +" : " +this.point2.toString()+ " "+ this.pointWin.toString();
+	
+	this.scoreText2.setText(string);
+
+}
+
+
+
 UnderAttackedPong.prototype.create = function(){
 	this.super.create.call(this);
+	//this.scoreText2 = this.game.add.bitmapText(this.scoreText.x,this.scoreText.y, 'flappyfont', 'aazze', 50);
+	this.scoreText2 = this.game.add.bitmapText(this.game.width / 2 - 230, this.scoreText.y+70, 'flappyfont', "ar", 50);
+
+	//this.updateScore2();
+
 	this.playground = new UnderAttackedPlayground(this);
 	this.timers.push(new TimerFire(this,1500));
 
@@ -111,11 +133,22 @@ UnderAttackedPong.prototype.update = function(){
 		e.update();
 
 	},this);
+	this.checkWin();
+	this.updateScore2();
 }
 
 
 
-
+UnderAttackedPong.prototype.checkWin = function(){
+	if(this.point1 > this.pointWin){
+	    this.scorePlayer++;
+		this.reinitGame();
+	}
+	else if(this.point2 > this.pointWin){
+		this.scoreComputer++;
+		this.reinitGame();
+	}
+}
 
 
 
@@ -170,6 +203,9 @@ UnderAttackedPong.prototype.reinitGame = function() {
 	this.timers.forEach(function(e,i,a){
 		e.reset();
 	});
+	this.point1 = 0;
+	this.point2 = 0;
+	this.updateScore2();
 }
 
 
