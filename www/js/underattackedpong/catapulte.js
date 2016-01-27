@@ -10,15 +10,16 @@ function Catapulte(pong,direction,playground){
         'lookbot':this.animations.add('lookbot',[4],false),
         'firetop':this.animations.add('firetop',[10,15],false),
         'firebot':this.animations.add('firebot',[14,19],false),
-        'firetopreverse':this.animations.add('firetopreverse',[15,10],false),
-        'firebotreverse':this.animations.add('firebotreverse',[19,14],false),
+        'firetopreverse':this.animations.add('firetopreverse',[15],false),
+        'firebotreverse':this.animations.add('firebotreverse',[19],false),
 
     };
 
     this.accum = 0;
-    this.fireRate = 2000;
-    this.shootAnimationDuration = 4000;
+    this.fireRate = 1000;
+    this.shootAnimationDuration = 5000;
     this.shot = false;
+    this.finished = false;
 }
 Catapulte.prototype = Object.create(Runner.prototype);
 Catapulte.prototype.constructor = Catapulte;
@@ -26,7 +27,7 @@ Catapulte.prototype.constructor = Catapulte;
 
 Catapulte.prototype.getPattern = function(){
 	if(this.direction == 'left'){
-		return ['goLeft','goLeft','goLeft','goLeft','goLeft','shoot'];
+		return ['goLeft','goLeft','shoot'];
 	}
 	else{
 		return ['goRight','goRight','shoot'];
@@ -51,7 +52,7 @@ Catapulte.prototype.shoot = function(){
 	if(this.accum > this.fireRate && !this.shot){
 		this.fire();
 	}
-	if(this.accum > this.shootAnimationDuration){
+	if(this.accum > this.shootAnimationDuration && this.finished){
 		this.shot = false;
 		this.accum = 0;
 		return true;
@@ -59,18 +60,22 @@ Catapulte.prototype.shoot = function(){
 	return false;
 }
 Catapulte.prototype.fire = function(){
-	console.log("fire catapulte ! ");
-	this.playFire();
-	this.animations.currentAnim.onComplete.add(function (sprite,anim) {
-		console.log('animation fire complete');
+	if(! this.shot){
+		this.playFire();
+		this.shot = true;
 		var target = this.getTarget();
 		this.shootTarget(target);
 		this.playReverseFire();
+		this.finished = true;
 		this.animations.currentAnim.onComplete.add(function (sprite,anim) {
-			console.log('animation reversefire complete');
-			this.playLookTarget();
+			console.log('animation fire complete');
+			
+			this.animations.currentAnim.onComplete.add(function (sprite,anim) {
+				console.log('animation reversefire complete');
+				this.playLookTarget();
+			}, this);
 		}, this);
-	}, this);
+	}
 }
 
 
@@ -95,34 +100,37 @@ Catapulte.prototype.getTarget = function(){
 }
 
 Catapulte.prototype.shootTarget = function(target){
-	var proj = this.getProjectile();
-	proj.x = this.x;
-	proj.y = this.y;
+	console.log("Shoot target");
+	var proj = this.getProjectile(this.x,this.y);
+
 	
 }
 
-Catapulte.prototype.getProjectile = function(){
-	var proj = this.game.add.sprite(0, 0, 'ball');
+Catapulte.prototype.getProjectile = function(x,y){
+	var proj = this.game.add.sprite(x, y, 'ball');
 	proj.anchor.setTo(0.5, 0.5);
+	proj.width = this.width /4;
+	proj.height = this.height/4;
 	this.game.physics.arcade.enable(proj);
+
 	return proj;
 }
 
 
 Catapulte.prototype.playFire = function(){
 	if(this.direction == "left"){
-		this.play('firebot');
+		this.play('firebot',3);
 	}
 	else{
-		this.play('firetop');
+		this.play('firetop',3);
 	}
 }
 Catapulte.prototype.playReverseFire = function(){
 	if(this.direction == "left"){
-		this.play('firebotreverse');
+		this.play('firebotreverse',3);
 	}
 	else{
-		this.play('firetopreverse');
+		this.play('firetopreverse',3);
 	}
 }
 
