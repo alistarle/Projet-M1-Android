@@ -499,14 +499,14 @@ angular.module('starter', ['ionic'])
 .controller('fin', function($scope, $stateParams, $ionicHistory) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicHistory.clearHistory();
+        $scope.gagnant = $stateParams.gagnant;
+
         $ionicHistory.nextViewOptions({
             disableAnimate: false,
             disableBack: true
         });
     });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        $scope.gagnant = $stateParams.gagnant;
-    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {});
     $scope.$parent.$parent.$on("$ionicView.leave", function() {});
 })
 
