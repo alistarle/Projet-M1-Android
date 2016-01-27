@@ -3,9 +3,12 @@
  */
 var socketIO, listPlayers = [];
 
-var maxPlayer = 4;
+var maxPlayer = 2;
 var minPlayer = 2;
 var idHost;
+
+var width = 1080;
+var height = 1920;
 
 var status = "PENDING";
 
@@ -24,6 +27,9 @@ function onClientConnected(client){
   client.on('CLIENT_NOTIFY_PLAYER_MOVEMENT', onNotifyPlayerMovement);
   client.on('CLIENT_REQUEST_PLAYER_LIST', onRequestPlayerList);
   client.on('CLIENT_NOTIFY_LAUNCH', onNotifyLaunch);
+  client.on('CLIENT_NOTIFY_GOAL', onNotifyGoal);
+  client.on('CLIENT_NOTIFY_BALL_MOVED', onNotifyBallMoved);
+  client.on('CLIENT_NOTIFY_RELEASE_BALL', onNotifyReleaseBall);
 
   client.on('disconnect', onDisconnected);
 
@@ -51,7 +57,24 @@ function onClientConnected(client){
     client.broadcast.emit('SERVER_PLAYER_CONNECTED', playerInfo);
   }
 
+  function onNotifyBallMoved(movementInfo) {
+    movementInfo.x = width - movementInfo.x;
+    movementInfo.y = height - movementInfo.y;
+    movementInfo.speedX = -movementInfo.speedX;
+    movementInfo.speedY = -movementInfo.speedY;
+    client.broadcast.emit('SERVER_BALL_MOVED', movementInfo);
+  }
+
+  function onNotifyReleaseBall() {
+    client.broadcast.emit('SERVER_BALL_RELEASE');
+  }
+
+  function onNotifyGoal() {
+    client.broadcast.emit('SERVER_GOAL');
+  }
+
   function onNotifyPlayerMovement(movementInfo){
+    movementInfo.x = width - movementInfo.x;
     client.broadcast.emit('SERVER_OTHER_PLAYER_MOVED', movementInfo);
     // update state on server
     var concernedPlayer = getPlayerById(movementInfo.uid);
@@ -63,9 +86,9 @@ function onClientConnected(client){
   function onNotifyLaunch() {
     status = "PLAYING";
     if(client.id == idHost) {
-      //client.emit('SERVER_LAUNCH');
-      client.broadcast.emit('SERVER_LAUNCH');
-      client.broadcast.to(idHost).emit("SERVER_LAUNCH")
+      socketIO.emit('SERVER_LAUNCH'); //Broadcast to all include sender
+      //client.broadcast.emit('SERVER_LAUNCH');
+      //client.broadcast.to(idHost).emit("SERVER_LAUNCH")
     }
   }
 

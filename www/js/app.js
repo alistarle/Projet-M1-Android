@@ -127,52 +127,23 @@ angular.module('starter', ['ionic'])
 })
 
 .controller('serveur-controller', function($scope) {
-    pong = new Pong();
+    pong = new Pong(4,5);
     $scope.$on("$ionicView.beforeEnter", function() {
         initJXCore(pong);
         $("#launchGame").click(function() {
-            NetworkManager.notifyLaunch();
+          NetworkManager.notifyLaunch();
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        if (pong.multiplayer) NetworkManager.requestPlayerList();
-        pong.launch = function() {
-          alert("test");
-        }
+        NetworkManager.requestPlayerList();
+
     });
 })
 
-  .controller('serveur-controller', function($scope) {
-    pong = new Pong();
-    $scope.$on("$ionicView.beforeEnter", function() {
-      initJXCore(pong);
-      $("#launchGame").click(function() {
-        function create() {
-          pong.create();
-        }
-
-        function preload() {
-          pong.preload();
-        }
-
-        function update() {
-          pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-        NetworkManager.notifyLaunch();
-      });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-      if (pong.multiplayer) NetworkManager.requestPlayerList();
-    });
-  })
-
 .controller('client-controller', function($scope) {
-    pong = new Pong();
+    pong = new Pong(4,5);
     $scope.$on("$ionicView.beforeEnter", function() {
         $("#connectToServeur").click(function() {
             var ip = $("#serveurIp").val();
-            pong.connectToServer(ip);
+            pong.connectToServer(ip,false);
         });
     });
     $scope.$on("$ionicView.enter", function() {

@@ -1,20 +1,20 @@
 function MultiPong(mode,nbPoints){
 
 	  Pong.apply(this,arguments);
-	  this.accumulateTimeMultiPong = 0; 
+	  this.accumulateTimeMultiPong = 0;
 	  this.timePopBall = 600;
 	  this.MAX_BALLS = 3;
 	  this.balls = [];
 	  this.tabEmitters=[];
 }
-MultiPong.prototype = $.extend(true, {}, Pong.prototype);  
-MultiPong.prototype.super = Pong.prototype;     
+MultiPong.prototype = $.extend(true, {}, Pong.prototype);
+MultiPong.prototype.super = Pong.prototype;
 
 
 
 
 MultiPong.prototype.update = function(){
-	
+
 	 this.super.update.call(this);
 	 this.doMultiPongUpdate();
 
@@ -34,6 +34,7 @@ MultiPong.prototype.doMultiPongUpdate = function(){
 		if(this.accumulateTimeMultiPong > this.timePopBall){
 			if(this.balls.length < this.MAX_BALLS){
 				this.addBall();
+        //SEND EVENT ADDBALL WHO TRIGGER ADDBALL()
 			}
 			this.accumulateTimeMultiPong -= this.timePopBall;
 		}
@@ -46,7 +47,7 @@ MultiPong.prototype.doMultiPongUpdate = function(){
 	}
 
 
-	
+
 
 }
 
@@ -112,14 +113,14 @@ MultiPong.prototype.reinitGame = function(){
 	}
 	this.balls = [this.ball];
 	this.tabEmitters = [this.emitter];
-	
+
 }
 
 
 
 
 
-MultiPong.prototype.multiTrail = function(_emitter,_ball) {	
+MultiPong.prototype.multiTrail = function(_emitter,_ball) {
     var px = _ball.body.velocity.x;
     var py = _ball.body.velocity.y;
 

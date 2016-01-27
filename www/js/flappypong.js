@@ -13,8 +13,8 @@ function FlappyPong(mode, nbPoints){
 	  this.capAnimation1 = 500;//separateur d'anim
 	  this.capAnimation2 = 600;
 }
-FlappyPong.prototype = $.extend(true, {}, Pong.prototype);  
-FlappyPong.prototype.super = Pong.prototype;     
+FlappyPong.prototype = $.extend(true, {}, Pong.prototype);
+FlappyPong.prototype.super = Pong.prototype;
 
 
 FlappyPong.prototype.create = function(){
@@ -25,11 +25,16 @@ FlappyPong.prototype.create = function(){
 	this.flappy.anchor.setTo(0.5,0.5);
 	this.flappy.body.moves = false;
 
-	
+
 
 	//this.flappy.body.setSize()
 	//this.ball.addChild(this.flappy);
 
+
+}
+
+FlappyPong.prototype.connectToServer = function(ip) {
+  this.super.connectToServer.call(this);
 
 }
 
@@ -138,7 +143,7 @@ FlappyPong.prototype.stopFlappy = function(){
 }
 //animation en cours
 FlappyPong.prototype.animateFlappy = function(){
-	this.accumulateTimeAnimationFlappy += this.game._deltaTime; 
+	this.accumulateTimeAnimationFlappy += this.game._deltaTime;
 	if(this.accumulateTimeAnimationFlappy > this.capTimeFlappyAnimation){
 		this.stopFlappy();
 	}
@@ -151,6 +156,7 @@ FlappyPong.prototype.animateFlappy = function(){
 
 FlappyPong.prototype.animatePart1 = function(){
 	this.flappy.angle += this.game.rnd.realInRange(18, 22);
+  //SEND PACKET ANGLE
 	this.recenterFlappy();
 }
 FlappyPong.prototype.animatePart2 = function(){

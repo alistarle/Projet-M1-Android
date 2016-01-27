@@ -22,7 +22,7 @@ function syncPlayer(listPlayers) {
 
 function ready() {
   console.log("JXCORE : connecting to "+currentIp);
-  pong.connectToServer(currentIp);
+  pong.connectToServer(currentIp,true);
 }
 
 function initJXCore(pongInstance) {
@@ -39,7 +39,7 @@ function initJXCore(pongInstance) {
 
     var addIp = function(addr) {
       currentIp = addr;
-      document.getElementById('ipaddrs').innerHTML += "<a class='item' href='#''>"+addr+"</a>";
+      document.getElementById('ipaddrs').innerHTML += "<a class='item' href='#' id='serverAddress'>"+addr+"</a>";
     }
 
     jxcore.isReady(function() {
