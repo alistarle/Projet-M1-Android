@@ -38,7 +38,7 @@ Catapulte.prototype.getHealth = function(){
 }
 
 Catapulte.prototype.getSpeed = function(){
-	return 50;
+	return 150;
 }
 Catapulte.prototype.getDamage = function(){
 	return 10;
@@ -71,11 +71,8 @@ Catapulte.prototype.fire = function(){
 		this.shootTarget();
 		this.playReverseFire();
 		this.finished = true;
-		this.animations.currentAnim.onComplete.add(function (sprite,anim) {
-			console.log('animation fire complete');
-			
+		this.animations.currentAnim.onComplete.add(function (sprite,anim) {			
 			this.animations.currentAnim.onComplete.add(function (sprite,anim) {
-				console.log('animation reversefire complete');
 				this.playLookTarget();
 			}, this);
 		}, this);
