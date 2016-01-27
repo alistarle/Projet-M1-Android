@@ -12,13 +12,20 @@ var onServerRoomFullCallback;
 var onServerLaunchCallback;
 var onServerCanLaunchCallback;
 var onServerCannotLaunchCallback;
+var onBallReleaseCallback;
+var onBallMoveCallback;
+var onGoalCallback;
 
 var PORT = 3000;
 
 var mainPlayer = { name: "", uid: "", x: "", color: ""};
 
+var MAX_TICK_BEFORE_SEND = 5;
+var tick = 0;
+
 var NetworkManager = {
   connected: false,
+  fps: 60,
   connect: function (ip, player, color) {
     mainPlayer.name = player;
     mainPlayer.color = color;
@@ -38,6 +45,9 @@ var NetworkManager = {
     serverSocket.on('SERVER_PLAYER_CONNECTED', onPlayerConnected);
     serverSocket.on('SERVER_PLAYER_LIST', onReceivePlayerList);
     serverSocket.on('SERVER_OTHER_PLAYER_MOVED', onOtherPlayerMoved);
+    serverSocket.on('SERVER_GOAL', onGoal);
+    serverSocket.on('SERVER_BALL_MOVED', onBallMove);
+    serverSocket.on('SERVER_BALL_RELEASE', onBallRelease);
   },
   onServerRoomClosed: function (callback) {
     onServerRoomClosedCallback = callback;
@@ -60,18 +70,48 @@ var NetworkManager = {
   onOtherPlayerMove: function(callback){
     onOtherPlayerMove = callback;
   },
-  requestPlayerList:function() {
+  requestPlayerList: function() {
     serverSocket.emit('CLIENT_REQUEST_PLAYER_LIST');
   },
   notifyMovement: function(movementInfo){
     mainPlayer.x = movementInfo.x;
-    serverSocket.emit('CLIENT_NOTIFY_PLAYER_MOVEMENT', {x: movementInfo.x, uid: mainPlayer.uid});
+    tick++;
+    if(tick == MAX_TICK_BEFORE_SEND) {
+      serverSocket.emit('CLIENT_NOTIFY_PLAYER_MOVEMENT', {x: movementInfo.x, uid: mainPlayer.uid});
+      tick = 0;
+    }
   },
   notifyLaunch: function() {
     serverSocket.emit('CLIENT_NOTIFY_LAUNCH');
   },
+  notifyGoal: function() {
+    serverSocket.emit('CLIENT_NOTIFY_GOAL');
+  },
+  notifyReleaseBall: function() {
+    serverSocket.emit('CLIENT_NOTIFY_RELEASE_BALL');
+  },
+  notifyBallMoved: function(movementInfo) {
+    serverSocket.emit('CLIENT_NOTIFY_BALL_MOVED', movementInfo);
+  },
   onUpdatePlayerList: function(callback){
     onUpdatePlayerListCallback = callback;
+  },
+  onBallRelease: function(callback) {
+    onBallReleaseCallback = callback;
+  },
+  onGoal: function(callback) {
+    onGoalCallback = callback;
+  },
+  onBallMove: function(callback) {
+    onBallMoveCallback = callback;
+  },
+  sendPacket: function(type,data) {
+    MAX_TICK_BEFORE_SEND = this.fps/20;
+    tick++;
+    if(tick >= MAX_TICK_BEFORE_SEND) {
+      serverSocket.emit(type,data);
+      tick = 0;
+    }
   }
 
 };
@@ -116,4 +156,16 @@ function onCanLaunch() {
 
 function onCannotLaunch() {
   onServerCannotLaunchCallback();
+}
+
+function onGoal() {
+  onGoalCallback();
+}
+
+function onBallMove(movementInfo) {
+  onBallMoveCallback(movementInfo);
+}
+
+function onBallRelease() {
+  onBallReleaseCallback();
 }
