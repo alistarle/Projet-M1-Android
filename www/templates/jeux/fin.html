@@ -1,0 +1,11 @@
+<ion-view view-title="Fin de la partie" hide-back-button="true">
+    <ion-content>
+        <div class="padding" ng-controller="fin">
+            <div ng-if="gagnant == 1">Loose</div>
+            <div ng-if="gagnant == 0">Gagnant</div>
+            <button class="button button-block button-positive" ui-sref="home">
+                Recommencer
+            </button>
+        </div>
+    </ion-content>
+</ion-view>
