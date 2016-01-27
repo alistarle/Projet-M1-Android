@@ -609,7 +609,40 @@ angular.module('starter', ['ionic'])
         pong.game.destroy();
     });
 })
+.controller('underattackedpong-multilocal', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var nbPoints = $stateParams.nbPoints;
+        pong = new UnderAttackedPong(3, nbPoints);
 
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+
+        function render() {
+            pong.render();
+        }
+        pong.init(create, preload, update, 'gameArea', render);
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
 .controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
