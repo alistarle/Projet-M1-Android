@@ -89,7 +89,9 @@ Runner.prototype.updateLifeBar = function(){
 
 	this.healthBar.dirty = true;
 	this.healthBar.fresh =true;
-
+	if(this.direction=="left"){
+		this.healthBar.scale.x = -1;
+	}
 }
 
 Runner.prototype.update = function(){
