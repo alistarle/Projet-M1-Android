@@ -218,22 +218,22 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
 })
 
 .controller('serveur-controller', function($scope) {
-    pong = new Pong(4,5);
+    pong = new Pong(4, 5);
     $scope.$on("$ionicView.beforeEnter", function() {
         initJXCore(pong);
         $("#launchGame").click(function() {
-          NetworkManager.notifyLaunch();
+            NetworkManager.notifyLaunch();
         });
         NetworkManager.requestPlayerList();
     });
 })
 
 .controller('client-controller', function($scope) {
-    pong = new Pong(4,5);
+    pong = new Pong(4, 5);
     $scope.$on("$ionicView.beforeEnter", function() {
         $("#connectToServeur").click(function() {
             var ip = $("#serveurIp").val();
-            pong.connectToServer(ip,false);
+            pong.connectToServer(ip, false);
         });
     });
     $scope.$on("$ionicView.enter", function() {
@@ -571,99 +571,99 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
 })
 
 .controller('fakeballs-multilocal', function($scope, $ionicLoading, $stateParams) {
-    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
-        $ionicLoading.show({
-            template: 'Chargement...'
+        $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+            $ionicLoading.show({
+                template: 'Chargement...'
+            });
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var nbPoints = $stateParams.nbPoints;
-        pong = new FakeBallsPong(3, nbPoints);
+        $scope.$parent.$parent.$on("$ionicView.enter", function() {
+            var nbPoints = $stateParams.nbPoints;
+            pong = new FakeBallsPong(3, nbPoints);
 
-        function create() {
-            pong.create();
-        }
+            function create() {
+                pong.create();
+            }
 
-        function preload() {
-            pong.preload();
-        }
+            function preload() {
+                pong.preload();
+            }
 
-        function update() {
-            pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-    });
-    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.hide();
-    });
-    $scope.$parent.$parent.$on("$ionicView.leave", function() {
-        pong.game.destroy();
-    });
-})
-.controller('underattackedpong-multilocal', function($scope, $ionicLoading, $stateParams) {
-    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
-        $ionicLoading.show({
-            template: 'Chargement...'
+            function update() {
+                pong.update();
+            }
+            pong.init(create, preload, update, 'gameArea');
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var nbPoints = $stateParams.nbPoints;
-        pong = new UnderAttackedPong(3, nbPoints);
-
-        function create() {
-            pong.create();
-        }
-
-        function preload() {
-            pong.preload();
-        }
-
-        function update() {
-            pong.update();
-        }
-
-        function render() {
-            pong.render();
-        }
-        pong.init(create, preload, update, 'gameArea', render);
-    });
-    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.hide();
-    });
-    $scope.$parent.$parent.$on("$ionicView.leave", function() {
-        pong.game.destroy();
-    });
-})
-.controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
-    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
-        $ionicLoading.show({
-            template: 'Chargement...'
+        $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.hide();
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var nbPoints = $stateParams.nbPoints;
-        pong = new MultiPong(3, nbPoints);
+        $scope.$parent.$parent.$on("$ionicView.leave", function() {
+            pong.game.destroy();
+        });
+    })
+    .controller('underattackedpong-multilocal', function($scope, $ionicLoading, $stateParams) {
+        $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+            $ionicLoading.show({
+                template: 'Chargement...'
+            });
+        });
+        $scope.$parent.$parent.$on("$ionicView.enter", function() {
+            var nbPoints = $stateParams.nbPoints;
+            pong = new UnderAttackedPong(3, nbPoints);
 
-        function create() {
-            pong.create();
-        }
+            function create() {
+                pong.create();
+            }
 
-        function preload() {
-            pong.preload();
-        }
+            function preload() {
+                pong.preload();
+            }
 
-        function update() {
-            pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-    });
-    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.hide();
-    });
-    $scope.$parent.$parent.$on("$ionicView.leave", function() {
-        pong.game.destroy();
-    });
-})
+            function update() {
+                pong.update();
+            }
+
+            function render() {
+                pong.render();
+            }
+            pong.init(create, preload, update, 'gameArea', render);
+        });
+        $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.hide();
+        });
+        $scope.$parent.$parent.$on("$ionicView.leave", function() {
+            pong.game.destroy();
+        });
+    })
+    .controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
+        $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+            $ionicLoading.show({
+                template: 'Chargement...'
+            });
+        });
+        $scope.$parent.$parent.$on("$ionicView.enter", function() {
+            var nbPoints = $stateParams.nbPoints;
+            pong = new MultiPong(3, nbPoints);
+
+            function create() {
+                pong.create();
+            }
+
+            function preload() {
+                pong.preload();
+            }
+
+            function update() {
+                pong.update();
+            }
+            pong.init(create, preload, update, 'gameArea');
+        });
+        $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.hide();
+        });
+        $scope.$parent.$parent.$on("$ionicView.leave", function() {
+            pong.game.destroy();
+        });
+    })
 
 .controller('jeux-config', function($scope) {
     $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong", "UnderAttackedPong"];
@@ -767,8 +767,8 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicNativeTransitionsProvider) {
     $ionicNativeTransitionsProvider.setDefaultTransition({
-        type: 'fade',
-        direction: 'right'
+        type: 'slide',
+        direction: 'left'
     });
     $stateProvider.state('home', {
         url: '/home',
@@ -776,6 +776,9 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     })
     $stateProvider.state('jeux', {
         url: '/jeux',
+        nativeTransitions: {
+            "type": "fade"
+        },
         templateUrl: 'templates/jeux.html'
     })
     $stateProvider.state('options', {
