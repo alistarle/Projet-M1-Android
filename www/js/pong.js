@@ -319,7 +319,7 @@ Pong.prototype.checkIfGoal = function(){
 
 Pong.prototype.reinitGame = function() {
     this.updateScore();
-
+    this.setBall();
 }
 Pong.prototype.goalTop = function() {
     this.setBall();
