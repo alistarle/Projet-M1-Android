@@ -5,20 +5,21 @@
 // the 2nd parameter is an array of 'requires'
 var pong;
 
-angular.module('starter', ['ionic'])
-    .run(function($ionicPlatform) {
-        $ionicPlatform.ready(function() {
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
-            if (window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            }
-            if (window.StatusBar) {
-                StatusBar.styleDefault();
-            }
-        });
-        ionic.Platform.fullScreen(true, false);
-    })
+angular.module('starter', ['ionic', 'ionic-native-transitions'])
+
+.run(function($ionicPlatform) {
+    $ionicPlatform.ready(function() {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
+    ionic.Platform.fullScreen(true, false);
+})
 
 .controller('MainCtrl', function($scope, $ionicHistory, $timeout) {
     $scope.modesControle = [{
@@ -85,6 +86,27 @@ angular.module('starter', ['ionic'])
         fichier: "assets/sound/chat.wav"
     }];
 
+    $scope.helps = [{
+        titre: "Normal",
+        description: "Jeux de pong basique."
+    }, {
+        titre: "FlappyPong",
+        description: "Pong basique et la balle devient un FlappyBird."
+    }, {
+        titre: "MultiPong",
+        description: "Pong basique mais il y a plusieurs balles."
+    }, {
+        titre: "LarryPong",
+        description: "Pong basique mais il y a un obstacle, un serpent voulant grandir et qui peut se diviser."
+    }, {
+        titre: "FakeBallsPong",
+        description: "Une seule balle est vraie arriverais vous à la suivre."
+    }, {
+        titre: "UnderAttackedPong",
+        description: "Le but est de tirer sur les monstres et d'esquiver les tirs ennemies."
+    }]
+
+    $scope.helpSelec = 0;
 
     $scope.getSons = function(type) {
         var listeSons = [];
@@ -117,7 +139,6 @@ angular.module('starter', ['ionic'])
         setTimeout(function() {
             $scope.playSons();
         }, 100);
-
     }
 
     $scope.playSons = function() {
@@ -649,7 +670,7 @@ angular.module('starter', ['ionic'])
     $scope.joueurBas = 0;
     $scope.nbPoints = 5;
     $scope.mode = 0;
-
+    var scoreMax = 20;
     $scope.url;
 
     var urlBase = "#/jeux/";
@@ -682,10 +703,12 @@ angular.module('starter', ['ionic'])
                 $scope.joueurHaut = $scope.joueurs.length - 1;
             }
         } else if (pos == 1) {
+            /* 
             $scope.joueurBas -= 1;
             if ($scope.joueurBas < 0) {
                 $scope.joueurBas = $scope.joueurs.length - 1;
             }
+            */
         }
         constructionUrl();
     }
@@ -696,10 +719,12 @@ angular.module('starter', ['ionic'])
                 $scope.joueurHaut = 0;
             }
         } else if (pos == 1) {
+            /*
             $scope.joueurBas += 1;
             if ($scope.joueurBas >= $scope.joueurs.length) {
                 $scope.joueurBas = 0;
             }
+            */
         }
         constructionUrl();
     }
@@ -712,7 +737,11 @@ angular.module('starter', ['ionic'])
     }
 
     $scope.clicPointsPlus = function() {
-        $scope.nbPoints += 1;
+        if ($scope.nbPoints + 1 > scoreMax) {
+            $scope.nbPoints = 1;
+        } else {
+            $scope.nbPoints += 1;
+        }
         constructionUrl();
     }
 
@@ -733,7 +762,11 @@ angular.module('starter', ['ionic'])
     }
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicNativeTransitionsProvider) {
+    $ionicNativeTransitionsProvider.setDefaultTransition({
+        type: 'fade',
+        direction: 'right'
+    });
     $stateProvider.state('home', {
         url: '/home',
         templateUrl: 'templates/home.html'
@@ -749,6 +782,11 @@ angular.module('starter', ['ionic'])
     $stateProvider.state('about', {
         url: '/about',
         templateUrl: 'templates/about.html'
+    })
+
+    $stateProvider.state('help', {
+        url: '/help',
+        templateUrl: 'templates/help.html'
     })
 
     //Jeux
@@ -845,7 +883,6 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/options/sons.html'
     })
 
-
     $stateProvider.state('jeux-heberger', {
         url: '/jeux/heberger',
         templateUrl: 'templates/jeux/multi/heberger.html'
@@ -857,7 +894,7 @@ angular.module('starter', ['ionic'])
         //config partie
     $stateProvider.state('solo-config', {
         url: '/jeux/solo/config',
-        templateUrl: 'templates/jeux/solo/config.html'
+        templateUrl: 'templates/jeux/config.html'
     })
 
 
