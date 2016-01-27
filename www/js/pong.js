@@ -319,10 +319,10 @@ Pong.prototype.checkIfGoal = function(){
 }
 
 Pong.prototype.checkWin = function(){
-    if(this.scorePlayer>=nbPoints){
+    if(this.scorePlayer>=this.nbPoints){
         console.log("you win");
     }else{
-        if(this.scoreComputer>=nbPoints){
+        if(this.scoreComputer>=this.nbPoints){
         console.log("you loose");
         }
     }
