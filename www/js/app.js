@@ -496,6 +496,27 @@ angular.module('starter', ['ionic'])
     });
 })
 
+.controller('fin', function($scope, $stateParams, $ionicHistory) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicHistory.clearHistory();
+        $scope.gagnant = $stateParams.gagnant;
+
+        $ionicHistory.nextViewOptions({
+            disableAnimate: false,
+            disableBack: true
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {});
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {});
+})
+
+.controller('homeCtrl', function($scope, $ionicHistory, $rootScope) {
+    $scope.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicHistory.clearHistory();
+    });
+})
+
+
 .controller('flappypong-multilocal', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
@@ -743,6 +764,11 @@ angular.module('starter', ['ionic'])
         url: '/jeux/multilocal',
         templateUrl: 'templates/jeux/multilocal.html'
     })
+    $stateProvider.state('jeux-fin', {
+        url: '/jeux/fin?:gagnant',
+        templateUrl: 'templates/jeux/fin.html'
+    })
+
 
 
     //Solo
