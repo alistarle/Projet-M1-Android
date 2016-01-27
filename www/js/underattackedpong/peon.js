@@ -25,7 +25,6 @@ Peon.prototype.getPattern = function(){
 	}
 }
 Peon.prototype.patternBidon = function(){
-	console.log("mdr");
 }
 
 Peon.prototype.getHealth = function(){
@@ -34,4 +33,7 @@ Peon.prototype.getHealth = function(){
 
 Peon.prototype.getSpeed = function(){
 	return 250;
+}
+Peon.prototype.getScore = function(){
+	return 1;
 }

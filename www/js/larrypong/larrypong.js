@@ -48,7 +48,7 @@ LarryPong.prototype.placementPlayground = function(){
 }*/
 
 LarryPong.prototype.render = function(){
-	this.game.debug.body(this.potion.self);
+	/*this.game.debug.body(this.potion.self);
 	for(var i = 0 ; i < this.larrys.length ; i++){
 		this.game.debug.body(this.larrys[i].self);
 	}
@@ -62,7 +62,7 @@ LarryPong.prototype.render = function(){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
 			this.game.debug.body(this.playground.get(i,j));
 		}
-	}
+	}*/
 
 }
 
@@ -75,9 +75,19 @@ LarryPong.prototype.update = function(){
 	//this.game.physics.arcade.enable(this.larrys[0]);
 	//this.game.physics.arcade.enable(this.potion);
 	 this.super.update.call(this);
-	 this.playground.update();
-	 this.larrys.forEach(function(e,i,tab){e.update();});
-
+	 if(this.ballReleased){
+	 	this.playground.update();
+	 	this.larrys.forEach(function(e,i,tab){e.update();});
+	}
+	else{
+		this.ball.x=this.game.world.centerX;
+		this.ball.y=this.game.world.centerY;
+	}
+	
+    if(this.ball.body.velocity.y < 100 && this.ball.body.velocity.y >= 0 && this.ballReleased)
+        this.ball.body.velocity.y++;
+    if(this.ball.body.velocity.y > -100 && this.ball.body.velocity.y <= 0 && this.ballReleased)
+        this.ball.body.velocity.y--;
 }
 
 LarryPong.prototype.setBall = function(){

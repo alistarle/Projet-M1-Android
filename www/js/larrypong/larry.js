@@ -96,6 +96,7 @@ LarryHead.prototype.produceBody = function() {
 }
 
 LarryHead.prototype.update = function() {
+
 	this.self.bringToTop();
     if (this.tileObjective != undefined) {
         if (this.objectiveReached()) {
@@ -117,7 +118,6 @@ LarryHead.prototype.update = function() {
             this.game.physics.arcade.collide(
                 this.self, this.playground.get(i, j),
                 function() {
-                    console.log("collide test");
                 },
                 function(larry, tile) {
                     larry.self.setCurrentTile(tile);
@@ -129,7 +129,6 @@ LarryHead.prototype.update = function() {
 
     this.game.physics.arcade.collide(this.self, this.larrypong.potion.self,
         function() {
-            console.log("collide test 2");
         },
         function(larry, potion) {
             larry.self.produceBody();
@@ -138,7 +137,7 @@ LarryHead.prototype.update = function() {
         }, this);
 
     this.game.physics.arcade.collide(this.self, this.larrypong.ball, this.onHitBall, null, this);
-
+    
 }
 
 LarryHead.prototype.move = function() {
@@ -146,38 +145,20 @@ LarryHead.prototype.move = function() {
         return;
     }
 
-    //le larry attend son fils pour bouger
-    /*if (this.fils != undefined) {
-        this.colliding = false;
-        this.game.physics.arcade.collide(
-            this.self, this.fils.self,
-            function() {
-                console.log("collide test");
-            },
-            function(larryhead, fils) {
-                larryhead.self.colliding = true;
-                return false;
-            }, this);
-
-        if (!this.colliding) {
-        	this.self.body.velocity.x = 0;
-            this.self.body.velocity.y = 0;
-            console.log("LarryHead collide avec le fils");
-            return;
-        }
-    }*/
-
 
     if (this.tileCurrent.posX != this.tileObjective.posX) {;
         if (this.tileCurrent.posX > this.tileObjective.posX) {
             this.self.body.velocity.x = -this.speed;
             this.self.body.velocity.y = 0;
             this.self.animations.play('walkright', 3, true);
+            this.self.scale.setTo(-Math.abs(this.self.scale.x),this.self.scale.y);
 
         } else {
             this.self.body.velocity.x = this.speed;
             this.self.body.velocity.y = 0;
             this.self.animations.play('walkleft', 3, true);
+            this.self.scale.setTo(Math.abs(this.self.scale.x),this.self.scale.y);
+
         }
     } else if (this.tileCurrent.posY != this.tileObjective.posY) {;
         if (this.tileCurrent.posY < this.tileObjective.posY) {
@@ -226,7 +207,6 @@ LarryHead.prototype.findObjective = function() {
     else {
         this.tileObjective = this.larrypong.playground.get(this.tileCurrent.posX, this.tileCurrent.posY - yToGo);
     }
-    //console.log(this.tileObjective);
 
     return false;
 }
@@ -321,7 +301,6 @@ LarryBody.prototype.update = function() {
     this.move();
     this.game.physics.arcade.collide(this.self, this.larrypong.ball,
         function() {
-            console.log("collide test 2");
         },
         function(larry, ball) {
             larry.self.remove();
@@ -333,7 +312,6 @@ LarryBody.prototype.update = function() {
             this.game.physics.arcade.collide(
                 this.self, this.playground.get(i, j),
                 function() {
-                    console.log("collide test");
                 },
                 function(larry, tile) {
                     larry.self.tileCurrent = tile;
@@ -364,44 +342,13 @@ LarryBody.prototype.move = function() {
         }
         this.collidingPere = false;
         this.collidingFils = true;
-
         this.collidingPere = this.self.getBounds().contains(this.pere.self.x,this.pere.self.y);
-        /*this.game.physics.arcade.collide(
-            this.self, this.pere.self,
-            function() {
-                console.log("collide test");
-            },
-            function(larrybody, pere) {
-                larrybody.self.collidingPere = true;
-                return false;
-            }, this);
-		*/
-
-
-        //le larry attend son fils pour bouger
-        if (this.fils != undefined) {
-            /*this.collidingFils = false;
-            /*this.game.physics.arcade.collide(
-                this.self, this.fils.self,
-                function() {
-                    console.log("collide test");
-                },
-                function(larrybody, fils) {
-                    larrybody.self.collidingFils = true;
-                    return false;
-                }, this);*/
-        }
         this.self.body.velocity.x = 0;
         this.self.body.velocity.y = 0;
         if(!this.collidingPere){
         	if(this.collidingFils){
         		this.follow();
         	}
-        }
-        else {
-        	
-        	//console.log("Larrybody ne bouge pas:"+this.getNum()+" collide pere");
-            //this.tryRecenter();
         }
     }
     else{

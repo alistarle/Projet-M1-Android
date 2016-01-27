@@ -1,14 +1,13 @@
 function MultiPong(mode,nbPoints){
-
-	Pong.apply(this,arguments);
-	this.accumulateTimeMultiPong = 0; 
-	this.timePopBall = 600;
-	this.MAX_BALLS = 3;
-	this.balls = [];
-	this.tabEmitters=[];
+	  Pong.apply(this,arguments);
+	  this.accumulateTimeMultiPong = 0;
+	  this.timePopBall = 600;
+	  this.MAX_BALLS = 3;
+	  this.balls = [];
+	  this.tabEmitters=[];
 }
-MultiPong.prototype = $.extend(true, {}, Pong.prototype);  
-MultiPong.prototype.super = Pong.prototype;     
+MultiPong.prototype = $.extend(true, {}, Pong.prototype);
+MultiPong.prototype.super = Pong.prototype;
 
 
 
@@ -50,10 +49,12 @@ MultiPong.prototype.ia = function(){
 	}
 }
 
-	MultiPong.prototype.update = function(){
+
+MultiPong.prototype.update = function(){
 
 		this.super.update.call(this);
 		this.doMultiPongUpdate();
+		this.checkWin();
 
 	}
 
@@ -67,10 +68,10 @@ MultiPong.prototype.ia = function(){
 MultiPong.prototype.doMultiPongUpdate = function(){
 	if(this.ballReleased){
 		this.accumulateTimeMultiPong += this.game._deltaTime;
-		//console.log("Le accum est ", this.accumulateTimeMultiPong);
 		if(this.accumulateTimeMultiPong > this.timePopBall){
 			if(this.balls.length < this.MAX_BALLS){
 				this.addBall();
+        //SEND EVENT ADDBALL WHO TRIGGER ADDBALL()
 			}
 			this.accumulateTimeMultiPong -= this.timePopBall;
 		}
@@ -84,7 +85,7 @@ MultiPong.prototype.doMultiPongUpdate = function(){
 	}
 
 
-	
+
 
 }
 
@@ -137,7 +138,6 @@ MultiPong.prototype.resetMultiPong = function(){
 
 
 MultiPong.prototype.addBall = function(){
-	console.log("Add ball");
 	var newBall = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
 	newBall.tint = this.ball.tint;
 	newBall.anchor.setTo(0.5, 0.5);
@@ -158,14 +158,15 @@ MultiPong.prototype.reinitGame = function(){
 	}
 	this.balls = [this.ball];
 	this.tabEmitters = [this.emitter];
-	
+
 }
 
 
 
 
 
-MultiPong.prototype.multiTrail = function(_emitter,_ball) {	
+
+MultiPong.prototype.multiTrail = function(_emitter,_ball) {
 	var px = _ball.body.velocity.x;
 	var py = _ball.body.velocity.y;
 

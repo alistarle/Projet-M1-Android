@@ -31,6 +31,7 @@ function Runner(pong,direction,playground,skin,scaleWPlayground,scaleHPlayground
 	this.tileObjective;
 	this.tileCurrent;
 
+	this.score = this.getScore();
 	this.health = this.maxHealth = this.getHealth();
 	/*this.health = 450;
 	this.maxHealth = 500;*/
@@ -89,7 +90,9 @@ Runner.prototype.updateLifeBar = function(){
 
 	this.healthBar.dirty = true;
 	this.healthBar.fresh =true;
-
+	if(this.direction=="left"){
+		this.healthBar.scale.x = -1;
+	}
 }
 
 Runner.prototype.update = function(){
@@ -103,7 +106,6 @@ Runner.prototype.update = function(){
 		this.stop();
 		this.play('dead',2);
 		this.animations.currentAnim.onComplete.add(function (sprite,anim) {
-			console.log('animation complete');
 			this.removeRunner(sprite);
 			sprite.destroy();
 		}, this.pong);
@@ -135,7 +137,6 @@ Runner.prototype.locate = function(){
 
 Runner.prototype.followPattern = function(){
 	if(this.pattern == []){
-		console.log("PAS DE PATTERN POUR ",this);
 		return;
 	}
 	/*if(this.tileObjective == this.tileCurrent){
@@ -261,5 +262,49 @@ Runner.prototype.getHealth = function(){
 }
 
 Runner.prototype.getSpeed = function(){
-	console.log("Gethealth not overriden");
+	console.log("Getspeed not overriden");
+}
+Runner.prototype.getScore = function(){
+	console.log("Getscore not overriden");
+}
+Runner.prototype.getDamage = function(){
+	console.log("Getdamage not overriden");
+}
+
+
+
+
+
+Runner.prototype.getTarget = function(){
+	if(this.direction == "left"){
+		return this.pong.playerBet;
+	}
+	else{
+		return this.pong.computerBet;
+	}
+}
+
+Runner.prototype.shootTarget = function(){
+	var target = this.getTarget();
+	var proj = this.getProjectile(this.x,this.y);
+	var x = target.x - this.x;
+	var y = target.y - this.y;
+	proj.body.velocity.x = x;
+	proj.body.velocity.y = y;
+	
+	
+
+}
+
+Runner.prototype.getProjectile = function(){
+	var proj = this.game.add.sprite(this.x, this.y, 'ball');
+	proj.anchor.setTo(0.5, 0.5);
+	proj.width = this.width /2;
+	proj.height = this.height/2;
+	proj.tint = 0x000000;
+	proj.damage = this.getDamage();
+	proj.pong = this.pong;
+	this.game.physics.arcade.enable(proj);
+	this.pong.addEnnemyProj(proj);
+	return proj;
 }

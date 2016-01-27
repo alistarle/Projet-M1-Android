@@ -218,52 +218,22 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
 })
 
 .controller('serveur-controller', function($scope) {
-    pong = new Pong();
+    pong = new Pong(4,5);
     $scope.$on("$ionicView.beforeEnter", function() {
         initJXCore(pong);
         $("#launchGame").click(function() {
-            NetworkManager.notifyLaunch();
+          NetworkManager.notifyLaunch();
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        if (pong.multiplayer) NetworkManager.requestPlayerList();
-        pong.launch = function() {
-            alert("test");
-        }
-    });
-})
-
-.controller('serveur-controller', function($scope) {
-    pong = new Pong();
-    $scope.$on("$ionicView.beforeEnter", function() {
-        initJXCore(pong);
-        $("#launchGame").click(function() {
-            function create() {
-                pong.create();
-            }
-
-            function preload() {
-                pong.preload();
-            }
-
-            function update() {
-                pong.update();
-            }
-            pong.init(create, preload, update, 'gameArea');
-            NetworkManager.notifyLaunch();
-        });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        if (pong.multiplayer) NetworkManager.requestPlayerList();
+        NetworkManager.requestPlayerList();
     });
 })
 
 .controller('client-controller', function($scope) {
-    pong = new Pong();
+    pong = new Pong(4,5);
     $scope.$on("$ionicView.beforeEnter", function() {
         $("#connectToServeur").click(function() {
             var ip = $("#serveurIp").val();
-            pong.connectToServer(ip);
+            pong.connectToServer(ip,false);
         });
     });
     $scope.$on("$ionicView.enter", function() {
@@ -630,7 +600,40 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         pong.game.destroy();
     });
 })
+.controller('underattackedpong-multilocal', function($scope, $ionicLoading, $stateParams) {
+    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+        $ionicLoading.show({
+            template: 'Chargement...'
+        });
+    });
+    $scope.$parent.$parent.$on("$ionicView.enter", function() {
+        var nbPoints = $stateParams.nbPoints;
+        pong = new UnderAttackedPong(3, nbPoints);
 
+        function create() {
+            pong.create();
+        }
+
+        function preload() {
+            pong.preload();
+        }
+
+        function update() {
+            pong.update();
+        }
+
+        function render() {
+            pong.render();
+        }
+        pong.init(create, preload, update, 'gameArea', render);
+    });
+    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+        $ionicLoading.hide();
+    });
+    $scope.$parent.$parent.$on("$ionicView.leave", function() {
+        pong.game.destroy();
+    });
+})
 .controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
