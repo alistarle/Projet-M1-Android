@@ -31,6 +31,7 @@ function Runner(pong,direction,playground,skin,scaleWPlayground,scaleHPlayground
 	this.tileObjective;
 	this.tileCurrent;
 
+	this.score = this.getScore();
 	this.health = this.maxHealth = this.getHealth();
 	/*this.health = 450;
 	this.maxHealth = 500;*/
@@ -264,4 +265,49 @@ Runner.prototype.getHealth = function(){
 
 Runner.prototype.getSpeed = function(){
 	console.log("Gethealth not overriden");
+}
+Runner.prototype.getScore = function(){
+	console.log("Gethealth not overriden");
+}
+Runner.prototype.getDamage = function(){
+	console.log("Gethealth not overriden");
+}
+
+
+
+
+
+Runner.prototype.getTarget = function(){
+	if(this.direction == "left"){
+		return this.pong.playerBet;
+	}
+	else{
+		return this.pong.computerBet;
+	}
+}
+
+Runner.prototype.shootTarget = function(){
+	console.log("Shoot target");
+	var target = this.getTarget();
+	var proj = this.getProjectile(this.x,this.y);
+	var x = target.x - this.x;
+	var y = target.y - this.y;
+	proj.body.velocity.x = x;
+	proj.body.velocity.y = y;
+	
+	
+
+}
+
+Runner.prototype.getProjectile = function(){
+	var proj = this.game.add.sprite(this.x, this.y, 'ball');
+	proj.anchor.setTo(0.5, 0.5);
+	proj.width = this.width /2;
+	proj.height = this.height/2;
+	proj.tint = 0x000000;
+	proj.damage = this.getDamage();
+	proj.pong = this.pong;
+	this.game.physics.arcade.enable(proj);
+	this.pong.addEnnemyProj(proj);
+	return proj;
 }

@@ -27,10 +27,10 @@ Catapulte.prototype.constructor = Catapulte;
 
 Catapulte.prototype.getPattern = function(){
 	if(this.direction == 'left'){
-		return ['goLeft','goLeft','shoot'];
+		return ['goLeft','goLeft','goLeft','goLeft','goLeft','shoot'];
 	}
 	else{
-		return ['goRight','goRight','shoot'];
+		return ['goRight','goRight','goRight','goRight','goRight','shoot'];
 	}
 }
 Catapulte.prototype.getHealth = function(){
@@ -40,7 +40,12 @@ Catapulte.prototype.getHealth = function(){
 Catapulte.prototype.getSpeed = function(){
 	return 50;
 }
-
+Catapulte.prototype.getDamage = function(){
+	return 10;
+}
+Catapulte.prototype.getScore = function(){
+	return 10;
+}
 Catapulte.prototype.shoot = function(){
 	this.stop();
 	if(!this.shot){
@@ -63,8 +68,7 @@ Catapulte.prototype.fire = function(){
 	if(! this.shot){
 		this.playFire();
 		this.shot = true;
-		var target = this.getTarget();
-		this.shootTarget(target);
+		this.shootTarget();
 		this.playReverseFire();
 		this.finished = true;
 		this.animations.currentAnim.onComplete.add(function (sprite,anim) {
@@ -88,34 +92,18 @@ Catapulte.prototype.playLookTarget = function(){
 	}
 }
 
-
-Catapulte.prototype.getTarget = function(){
-	
-	if(this.direction == "left"){
-		return this.pong.playerBet;
-	}
-	else{
-		return this.pong.computerBet;
-	}
-}
-
-Catapulte.prototype.shootTarget = function(target){
-	console.log("Shoot target");
-	var proj = this.getProjectile(this.x,this.y);
-
-	
-}
-
+/*
 Catapulte.prototype.getProjectile = function(x,y){
 	var proj = this.game.add.sprite(x, y, 'ball');
 	proj.anchor.setTo(0.5, 0.5);
 	proj.width = this.width /4;
 	proj.height = this.height/4;
+	proj.tint = 0x000000;
 	this.game.physics.arcade.enable(proj);
 
 	return proj;
 }
-
+*/
 
 Catapulte.prototype.playFire = function(){
 	if(this.direction == "left"){

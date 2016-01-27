@@ -32,3 +32,9 @@ Axeman.prototype.getHealth = function(){
 Axeman.prototype.getSpeed = function(){
 	return 225;
 }
+Axeman.prototype.getScore = function(){
+	return 4;
+}
+Axeman.prototype.getDamage = function(){
+	return 10;
+}
