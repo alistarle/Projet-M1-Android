@@ -21,7 +21,7 @@ MultiPong.prototype.ia = function(){
 			ball= this.balls[i];
 		}
 	}
-	if(this.difficulte==1){
+	if(this.difficulte==0){
 		if (this.computerBet.x - ball.x < -15) {
 			this.computerBet.body.velocity.x = this.computerBetSpeed*1.5;
 		} else if (this.computerBet.x - ball.x > 15) {
@@ -30,7 +30,7 @@ MultiPong.prototype.ia = function(){
 			this.computerBet.body.velocity.x = 0;
 		}
 	}
-		if(this.difficulte==2){
+		if(this.difficulte==1){
 		if (this.computerBet.x - ball.x < -15) {
 			this.computerBet.body.velocity.x = this.computerBetSpeed*2;
 		} else if (this.computerBet.x - ball.x > 15) {
@@ -39,7 +39,7 @@ MultiPong.prototype.ia = function(){
 			this.computerBet.body.velocity.x = 0;
 		}
 	}
-		if(this.difficulte==3){
+		if(this.difficulte==2){
 		if (this.computerBet.x - ball.x < -15) {
 			this.computerBet.body.velocity.x = this.computerBetSpeed*2.5;
 		} else if (this.computerBet.x - ball.x > 15) {
@@ -101,7 +101,7 @@ MultiPong.prototype.collideCheck = function(){
 }
 
 MultiPong.prototype.ballHitsBet = function(_ball, _bet){
-	this.super.update.call(this);
+	this.super.ballHitsBet.call(this,_ball,_bet);
 	_ball.tint=_bet.tint;
 	for(var i = 0 ; i < this.balls.length ; i++){
 		this.colorMultiEmitter(this.balls[i].tint,this.tabEmitters[i]);
