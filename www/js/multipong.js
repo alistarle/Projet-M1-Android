@@ -54,6 +54,7 @@ MultiPong.prototype.ia = function(){
 
 		this.super.update.call(this);
 		this.doMultiPongUpdate();
+		this.checkWin();
 
 	}
 
@@ -136,7 +137,6 @@ MultiPong.prototype.resetMultiPong = function(){
 
 
 MultiPong.prototype.addBall = function(){
-	console.log("Add ball");
 	var newBall = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'ball');
 	newBall.tint = this.ball.tint;
 	newBall.anchor.setTo(0.5, 0.5);

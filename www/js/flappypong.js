@@ -120,7 +120,6 @@ FlappyPong.prototype.resetFlappy = function(){
 //debut de l'animation
 FlappyPong.prototype.doFlappy = function(){
 	//	Math.random();
-	console.log("Do the flappy" );
 	this.accumulateTimeAnimationFlappy = 0;
 	this.animatingFlappy = true;
 	this.ball.alpha = 255;
@@ -131,7 +130,6 @@ FlappyPong.prototype.doFlappy = function(){
 }
 //fin de l'animation
 FlappyPong.prototype.stopFlappy = function(){
-	console.log("Flappy stopped");
 	this.animatingFlappy = false;
 	this.flappy.visible = false;
 	this.ball.alpha = 1;

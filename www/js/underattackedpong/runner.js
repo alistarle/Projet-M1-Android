@@ -106,7 +106,6 @@ Runner.prototype.update = function(){
 		this.stop();
 		this.play('dead',2);
 		this.animations.currentAnim.onComplete.add(function (sprite,anim) {
-			console.log('animation complete');
 			this.removeRunner(sprite);
 			sprite.destroy();
 		}, this.pong);
@@ -138,7 +137,6 @@ Runner.prototype.locate = function(){
 
 Runner.prototype.followPattern = function(){
 	if(this.pattern == []){
-		console.log("PAS DE PATTERN POUR ",this);
 		return;
 	}
 	/*if(this.tileObjective == this.tileCurrent){
@@ -264,13 +262,13 @@ Runner.prototype.getHealth = function(){
 }
 
 Runner.prototype.getSpeed = function(){
-	console.log("Gethealth not overriden");
+	console.log("Getspeed not overriden");
 }
 Runner.prototype.getScore = function(){
-	console.log("Gethealth not overriden");
+	console.log("Getscore not overriden");
 }
 Runner.prototype.getDamage = function(){
-	console.log("Gethealth not overriden");
+	console.log("Getdamage not overriden");
 }
 
 
@@ -287,7 +285,6 @@ Runner.prototype.getTarget = function(){
 }
 
 Runner.prototype.shootTarget = function(){
-	console.log("Shoot target");
 	var target = this.getTarget();
 	var proj = this.getProjectile(this.x,this.y);
 	var x = target.x - this.x;

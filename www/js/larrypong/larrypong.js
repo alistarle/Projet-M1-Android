@@ -83,7 +83,11 @@ LarryPong.prototype.update = function(){
 		this.ball.x=this.game.world.centerX;
 		this.ball.y=this.game.world.centerY;
 	}
-
+	
+    if(this.ball.body.velocity.y < 100 && this.ball.body.velocity.y >= 0 && this.ballReleased)
+        this.ball.body.velocity.y++;
+    if(this.ball.body.velocity.y > -100 && this.ball.body.velocity.y <= 0 && this.ballReleased)
+        this.ball.body.velocity.y--;
 }
 
 LarryPong.prototype.setBall = function(){

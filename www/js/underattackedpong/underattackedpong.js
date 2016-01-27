@@ -245,7 +245,6 @@ UnderAttackedPong.prototype.testOutOfBounds = function(){
 	},this);
 	this.cannonBalls.forEach(function(e,a){
 		if(this.isOutOfBounds(e)){
-			console.log("Cannon ball out of bound");
 			this.removeCannonBall(e);
 			e.destroy();
 		}
@@ -355,7 +354,6 @@ UnderAttackedPong.prototype.createExplosion = function(spriteSrc,power){
 	explo.animations.add('explosion',[0,1,2,3,4], false);
 	explo.play('explosion',30);
 	explo.animations.currentAnim.onComplete.add(function (sprite,anim) {
-		console.log('animation complete');
 		sprite.destroy();
 	}, this);
 	this.explosions.push(explo);
