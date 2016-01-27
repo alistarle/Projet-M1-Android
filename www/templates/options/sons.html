@@ -1,0 +1,19 @@
+<ion-view view-title="Sons">
+    <ion-content>
+        <audio id="audio" src="{{sonsSelec}}"></audio>
+        <ul class="list">
+            <div class="item item-divider">
+                Notes de piano
+            </div>
+            <ion-radio ng-repeat="son in sons_piano" ng-click="setSons($index)" ng-model="rangSons" ng-value="{{$index}}">
+                {{son.nom}}
+            </ion-radio>
+            <div class="item item-divider">
+                Animaux
+            </div>
+            <ion-radio ng-repeat="son in sons_animaux" ng-click="setSons($index + sons_piano.length)" ng-model="rangSons" ng-value="{{$index + sons_piano.length}}">
+                {{son.nom}}
+            </ion-radio>
+        </ul>
+    </ion-content>
+</ion-view>

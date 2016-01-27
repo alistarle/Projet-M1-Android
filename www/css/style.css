@@ -1,5 +1,15 @@
 /* Empty. Add your own CSS if you like */
 
+.col-config {
+    height: 50px;
+}
+
+.col-config-mid {}
+
+.col-config-mid>h2 {
+    display: inline;
+}
+
 .center {
     text-align: center;
 }
@@ -23,4 +33,14 @@
 #gameArea {
     max-width: 100%;
     max-height: 100%;
+}
+
+.textFin {
+    padding-top: 20%;
+    margin-bottom: 40%;
+}
+
+.buttonCustom{
+    padding-left: 20%;
+    padding-right: 20%;
 }

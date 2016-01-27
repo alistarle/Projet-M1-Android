@@ -8,5 +8,6 @@ TimerCatapulte.prototype.constructor = TimerCatapulte;
 
 
 TimerCatapulte.prototype.execute = function(){
-	console.log("Execute empty TimerCatapulte");
+	this.pong.runners.push(new Catapulte(this.pong,'right',this.pong.playground));
+	this.pong.runners.push(new Catapulte(this.pong,'left',this.pong.playground));
 }
