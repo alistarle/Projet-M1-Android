@@ -5,7 +5,10 @@
 /*
 !/server
 !/www
+!/resources
 /www/jxcore/node_modules
 !README.md
 !.gitignore
 !diapo.key
+!config.xml
+!rapport.pages

@@ -1,0 +1,69 @@
+<ion-view view-title="Configuration de la partie">
+    <ion-content ng-controller="jeux-config">
+        <div class="list card">
+            <div class="item item-divider center">Joueurs</div>
+            <div class="item center">
+                <div class="row row-top">
+                    <div class="col col-config" ng-click="clicJoueurMoins(0)">
+                        <span class="ion-chevron-left padding-right"></span>
+                    </div>
+                    <div class="col col-config-mid">
+                        <h2>Joueur du haut</h2>
+                        <p>{{joueurs[joueurHaut]}}</p>
+                    </div>
+                    <div class="col col-config" ng-click="clicJoueurPlus(0)">
+                        <span class="ion-chevron-right padding-left"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="item center">
+                <div class="row row-top">
+                    <div class="col col-config" ng-click="clicJoueurMoins(1)">
+                        <span class="ion-chevron-left padding-right"></span>
+                    </div>
+                    <div class="col col-config-mid">
+                        <h2>Joueur du Bas</h2>
+                        <p>{{joueurs[joueurBas]}}</p>
+                    </div>
+                    <div class="col col-config" ng-click="clicJoueurPlus(1)">
+                        <span class="ion-chevron-right padding-left"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="item item-divider center">Partie</div>
+            <div class="item center">
+                <div class="row row-top">
+                    <div class="col col-config" ng-click="clicPointsMoins()">
+                        <span class="ion-chevron-left padding-right"></span>
+                    </div>
+                    <div class="col col-config-mid">
+                        <h2>Nombre de points</h2>
+                        <p>{{nbPoints}}</p>
+                    </div>
+                    <div class="col col-config" ng-click="clicPointsPlus()">
+                        <span class="ion-chevron-right padding-left"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="item center">
+                <div class="row row-top">
+                    <div class="col col-config" ng-click="clicModeMoins()">
+                        <span class="ion-chevron-left padding-right"></span>
+                    </div>
+                    <div class="col col-config-mid">
+                        <h2>Mode de jeux</h2>
+                        <p>{{modes[mode]}}</p>
+                    </div>
+                    <div class="col col-config" ng-click="clicModePlus()">
+                        <span class="ion-chevron-right padding-left"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding">
+        <a class="button button-block  button-outline button-positive" ng-href="{{url}}">Lancer !</a>
+        </div>
+    </ion-content>
+</ion-view>
