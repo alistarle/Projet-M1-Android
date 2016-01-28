@@ -35,5 +35,5 @@ Peon.prototype.getSpeed = function(){
 	return 300;
 }
 Peon.prototype.getScore = function(){
-	return 1;
+	return 3;
 }

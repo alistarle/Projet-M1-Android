@@ -33,26 +33,32 @@ UnderAttackedPong.prototype.preload = function(){
 	this.game.load.spritesheet('ogre', 'assets/ogre2.png',73,73);
 	this.game.load.spritesheet('catapulte', 'assets/catapulte.png',68,68);
 	this.game.load.image('tile', 'assets/tileW2.png');
+	//debugger;
+	//this.game.load.tileSprite('tileTexture', 'assets/tileW2.png');
 	this.game.load.spritesheet('explosion', 'assets/explosion.png',480/5,288/3);
 
 }
 
 UnderAttackedPong.prototype.render = function(){
+	/*this.game.debug.body(this.computerBet);
+	this.game.debug.body(this.playerBet);*/
+
 	/*console.log("RENDER");
 
 	this.runners.forEach(function(e,i,a){
 		this.game.debug.body(e)
-	},this);
-	this.cannonBalls.forEach(function(e,i,a){
+	},this);*/
+	/*this.cannonBalls.forEach(function(e,i,a){
 		this.game.debug.body(e)
-	},this);
-
+	},this);*/
+/*
 	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
 			this.game.debug.body(this.playground.get(i,j));
 		}
 	}
 	*/
+
 
 }
 
@@ -111,13 +117,13 @@ UnderAttackedPong.prototype.create = function(){
 	
 
 	this.playground = new UnderAttackedPlayground(this);
-	this.timers.push(new TimerFire(this,2000));
-	this.timers.push(new TimerPeon(this,6000));
+	this.timers.push(new TimerFire(this,1000));
+	this.timers.push(new TimerPeon(this,5000));
 	this.timers[1].accum= 6000;
 	this.timers.push(new TimerCatapulte(this,40000));
-	this.timers.push(new TimerGrunt(this,10000));
-	this.timers.push(new TimerAxeman(this,14000));
-	this.timers.push(new TimerOgre(this,25000));
+	this.timers.push(new TimerGrunt(this,8500));
+	this.timers.push(new TimerAxeman(this,12000));
+	this.timers.push(new TimerOgre(this,19000));
 	/*this.timers.push(new TimerGrunt(this,2000));
 	this.timers.push(new TimerGrunt(this,7000));
 
@@ -137,30 +143,28 @@ UnderAttackedPong.prototype.update = function(){
 	this.timers.forEach(function(e,i,a){
 		e.update();
 	},this);
-	if(this.frameCount % 5 == 0){
-		this.runners.forEach(function(e,a){
-			e.update();
-
-		},this);
-	}
-	if(this.frameCount % 10 == 0){
+	this.runners.forEach(function(e,a){
+		e.update();
+	},this);
+	
+	if(this.frameCount % 3 == 1){
 		this.updateScore();
 		this.checkWin();
 	}
 
 	this.frameCount++;
-	if(this.frameCount > 50)
+	if(this.frameCount > 3)
 		this.frameCount = 0;
 }
 
 
 
 UnderAttackedPong.prototype.checkWin = function(){
-	if(this.point1 > this.pointWin){
+	if(this.point1 >= this.pointWin){
 	    this.scorePlayer++;
 		this.reinitGame();
 	}
-	else if(this.point2 > this.pointWin){
+	else if(this.point2 >= this.pointWin){
 		this.scoreComputer++;
 		this.reinitGame();
 	}
@@ -283,7 +287,7 @@ UnderAttackedPong.prototype.isOutOfBounds = function(sprite){
 
 UnderAttackedPong.prototype.testCollision = function(){
 		for(var j = 0 ; j < this.cannonBalls.length ; j++){
-			if(this.frameCount%6==4){
+			if(this.frameCount%3==2){
 				for(var i = 0 ; i < this.runners.length ; i++){
 					//test runner hit
 					this.game.physics.arcade.collide(this.cannonBalls[j], this.runners[i], function(cannonBall,runner) {
@@ -304,26 +308,26 @@ UnderAttackedPong.prototype.testCollision = function(){
 				}
 			}
 			//test player hit
-			if(this.frameCount%6==2){
 				if(this.cannonBalls[j] != undefined){
 					this.game.physics.arcade.collide(this.cannonBalls[j], this.playerBet, function(cannonBall,player) {
 						cannonBall.pong.createExplosion(cannonBall,cannonBall.pong.explosionRadius);
 						cannonBall.pong.playerHitByCannonBall(player,20);
 						cannonBall.pong.removeCannonBall(cannonBall);
+						cannonBall.pong.point2 += 25;
 						cannonBall.destroy();
 					});
 					this.game.physics.arcade.collide(this.cannonBalls[j], this.computerBet, function(cannonBall,player) {
 						cannonBall.pong.createExplosion(cannonBall,cannonBall.pong.explosionRadius);
 						cannonBall.pong.playerHitByCannonBall(player,20);
 						cannonBall.pong.removeCannonBall(cannonBall);
+						cannonBall.pong.point1 += 25;
 						cannonBall.destroy();
 					});
 				}
-			}
+			
 		}
 
 	
-	if(this.frameCount % 6 == 0){
 		this.ennemyProj.forEach(function(e,i,a){
 			this.game.physics.arcade.collide(e, this.computerBet, function(proj,player) {
 					proj.pong.createExplosion(proj,100);
@@ -339,7 +343,7 @@ UnderAttackedPong.prototype.testCollision = function(){
 				});
 
 		},this);
-	}
+	
 }
 
 UnderAttackedPong.prototype.kill = function(player,score){

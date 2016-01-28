@@ -121,12 +121,15 @@ Runner.prototype.normalizeHealth = function(){
 Runner.prototype.locate = function(){
 	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
-			this.game.physics.arcade.collide(this, this.playground.get(i,j), function(runner,tile) {
+			if(this.playground.get(i,j).contains(this.x,this.y)){
+				this.tileCurrent =this.playground.get(i,j);
+			}
+			/*this.game.physics.arcade.collide(this, this.playground.get(i,j), function(runner,tile) {
 
 		    }, function(runner, tile) {
 		      runner.tileCurrent = tile;
 		      return false;
-			});
+			});*/
 			 /*if(this.playground.get(i,j).getBounds().contains(this.x,this.y)){
 			 	this.tileCurrent = this.playground.get(i,j);
 			 }*/
