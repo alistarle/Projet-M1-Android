@@ -1,6 +1,6 @@
 function Pong(mode, nbPoints) {
     //mode : [(0, IA Facile), (1, IA Normale), (2, IA Difficile), (3, Multi local), (4, Multi En ligne)]
-    this.debug = true;
+    this.debug = false;
     //Multiplayer vars
     this.multiplayer = false;
     this.uid;
@@ -428,7 +428,6 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
 
 Pong.prototype.update = function() {
     this.trail();
-    this.ia();
     //check des collisions
     this.collideCheck();
     this.checkGoal();
@@ -440,7 +439,7 @@ Pong.prototype.update = function() {
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
 
-    if (!this.multiLocal) {
+    if ((!this.multiLocal)&&(!this.multiplayer)) {
         if (this.modeControle == 0) {
             this.playerBet.x = this.game.input.x;
 
@@ -451,8 +450,9 @@ Pong.prototype.update = function() {
             } else if (this.playerBet.x > this.game.width - playerBetHalfWidth) {
                 this.playerBet.x = this.game.width - playerBetHalfWidth;
             }
+            this.ia();
         }
-    } else {
+    }else if(this.multiLocal){
         for (var i = 0; i < this.pointers.length; i++) {
             if (this.pointers[i].isDown) {
                 if (this.pointers[i].y >= (this.game.height / 2)) {
