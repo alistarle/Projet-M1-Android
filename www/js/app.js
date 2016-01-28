@@ -1,8 +1,3 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
 var pong;
 
 angular.module('starter', ['ionic', 'ionic-native-transitions'])
@@ -94,19 +89,29 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         description: "Pong basique et la balle devient un FlappyBird."
     }, {
         titre: "MultiPong",
-        description: "Pong basique mais il y a plusieurs balles."
+        description: "Pong basique mais il y a plusieurs balles sur le plateau."
     }, {
         titre: "LarryPong",
         description: "Pong basique mais il y a un obstacle, un serpent voulant grandir et qui peut se diviser."
     }, {
         titre: "FakeBallsPong",
-        description: "Une seule balle est vraie arriverais vous à la suivre."
+        description: "Une seule balle est vraie. Arriverez vous à la suivre ?"
     }, {
         titre: "UnderAttackedPong",
         description: "Le but est de tirer sur les monstres et d'esquiver les tirs ennemies."
+    }, {
+        titre: "Mode de contrôle",
+        description: "Permet de choisir entre le gyroscope et le tactile pour contrôler sa raquette en solo."
+    }, {
+        titre: "Personnalisation du son",
+        description: "Permet de changer le son qui sera joué à chaque rebond de la balle sur les raquettes."
+    }, {
+        titre: "Personnalisation de la barre",
+        description: "Permet de changer la couleur de sa barre."
+    }, {
+        titre: "Multijoueur local",
+        description: "Il suffit de choisir joueur contre joueur dans le menu de création de partie. Le joueur du haut aura la partie haute de l'écran pour jouer, le joueur du bas la partie basse."
     }]
-
-    $scope.helpSelec = 0;
 
     $scope.getSons = function(type) {
         var listeSons = [];
@@ -127,7 +132,6 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
 
 
     $scope.setSons = function(rang) {
-        console.log('appel');
         $scope.rangSons = rang;
         $scope.sonsSelec = $scope.sons[rang].fichier;
         $scope.nomSonsSelec = $scope.sons[parseInt($scope.rangSons)].nom;
@@ -696,7 +700,6 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         } else {
             $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?nbPoints=" + $scope.nbPoints;
         }
-        console.log($scope.url);
     }
 
     $scope.clicJoueurMoins = function(pos) {
@@ -735,6 +738,8 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     $scope.clicPointsMoins = function() {
         if ($scope.nbPoints > 1) {
             $scope.nbPoints -= 1;
+        } else {
+            $scope.nbPoints = scoreMax;
         }
         constructionUrl();
     }
@@ -796,17 +801,13 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     })
 
     //Jeux
-    $stateProvider.state('jeux-solo', {
-        url: '/jeux/solo',
-        templateUrl: 'templates/jeux/solo.html'
+    $stateProvider.state('solo-config', {
+        url: '/jeux/solo/config',
+        templateUrl: 'templates/jeux/config.html'
     })
     $stateProvider.state('jeux-multi', {
         url: '/jeux/multi',
         templateUrl: 'templates/jeux/multi.html'
-    })
-    $stateProvider.state('jeux-multilocal', {
-        url: '/jeux/multilocal',
-        templateUrl: 'templates/jeux/multilocal.html'
     })
     $stateProvider.state('jeux-fin', {
         url: '/jeux/fin?:gagnant',
@@ -889,20 +890,15 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         templateUrl: 'templates/options/sons.html'
     })
 
+    //Multijoueur serveur
     $stateProvider.state('jeux-heberger', {
         url: '/jeux/heberger',
         templateUrl: 'templates/jeux/multi/heberger.html'
     })
     $stateProvider.state('jeux-rejoindre', {
-            url: '/jeux/rejoindre',
-            templateUrl: 'templates/jeux/multi/rejoindre.html'
-        })
-        //config partie
-    $stateProvider.state('solo-config', {
-        url: '/jeux/solo/config',
-        templateUrl: 'templates/jeux/config.html'
+        url: '/jeux/rejoindre',
+        templateUrl: 'templates/jeux/multi/rejoindre.html'
     })
-
 
     $urlRouterProvider.otherwise('/home')
 })
