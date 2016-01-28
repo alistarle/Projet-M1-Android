@@ -1,19 +1,26 @@
 <ion-view view-title="Menu Principal" hide-nav-bar="true">
     <ion-content ng-controller="homeCtrl">
-        <div class=" item-image">
+        <div class="item-image home-image">
             <img class="full-image" src="img/mainMenu.png" />
         </div>
         <div>
-            <div class="buttonMenu" ng-class="{'blur-element' : estPremierLancement()}">
+            <div class="containerButtonMenu" ng-class="{'blur-element' : estPremierLancement()}">
+            <div>
+
                 <button class="button button-block button-outline button-positive" ui-sref="jeux" data-ng-disabled="estPremierLancement()">
                     Jouer !
                 </button>
+            </div>
+            <div>
                 <button class="button button-block button-outline button-positive" ui-sref="options" data-ng-disabled="estPremierLancement()">
                     Options
                 </button>
+            </div>
+            <div>
                 <button class="button button-block  button-outline button-positive" ui-sref="about" data-ng-disabled="estPremierLancement()">
                     A propos
                 </button>
+            </div>
             </div>
         </div>
         </div>
