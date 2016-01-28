@@ -20,7 +20,7 @@ var PORT = 3000;
 
 var mainPlayer = { name: "", uid: "", x: "", color: ""};
 
-var MAX_TICK_BEFORE_SEND = 5;
+var MAX_TICK_BEFORE_SEND = 3;
 var tick = 0;
 
 var NetworkManager = {
@@ -31,7 +31,6 @@ var NetworkManager = {
     mainPlayer.color = color;
     serverSocket = io.connect('http://'+ip+':'+PORT);
     serverSocket.on('connect', onConnectedToServer);
-
     this.configureIncomingTraffic();
 
   },
@@ -81,11 +80,11 @@ var NetworkManager = {
       tick = 0;
     }
   },
-  notifyLaunch: function() {
-    serverSocket.emit('CLIENT_NOTIFY_LAUNCH');
+  notifyLaunch: function(gameInfo) {
+    serverSocket.emit('CLIENT_NOTIFY_LAUNCH', gameInfo);
   },
-  notifyGoal: function() {
-    serverSocket.emit('CLIENT_NOTIFY_GOAL');
+  notifyGoal: function(score) {
+    serverSocket.emit('CLIENT_NOTIFY_GOAL', score);
   },
   notifyReleaseBall: function() {
     serverSocket.emit('CLIENT_NOTIFY_RELEASE_BALL');
@@ -146,8 +145,8 @@ function onRoomFull() {
   onServerRoomFullCallback();
 }
 
-function onLaunch() {
-  onServerLaunchCallback();
+function onLaunch(gameInfo) {
+  onServerLaunchCallback(gameInfo);
 }
 
 function onCanLaunch() {
@@ -158,8 +157,8 @@ function onCannotLaunch() {
   onServerCannotLaunchCallback();
 }
 
-function onGoal() {
-  onGoalCallback();
+function onGoal(score) {
+  onGoalCallback(score);
 }
 
 function onBallMove(movementInfo) {
