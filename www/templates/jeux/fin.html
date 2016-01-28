@@ -1,16 +1,26 @@
 <ion-view view-title="Fin de la partie" hide-back-button="true">
     <ion-content>
         <div class="padding" ng-controller="fin">
-            <div ng-if="gagnant == 1">
-                <h2 class="textFin center">Vous avez perdu la partie</h2>
+            <div ng-show="solo == 1">
+                <div ng-if="gagnant == 1">
+                    <h2 class="textFin center">L'ordinateur à gagné.</h2>
+                </div>
+                <div ng-if="gagnant == 0">
+                    <h2 class="textFin center">Vous avez gagné.</h2>
+                </div>
             </div>
-            <div ng-if="gagnant == 0">
-                <h2 class="textFin center">Vous avez gagné la partie</h2>
+            <div ng-show="solo == 0">
+                <div ng-if="gagnant == 1">
+                    <h2 class="textFin center">Le joueur d'en haut à gagné.</h2>
+                </div>
+                <div ng-if="gagnant == 0">
+                    <h2 class="textFin center">Le joueur d'en bas à gagné.</h2>
+                </div>
             </div>
             <div class="buttonCustom">
-            <button class="button button-block button-outline button-positive" ui-sref="home">
-                Retour au menu principal
-            </button>
+                <button class="button button-block button-outline button-positive" ui-sref="home">
+                    Retour au menu principal
+                </button>
             </div>
         </div>
     </ion-content>

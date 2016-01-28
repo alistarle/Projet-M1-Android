@@ -495,6 +495,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicHistory.clearHistory();
         $scope.gagnant = $stateParams.gagnant;
+        $scope.solo = $stateParams.solo;
 
         $ionicHistory.nextViewOptions({
             disableAnimate: false,
@@ -810,7 +811,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         templateUrl: 'templates/jeux/multi.html'
     })
     $stateProvider.state('jeux-fin', {
-        url: '/jeux/fin?:gagnant',
+        url: '/jeux/fin?:gagnant&:solo',
         templateUrl: 'templates/jeux/fin.html'
     })
 
