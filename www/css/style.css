@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Roboto-thin';
+    src: url('../fonts/Roboto-Thin.ttf');
+}
+
 .col-config {
     height: 50px;
 }
@@ -37,6 +42,7 @@
 }
 
 .textFin {
+    font-family: 'Roboto-thin';
     padding-top: 20%;
     margin-bottom: 40%;
 }
