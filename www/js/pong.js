@@ -177,7 +177,8 @@ Pong.prototype.create = function() {
         this.iaBall.anchor.setTo(0.5, 0.5);
         this.iaBall.body.collideWorldBounds = true;
         this.iaBall.body.bounce.setTo(1, 1);
-        this.iaBall.visible = this.debug;
+        this.iaBall.visible = true;
+        this.iaBall.alpha = 0;
     }
 
     this.game.input.onDown.add(this.releaseBall, this);
@@ -501,7 +502,7 @@ Pong.prototype.ia = function() {
         iaSpeed = 2;
     }
     if (this.difficulte == 2) {
-        if (this.iaBallIsComplete) {
+        if ((this.iaBallIsComplete)&&(this.iaBall.y<this.game.height/2)) {
             if (this.computerBet.x - this.iaBall.x < -15) {
                 this.computerBet.body.velocity.x = this.computerBetSpeed;
             } else if (this.computerBet.x - this.iaBall.x > 15) {
