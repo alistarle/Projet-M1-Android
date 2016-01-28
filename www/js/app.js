@@ -49,6 +49,18 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         code: 0x76FF03,
         nom: "Vert",
         hexa: "#76FF03"
+    }, {
+        code: 0xEC407A,
+        nom: "Rose",
+        hexa: "#EC407A"
+    }, {
+        code: 0x757575,
+        nom: "Gris",
+        hexa: "#757575"
+    }, {
+        code: 0x26A69A,
+        nom: "Teal",
+        hexa: "#26A69A"
     }];
 
     $scope.sons = [{
@@ -101,7 +113,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         description: "Le but est de tirer sur les monstres et d'esquiver les tirs ennemies."
     }, {
         titre: "Mode de contrôle",
-        description: "Permet de choisir entre le gyroscope et le tactile pour contrôler sa raquette en solo."
+        description: "Permet de choisir entre le gyroscope et le tactile pour contrôler sa raquette en mode un joueur."
     }, {
         titre: "Personnalisation du son",
         description: "Permet de changer le son qui sera joué à chaque rebond de la balle sur les raquettes."
@@ -123,6 +135,8 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         return listeSons;
     }
 
+
+
     $scope.sons_piano = $scope.getSons('piano');
     $scope.sons_animaux = $scope.getSons('animaux');
     //Sons
@@ -131,7 +145,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     $scope.nomSonsSelec = $scope.sons[parseInt($scope.rangSons)].nom;
 
 
-    $scope.setSons = function(rang) {
+    $scope.setSons = function(rang, context) {
         $scope.rangSons = rang;
         $scope.sonsSelec = $scope.sons[rang].fichier;
         $scope.nomSonsSelec = $scope.sons[parseInt($scope.rangSons)].nom;
@@ -140,12 +154,14 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         optionsSetSonsSelec($scope.sonsSelec);
 
         $scope.$apply;
-        setTimeout(function() {
-            $scope.playSons();
-        }, 100);
+        if (context != 0) {
+            setTimeout(function() {
+                playSons();
+            }, 100);
+        }
     }
 
-    $scope.playSons = function() {
+    playSons = function() {
         var target = document.getElementById('audio');
         target.play();
     }
@@ -154,7 +170,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         if ($scope.estPremierLancement()) {
             $scope.setCouleurBalle(0);
             $scope.setCouleurBarre(0);
-            $scope.setSons(0);
+            $scope.setSons(0, 0);
         }
     })
 
@@ -191,9 +207,22 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         $scope.rangCouleurBarre = rang;
         $scope.couleurBarre = $scope.couleurs[rang].code;
         $scope.nomCouleurBarre = $scope.couleurs[rang].nom;
-
+        $scope.changeComputerBetColor();
         optionsSetRangCouleurBarre(rang);
         optionsSetCouleurBarre($scope.couleurBarre);
+    }
+
+    $scope.changeComputerBetColor = function() {
+        var bChange = false;
+        while (!bChange) {
+            var r = Math.floor((Math.random() * $scope.couleurs.length));
+            if (r == $scope.rangCouleurBarre) {
+                bChange = false;
+            } else {
+                bChange = true;
+                optionsSetCouleurBarreHaut($scope.couleurs[r].code);
+            }
+        }
     }
 
     //Pseudo
@@ -793,6 +822,10 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         nativeTransitions: {
             "type": "fade"
         },
+        nativeTransitionsBack: {
+            "type": "fade",
+            "direction": "left"
+        },
         templateUrl: 'templates/jeux.html'
     })
     $stateProvider.state('options', {
@@ -816,6 +849,9 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     })
     $stateProvider.state('jeux-multi', {
         url: '/jeux/multi',
+        nativeTransitions: {
+            "type": "fade"
+        },
         templateUrl: 'templates/jeux/multi.html'
     })
     $stateProvider.state('jeux-fin', {

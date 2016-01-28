@@ -3,6 +3,7 @@
     var keyCouleurBalle = "couleurBalle";
     var keyRangCouleurBalle = "rangCouleurBalle";
     var keyCouleurBarre = "couleurBarre";
+    var keyCouleurBarreHaut = "couleurBarreHaut";
     var keyRangCouleurBarre = "rangCouleurBarre";
     var keyPseudo = "pseudo";
     var keySonsSelec = "sonsSelec";
@@ -55,6 +56,14 @@
 
     var optionsSetCouleurBarre = function(couleur) {
         optionsSet(keyCouleurBarre, couleur);
+    }
+
+    var optionsGetCouleurBarreHaut = function() {
+        return optionsGet(keyCouleurBarreHaut);
+    }
+
+    var optionsSetCouleurBarreHaut = function(couleur) {
+        optionsSet(keyCouleurBarreHaut, couleur);
     }
 
     var optionsGetRangCouleurBarre = function() {
