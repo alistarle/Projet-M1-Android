@@ -40,7 +40,27 @@
     margin-bottom: 40%;
 }
 
+.buttonPlay>a{
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
 .buttonCustom{
     padding-left: 20%;
     padding-right: 20%;
+}
+
+.buttonMenu{
+    padding-top:40%;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.buttonMenu>button{
+    margin-top: 2%;
+    border-radius: 20px;
+}
+
+.buttonCustom>button{
+    border-radius: 20px;
 }
