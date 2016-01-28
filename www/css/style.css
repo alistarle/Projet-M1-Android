@@ -43,13 +43,14 @@
 
 
 .buttonPlay{
-        padding-left: 40%;
-    padding-right: 40%;
+    padding-left: 35%;
+    padding-right: 35%;
+        border-radius: 20px;
+
 
 }
-.buttonPlay>button{
+.buttonPlay>a{
     border-radius: 20px;
-
 }
 
 .buttonCustom{
