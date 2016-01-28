@@ -15,20 +15,20 @@ function Pong(mode, nbPoints) {
         if ((mode == 2) && ((this instanceof LarryPong) || (this instanceof FlappyPong))) {
             this.difficulte = 1;
         }
-    } else if(mode == 3) {
+    } else if (mode == 3) {
         this.multiLocal = true;
         this.pointers = [];
     } else {
-      this.multiplayer = true;
-      this.otherPlayers = [];
-      this.difficulte = 1;
-      this.multiLocal = false;
-  }
-  this.nbPoints = nbPoints;
+        this.multiplayer = true;
+        this.otherPlayers = [];
+        this.difficulte = 1;
+        this.multiLocal = false;
+    }
+    this.nbPoints = nbPoints;
 
-  console.log("Difficulte : " + this.difficulte);
-  console.log("Multilocal : " + this.multiLocal);
-  console.log("Nb points : " + this.nbPoints);
+    console.log("Difficulte : " + this.difficulte);
+    console.log("Multilocal : " + this.multiLocal);
+    console.log("Nb points : " + this.nbPoints);
 
     //variable de coordonees
     this.Y = 1000;
@@ -74,77 +74,78 @@ function Pong(mode, nbPoints) {
 
 }
 
-Pong.prototype.connectToServer = function(ip,isHost) {
-  this.isHost = isHost;
-  NetworkManager.connect(ip, optionsGetPseudo(), optionsGetCouleurBarre());
+Pong.prototype.connectToServer = function(ip, isHost) {
+    this.isHost = isHost;
+    NetworkManager.connect(ip, optionsGetPseudo(), optionsGetCouleurBarre());
 
-  NetworkManager.onOtherPlayerConnected(function(otherPlayerInfo){
-    pong.otherPlayers.push(otherPlayerInfo);
-    syncPlayer(pong.otherPlayers);
-});
+    NetworkManager.onOtherPlayerConnected(function(otherPlayerInfo) {
+        pong.otherPlayers.push(otherPlayerInfo);
+        syncPlayer(pong.otherPlayers);
+    });
 
-  NetworkManager.onOtherPlayerMove(function(movementInfo){
-    //var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
-    //if(otherPlayerToMove){
-    //  otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
-    //}
-    pong.computerBet.x = movementInfo.x;
-});
+    NetworkManager.onOtherPlayerMove(function(movementInfo) {
+        //var otherPlayerToMove = searchById(me.otherPlayers, movementInfo.uid);
+        //if(otherPlayerToMove){
+        //  otherPlayerToMove.moveTo(movementInfo.x, movementInfo.y);
+        //}
+        pong.computerBet.x = movementInfo.x;
+    });
 
-  NetworkManager.onUpdatePlayerList(function(receivedList){
-    pong.otherPlayers = receivedList;
-    syncPlayer(receivedList);
-});
+    NetworkManager.onUpdatePlayerList(function(receivedList) {
+        pong.otherPlayers = receivedList;
+        syncPlayer(receivedList);
+    });
 
-  NetworkManager.onBallRelease(function() {
-    if(!pong.ballReleased) {
-      pong.ball.body.velocity.x = -pong.ballSpeed;
-      pong.ball.body.velocity.y = pong.ballSpeed;
-      pong.ballReleased = true;
-      pong.ball.tint = pong.BallColor;
-  }
-});
+    NetworkManager.onBallRelease(function() {
+        if (!pong.ballReleased) {
+            pong.ball.body.velocity.x = -pong.ballSpeed;
+            pong.ball.body.velocity.y = pong.ballSpeed;
+            pong.ballReleased = true;
+            pong.ball.tint = pong.BallColor;
+        }
+    });
 
-  NetworkManager.onBallMove(function(movementInfo) {
-    pong.ball.x = movementInfo.x;
-    pong.ball.y = movementInfo.y;
-    pong.ball.body.velocity.x = movementInfo.speedX;
-    pong.ball.body.velocity.y = movementInfo.speedY;
-});
+    NetworkManager.onBallMove(function(movementInfo) {
+        pong.ball.x = movementInfo.x;
+        pong.ball.y = movementInfo.y;
+        pong.ball.body.velocity.x = movementInfo.speedX;
+        pong.ball.body.velocity.y = movementInfo.speedY;
+    });
 
-  NetworkManager.onGoal(function() {
-    pong.goalBot();
-});
+    NetworkManager.onGoal(function() {
+        pong.goalBot();
+    });
 
-  NetworkManager.onServerLaunch(function() {
-    function create() {
-      pong.create();
-  }
-  function preload() {
-      pong.preload();
-  }
+    NetworkManager.onServerLaunch(function() {
+        function create() {
+            pong.create();
+        }
 
-  function update() {
-      pong.update();
-  }
-  pong.init(create, preload, update, 'gameArea');
-});
+        function preload() {
+            pong.preload();
+        }
 
-  NetworkManager.onServerCanLaunch(function() {
-    $("#launchGame").prop('disabled', false);
-});
+        function update() {
+            pong.update();
+        }
+        pong.init(create, preload, update, 'gameArea');
+    });
 
-  NetworkManager.onServerCannotLaunch(function() {
-    $("#launchGame").prop('disabled', true);
-});
+    NetworkManager.onServerCanLaunch(function() {
+        $("#launchGame").prop('disabled', false);
+    });
 
-  NetworkManager.onServerRoomClosed(function() {
-    alert("Serveur fermé");
-});
+    NetworkManager.onServerCannotLaunch(function() {
+        $("#launchGame").prop('disabled', true);
+    });
 
-  NetworkManager.onServerRoomFull(function() {
-    alert("Serveur plein");
-});
+    NetworkManager.onServerRoomClosed(function() {
+        alert("Serveur fermé");
+    });
+
+    NetworkManager.onServerRoomFull(function() {
+        alert("Serveur plein");
+    });
 };
 
 Pong.prototype.createBet = function(x, y) {
@@ -308,8 +309,8 @@ Pong.prototype.releaseBall = function() {
     }
 
     if (this.multiplayer) {
-      NetworkManager.notifyReleaseBall();
-  }
+        NetworkManager.notifyReleaseBall();
+    }
 }
 
 Pong.prototype.checkGoal = function() {
@@ -334,7 +335,7 @@ Pong.prototype.checkGoal = function() {
 Pong.prototype.checkIfGoal = function() {
     //si but alors score++
     if (this.ball.y < 100) {
-        if(this.multiplayer) NetworkManager.notifyGoal();
+        if (this.multiplayer) NetworkManager.notifyGoal();
         this.goalTop();
         this.reinitGame();
     } else if (this.ball.y > this.game.height - 100) {
@@ -346,15 +347,25 @@ Pong.prototype.checkIfGoal = function() {
 
 Pong.prototype.checkWin = function() {
     if (!this.endGame) {
-        if (this.scorePlayer >= this.nbPoints) {
-            console.log("you win");
-            window.location = "#/jeux/fin?gagnant=0";
-            this.endGame = true;
-        } else {
-            if (this.scoreComputer >= this.nbPoints) {
-                console.log("you loose");
-                window.location = "#/jeux/fin?gagnant=1";
+        if (!this.multiLocal) {
+            if (this.scorePlayer >= this.nbPoints) {
+                window.location = "#/jeux/fin?gagnant=0&solo=1";
                 this.endGame = true;
+            } else {
+                if (this.scoreComputer >= this.nbPoints) {
+                    window.location = "#/jeux/fin?gagnant=1&solo=1";
+                    this.endGame = true;
+                }
+            }
+        } else {
+            if (this.scorePlayer >= this.nbPoints) {
+                window.location = "#/jeux/fin?gagnant=0&solo=0";
+                this.endGame = true;
+            } else {
+                if (this.scoreComputer >= this.nbPoints) {
+                    window.location = "#/jeux/fin?gagnant=1&solo=0";
+                    this.endGame = true;
+                }
             }
         }
     }
@@ -415,9 +426,9 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
     this.colorEmitter(_ball.tint);
     this.emitter.tint
         //gauche
-        if (_ball.x < _bet.x) {
-            diff = _bet.x - _ball.x;
-            _ball.body.velocity.x = (-10 * diff);
+    if (_ball.x < _bet.x) {
+        diff = _bet.x - _ball.x;
+        _ball.body.velocity.x = (-10 * diff);
         //droite
     } else if (_ball.x > _bet.x) {
         diff = _ball.x - _bet.x;
@@ -459,7 +470,7 @@ Pong.prototype.update = function() {
                 this.playerBet.x = this.game.width - playerBetHalfWidth;
             }
         }
-    }else{
+    } else {
         for (var i = 0; i < this.pointers.length; i++) {
             if (this.pointers[i].isDown) {
                 if (this.pointers[i].y >= (this.game.height / 2)) {
@@ -486,9 +497,16 @@ Pong.prototype.update = function() {
 
     }
     if (this.multiplayer) {
-      NetworkManager.notifyMovement({ x: this.playerBet.x });
-      if(this.isHost) NetworkManager.notifyBallMoved({ x: this.ball.x, y: this.ball.y, speedX: this.ball.body.velocity.x, speedY: this.ball.body.velocity.y });
-  }
+        NetworkManager.notifyMovement({
+            x: this.playerBet.x
+        });
+        if (this.isHost) NetworkManager.notifyBallMoved({
+            x: this.ball.x,
+            y: this.ball.y,
+            speedX: this.ball.body.velocity.x,
+            speedY: this.ball.body.velocity.y
+        });
+    }
 
 }
 

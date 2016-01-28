@@ -41,9 +41,15 @@
     margin-bottom: 40%;
 }
 
-.buttonPlay>a{
-    padding-left: 20%;
-    padding-right: 20%;
+
+.buttonPlay{
+        padding-left: 40%;
+    padding-right: 40%;
+
+}
+.buttonPlay>button{
+    border-radius: 20px;
+
 }
 
 .buttonCustom{
