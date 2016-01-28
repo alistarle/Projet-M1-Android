@@ -1,7 +1,7 @@
 // This JavaScript files runs on Cordova UI
 var inter;
 var currentIp;
-var pong;
+var lobby;
 
 function ctrl_log() {
   return document.getElementById('logs');
@@ -10,23 +10,24 @@ function ctrl_log() {
 function log(x) {
   ctrl_log().innerHTML += x + "<BR/>";
   ctrl_log().parentNode.scrollTop = ctrl_log().clientHeight;
+  console.log(x);
 }
 
 function syncPlayer(listPlayers) {
-  var lobby = document.getElementById('hasJoined');
-  lobby.innerHTML = "";
+  var lobbyDiv = document.getElementById('hasJoined');
+  lobbyDiv.innerHTML = "";
   for(player in listPlayers) {
-    lobby.innerHTML += "<a class='item' href='#''><strong>" + listPlayers[player].name + "</strong> : " + listPlayers[player].uid + "</a>";
+    lobbyDiv.innerHTML += "<a class='item' href='#''><strong>" + listPlayers[player].name + "</strong> : " + listPlayers[player].uid + "</a>";
   }
 }
 
 function ready() {
   console.log("JXCORE : connecting to "+currentIp);
-  pong.connectToServer(currentIp,true);
+  lobby.connectToServer(currentIp,true);
 }
 
-function initJXCore(pongInstance) {
-  pong = pongInstance;
+function initJXCore(lobbyInstance) {
+  lobby = lobbyInstance;
   inter = setInterval(function() {
     if (typeof jxcore == 'undefined')
       return;

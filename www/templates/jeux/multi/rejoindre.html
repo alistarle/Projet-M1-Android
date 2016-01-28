@@ -1,23 +1,22 @@
 <ion-view view-title="Rejoindre une partie" ng-controller="client-controller">
     <ion-content>
-      <div id="lobby">
-        <div class="list">
-          <label class="item item-input item-stacked-label">
-            <span class="input-label">Ip du serveur</span>
-            <input id="serveurIp" type="text" placeholder="192.168.42.16" value="192.168.42.16">
-          </label>
-        </div>
-        <button id="connectToServeur" class="button button-block button-positive">
-          Se connecter
-        </button>
-        <div class="list">
-          <div class="item item-divider">
-            Joueurs dans le lobby
+        <div id="lobby">
+          <div class="list">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Ip du serveur</span>
+              <input id="serveurIp" type="text" placeholder="192.168.42.16" value="192.168.42.16">
+            </label>
           </div>
-          <div id="hasJoined">
+          <button id="connectToServeur" class="button button-block button-positive">
+            Se connecter
+          </button>
+          <div class="list">
+            <div class="item item-divider">
+              Joueurs dans le lobby
+            </div>
+            <div id="hasJoined">
+            </div>
           </div>
         </div>
-      </div>
-      <div id="gameArea" ng-hide="showGame"></div>
     </ion-content>
 </ion-view>

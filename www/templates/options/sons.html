@@ -5,13 +5,13 @@
             <div class="item item-divider">
                 Notes de piano
             </div>
-            <ion-radio ng-repeat="son in sons_piano" ng-click="setSons($index)" ng-model="rangSons" ng-value="{{$index}}">
+            <ion-radio ng-repeat="son in sons_piano" ng-click="setSons($index , 1)" ng-model="rangSons" ng-value="{{$index}}">
                 {{son.nom}}
             </ion-radio>
             <div class="item item-divider">
                 Animaux
             </div>
-            <ion-radio ng-repeat="son in sons_animaux" ng-click="setSons($index + sons_piano.length)" ng-model="rangSons" ng-value="{{$index + sons_piano.length}}">
+            <ion-radio ng-repeat="son in sons_animaux" ng-click="setSons($index + sons_piano.length, 1)" ng-model="rangSons" ng-value="{{$index + sons_piano.length}}">
                 {{son.nom}}
             </ion-radio>
         </ul>

@@ -1,14 +1,14 @@
-<ion-view view-title="Configuration de la partie">
+<ion-view view-title="Configuration de la partie" hide-nav-bar="true">
     <ion-content ng-controller="jeux-config">
         <div class="list card">
-            <div class="item item-divider center">Joueurs</div>
+            <div class="item item-positive item-divider center">Options</div>
             <div class="item center">
                 <div class="row row-top">
                     <div class="col col-config" ng-click="clicJoueurMoins(0)">
                         <span class="ion-chevron-left padding-right"></span>
                     </div>
                     <div class="col col-config-mid">
-                        <h2>Joueur du haut</h2>
+                        <h2>Adversaire</h2>
                         <p>{{joueurs[joueurHaut]}}</p>
                     </div>
                     <div class="col col-config" ng-click="clicJoueurPlus(0)">
@@ -16,23 +16,6 @@
                     </div>
                 </div>
             </div>
-            <div class="item center">
-                <div class="row row-top">
-                    <div class="col col-config" ng-click="clicJoueurMoins(1)">
-                        <span class="ion-chevron-left padding-right"></span>
-                    </div>
-                    <div class="col col-config-mid">
-                        <h2>Joueur du Bas</h2>
-                        <p>{{joueurs[joueurBas]}}</p>
-                    </div>
-                    <div class="col col-config" ng-click="clicJoueurPlus(1)">
-                        <span class="ion-chevron-right padding-left"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="list card">
-            <div class="item item-divider center">Partie</div>
             <div class="item center">
                 <div class="row row-top">
                     <div class="col col-config" ng-click="clicPointsMoins()">
@@ -64,6 +47,9 @@
         </div>
         <div class="buttonPlay">
             <a class="button button-block button button-positive" ng-href="{{url}}">Lancer</a>
+        </div>
+        <div class="buttonPlay">
+            <a class="button button-block button button-positive" ui-sref="jeux">Retour</a>
         </div>
     </ion-content>
 </ion-view>

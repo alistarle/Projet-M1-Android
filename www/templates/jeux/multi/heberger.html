@@ -1,29 +1,59 @@
 <ion-view view-title="Heberger une partie" ng-controller="serveur-controller">
     <ion-content>
-		<div id="ipaddrs" class="list">
-		  <div class="item item-divider">
-		    Votre adresse
-		  </div>
-		</div>
-		<div class="list">
-		  <div class="item item-divider">
-		    Joueurs dans le lobby
-		  </div>
-      <div id="hasJoined">
+      <div id="ipaddrs" class="list">
+        <div class="item item-divider">
+          Votre adresse
+        </div>
       </div>
-		</div>
-    <button id="launchGame" class="button button-block button-positive" disabled>
-      Lancer la partie
-    </button>
-		<div class="card">
-		  <div class="item item-divider">
-		  	<i id="clrbtn" class="icon ion-trash-b"></i>
-		    Logs JXCore
-		  </div>
-		  <div id="logs" class="item item-text-wrap">
+      <div class="list">
+        <div class="item item-divider">
+          Joueurs dans le lobby
+        </div>
+        <div id="hasJoined">
+        </div>
+      </div>
+      <div class="list card">
+        <div class="item item-divider center">Partie</div>
+        <div class="item center">
+          <div class="row row-top">
+            <div class="col col-config" ng-click="clicPointsMoins()">
+              <span class="ion-chevron-left padding-right"></span>
+            </div>
+            <div class="col col-config-mid">
+              <h2>Nombre de points</h2>
+              <p>{{nbPoints}}</p>
+            </div>
+            <div class="col col-config" ng-click="clicPointsPlus()">
+              <span class="ion-chevron-right padding-left"></span>
+            </div>
+          </div>
+        </div>
+        <div class="item center">
+          <div class="row row-top">
+            <div class="col col-config" ng-click="clicModeMoins()">
+              <span class="ion-chevron-left padding-right"></span>
+            </div>
+            <div class="col col-config-mid">
+              <h2>Mode de jeux</h2>
+              <p>{{modes[mode]}}</p>
+            </div>
+            <div class="col col-config" ng-click="clicModePlus()">
+              <span class="ion-chevron-right padding-left"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="launchGame" class="button button-block button-positive" disabled>
+        Lancer la partie
+      </button>
+      <div class="card">
+        <div class="item item-divider">
+          <i id="clrbtn" class="icon ion-trash-b"></i>
+          Logs JXCore
+        </div>
+        <div id="logs" class="item item-text-wrap">
 
+        </div>
       </div>
-		</div>
-      <div id="gameArea"></div>
     </ion-content>
 </ion-view>
