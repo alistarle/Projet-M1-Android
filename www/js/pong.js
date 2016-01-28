@@ -8,6 +8,7 @@ function Pong(mode, nbPoints) {
     this.isHost;
     this.otherPlayers = [];
 
+    this.joueurHautNom = "Ordinateur";
     //Variables parties
     if (mode < 3) {
         this.difficulte = mode;
@@ -17,6 +18,7 @@ function Pong(mode, nbPoints) {
         }
     } else if (mode == 3) {
         this.multiLocal = true;
+        this.joueurHautNom = "visiteur";
         this.pointers = [];
     } else {
         this.multiplayer = true;
@@ -26,9 +28,11 @@ function Pong(mode, nbPoints) {
     }
     this.nbPoints = nbPoints;
 
-    console.log("Difficulte : " + this.difficulte);
-    console.log("Multilocal : " + this.multiLocal);
-    console.log("Nb points : " + this.nbPoints);
+    if (this.debug) {
+        console.log("Difficulte : " + this.difficulte);
+        console.log("Multilocal : " + this.multiLocal);
+        console.log("Nb points : " + this.nbPoints);
+    }
 
     //variable de coordonees
     this.Y = 1000;
@@ -387,7 +391,7 @@ Pong.prototype.goalBot = function() {
 
 Pong.prototype.updateScore = function() {
     //refresh affichage du score
-    var opponentName = (this.multiplayer) ? this.otherPlayers[0].name : "computer";
+    var opponentName = (this.multiplayer) ? this.otherPlayers[0].name : this.joueurHautNom;
     this.scoreText.setText(this.pseudo + " " + this.scorePlayer.toString() + " : " + this.scoreComputer.toString() + " " + opponentName);
 }
 

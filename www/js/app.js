@@ -701,6 +701,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         } else {
             $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?nbPoints=" + $scope.nbPoints;
         }
+        console.log($scope.url);
     }
 
     $scope.clicJoueurMoins = function(pos) {
@@ -778,6 +779,13 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     });
     $stateProvider.state('home', {
         url: '/home',
+        nativeTransitionsBack: {
+            "type": "fade",
+            "direction": "left"
+        },
+        nativeTransitions: {
+            "type": "fade"
+        },
         templateUrl: 'templates/home.html'
     })
     $stateProvider.state('jeux', {
