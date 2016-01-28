@@ -3,7 +3,7 @@
  */
 var socketIO, listPlayers = [];
 
-var maxPlayer = 2;
+var maxPlayer = 4;
 var minPlayer = 2;
 var idHost;
 
@@ -69,8 +69,8 @@ function onClientConnected(client){
     client.broadcast.emit('SERVER_BALL_RELEASE');
   }
 
-  function onNotifyGoal() {
-    client.broadcast.emit('SERVER_GOAL');
+  function onNotifyGoal(score) {
+    client.broadcast.emit('SERVER_GOAL',{player1 : score.player2, player2 : score.player1 });
   }
 
   function onNotifyPlayerMovement(movementInfo){
@@ -83,10 +83,10 @@ function onClientConnected(client){
     }
   }
 
-  function onNotifyLaunch() {
+  function onNotifyLaunch(gameInfo) {
     status = "PLAYING";
     if(client.id == idHost) {
-      socketIO.emit('SERVER_LAUNCH'); //Broadcast to all include sender
+      socketIO.emit('SERVER_LAUNCH',gameInfo); //Broadcast to all include sender
       //client.broadcast.emit('SERVER_LAUNCH');
       //client.broadcast.to(idHost).emit("SERVER_LAUNCH")
     }
