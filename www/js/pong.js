@@ -43,9 +43,9 @@ function Pong(mode, nbPoints) {
     this.game;
 
     //couleurs
-    this.BallColor = 0xff0000;
+    this.BallColor = optionsGetCouleurBarre();
     this.BetPlayer1Color = optionsGetCouleurBarre();
-    this.BetPlayer2Color = 0xff0000;
+    this.BetPlayer2Color = optionsGetCouleurBarreHaut();
     this.backgroundColor = 0xffffff;
 
     this.endGame = false;
