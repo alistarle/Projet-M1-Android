@@ -10,14 +10,15 @@ function Pong(mode, nbPoints) {
 
     this.joueurHautNom = "Ordinateur";
     //Variables parties
-    if(this instanceof UnderAttackedPong){
-        //this.difficulte=4;
-    }
     if (mode < 3) {
         this.difficulte = mode;
         this.multiLocal = false;
-        if ((mode == 2) && ((this instanceof LarryPong) || (this instanceof FlappyPong))) {
-            this.difficulte = 3;
+        if ((mode == 2) && ((this instanceof LarryPong) || (this instanceof FlappyPong))||(this instanceof UnderAttackedPong)) {
+            if(this instanceof UnderAttackedPong){
+                this.difficulte=4;
+            }else{
+                this.difficulte = 3;
+            }
         }
     } else if (mode == 3) {
         this.multiLocal = true;
@@ -36,7 +37,6 @@ function Pong(mode, nbPoints) {
         console.log("Multilocal : " + this.multiLocal);
         console.log("Nb points : " + this.nbPoints);
     }
-
     //variable de coordonees
     this.Y = 1000;
     this.modeControle = optionsGetModeControle();
@@ -522,11 +522,12 @@ Pong.prototype.update = function() {
 }
 
 Pong.prototype.ia = function() {
+    console.log("ia : "+this.difficulte);
     var iaSpeed =1;
     if (this.difficulte == 1) {
         iaSpeed=1.5;
     }
-    if(this.difficulte=3){
+    if(this.difficulte==3){
         iaSpeed=2;
     }
     if (this.difficulte == 2) {
