@@ -50,5 +50,5 @@ Ogre.prototype.getSpeed = function(){
 }
 
 Ogre.prototype.getScore = function(){
-	return 8;
+	return 20;
 }

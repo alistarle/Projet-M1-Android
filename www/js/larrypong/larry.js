@@ -2,7 +2,7 @@ function LarryHead(larrypong, tile) {
     this.larrypong = larrypong;
     this.game = larrypong.game;
     this.playground = this.larrypong.playground;
-    this.self = this.game.add.sprite(tile.x, tile.y, 'larryhead');
+    this.self = this.game.add.sprite(tile.centerX, tile.centerY, 'larryhead');
     this.self.self = this;
 
     this.larrybody = [];
@@ -115,7 +115,10 @@ LarryHead.prototype.update = function() {
 
     for (var i = 0; i < this.playground.numberWidthCase; i++) {
         for (var j = 0; j < this.playground.numberHeightCase; j++) {
-            this.game.physics.arcade.collide(
+            if(this.playground.get(i,j).contains(this.self.x,this.self.y)){
+                this.setCurrentTile(this.playground.get(i,j));
+            }
+       /*     this.game.physics.arcade.collide(
                 this.self, this.playground.get(i, j),
                 function() {
                 },
@@ -123,7 +126,7 @@ LarryHead.prototype.update = function() {
                     larry.self.setCurrentTile(tile);
                     return false;
                 }, this);
-
+*/
         }
     }
 
@@ -304,12 +307,15 @@ LarryBody.prototype.update = function() {
         },
         function(larry, ball) {
             larry.self.remove();
-            return false;
+            return true;
         }, this);
 
     for (var i = 0; i < this.playground.numberWidthCase; i++) {
         for (var j = 0; j < this.playground.numberHeightCase; j++) {
-            this.game.physics.arcade.collide(
+            if(this.playground.get(i,j).contains(this.self.x,this.self.y)){
+                this.tileCurrent =this.playground.get(i,j);
+            }
+            /*this.game.physics.arcade.collide(
                 this.self, this.playground.get(i, j),
                 function() {
                 },
@@ -317,7 +323,7 @@ LarryBody.prototype.update = function() {
                     larry.self.tileCurrent = tile;
                     return false;
                 }, this);
-
+*/
         }
     }
 }

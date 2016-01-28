@@ -28,5 +28,5 @@ Grunt.prototype.getSpeed = function(){
 	return 200;
 }
 Grunt.prototype.getScore = function(){
-	return 6;
+	return 12;
 }

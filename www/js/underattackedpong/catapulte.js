@@ -44,7 +44,7 @@ Catapulte.prototype.getDamage = function(){
 	return 10;
 }
 Catapulte.prototype.getScore = function(){
-	return 10;
+	return 20;
 }
 Catapulte.prototype.shoot = function(){
 	this.stop();
