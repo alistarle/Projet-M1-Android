@@ -28,9 +28,9 @@ function Potion(larrypong){
 
 
 Potion.prototype.placement = function(){
-	var i = this.game.rnd.integerInRange(0,this.playground.numberWidthCase-1);
-	var j = this.game.rnd.integerInRange(0, this.playground.numberHeightCase-1);
+	var i = this.game.rnd.integerInRange(1,this.playground.numberWidthCase-2);
+	var j = this.game.rnd.integerInRange(1, this.playground.numberHeightCase-2);
 	this.tileCurrent = this.playground.get(i,j);
-	this.self.x = this.tileCurrent.x;
-	this.self.y = this.tileCurrent.y;
+	this.self.x = this.tileCurrent.centerX;
+	this.self.y = this.tileCurrent.centerY;
 }

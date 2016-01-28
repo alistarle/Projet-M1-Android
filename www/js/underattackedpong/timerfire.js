@@ -1,6 +1,6 @@
 function TimerFire(pong,rate){
 	Timer.call(this, pong,rate);
-	this.speedCannonBall = 700;
+	this.speedCannonBall = 900;
 }
 
 TimerFire.prototype = Object.create(Timer.prototype);
@@ -17,7 +17,7 @@ TimerFire.prototype.createCannonBall = function(x,y,velocityY,player){
     cannonBall.tint = 0x000000;
     this.game.physics.arcade.enable(cannonBall);
     cannonBall.body.width = (cannonBall.width * 3)/ 5;
-    cannonBall.body.height = (cannonBall.height * 2) / 5;
+    cannonBall.body.height = (cannonBall.height * 4) / 5;
     cannonBall.body.velocity.y = velocityY;
     cannonBall.pong = this.pong;
     cannonBall.player = player;

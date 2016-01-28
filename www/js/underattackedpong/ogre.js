@@ -46,9 +46,9 @@ Ogre.prototype.getHealth = function(){
 }
 
 Ogre.prototype.getSpeed = function(){
-	return 400;
+	return 550;
 }
 
 Ogre.prototype.getScore = function(){
-	return 8;
+	return 20;
 }

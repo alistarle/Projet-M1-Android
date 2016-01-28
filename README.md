@@ -75,5 +75,7 @@ ionic run android
 # Plugins Cordova à installer
 ```
 cordova plugin add cordova-plugin-statusbar
+ionic plugin add https://github.com/Telerik-Verified-Plugins/NativePageTransitions#0.5.5
+
 ```
 

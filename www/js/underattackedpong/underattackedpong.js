@@ -15,6 +15,7 @@ function UnderAttackedPong(mode,nbPoints){
 
 	this.explosionRadius = 350;
 	this.explosionRadiusEnnemy = 125;
+	this.frameCount = 0;
 }
 
 UnderAttackedPong.prototype = $.extend(true, {}, Pong.prototype);  
@@ -32,26 +33,32 @@ UnderAttackedPong.prototype.preload = function(){
 	this.game.load.spritesheet('ogre', 'assets/ogre2.png',73,73);
 	this.game.load.spritesheet('catapulte', 'assets/catapulte.png',68,68);
 	this.game.load.image('tile', 'assets/tileW2.png');
+	//debugger;
+	//this.game.load.tileSprite('tileTexture', 'assets/tileW2.png');
 	this.game.load.spritesheet('explosion', 'assets/explosion.png',480/5,288/3);
 
 }
 
 UnderAttackedPong.prototype.render = function(){
+	/*this.game.debug.body(this.computerBet);
+	this.game.debug.body(this.playerBet);*/
+
 	/*console.log("RENDER");
 
 	this.runners.forEach(function(e,i,a){
 		this.game.debug.body(e)
-	},this);
-	this.cannonBalls.forEach(function(e,i,a){
+	},this);*/
+	/*this.cannonBalls.forEach(function(e,i,a){
 		this.game.debug.body(e)
-	},this);
-
+	},this);*/
+/*
 	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
 			this.game.debug.body(this.playground.get(i,j));
 		}
 	}
 	*/
+
 
 }
 
@@ -110,48 +117,54 @@ UnderAttackedPong.prototype.create = function(){
 	
 
 	this.playground = new UnderAttackedPlayground(this);
-	this.timers.push(new TimerFire(this,1250));
-	this.timers.push(new TimerCatapulte(this,15000));
-	this.timers.push(new TimerPeon(this,3000));
-	this.timers.push(new TimerGrunt(this,2000));
+	this.timers.push(new TimerFire(this,1000));
+	this.timers.push(new TimerPeon(this,5000));
+	this.timers[1].accum= 6000;
+	this.timers.push(new TimerCatapulte(this,40000));
+	this.timers.push(new TimerGrunt(this,8500));
+	this.timers.push(new TimerAxeman(this,12000));
+	this.timers.push(new TimerOgre(this,19000));
 	/*this.timers.push(new TimerGrunt(this,2000));
 	this.timers.push(new TimerGrunt(this,7000));
 
 	this.timers.push(new TimerPeon(this,4000));
 	this.timers.push(new TimerPeon(this,6500));
 
-	this.timers.push(new TimerAxeman(this,2500));
-
-	this.timers.push(new TimerOgre(this,10000));*/
-	this.timers[1].accum = 10000;
+	*/
 	this.updateScore();
 
 }
 
 UnderAttackedPong.prototype.update = function(){
 	this.super.update.call(this);
+	
 	this.testOutOfBounds();
 	this.testCollision();
 	this.timers.forEach(function(e,i,a){
 		e.update();
 	},this);
-
 	this.runners.forEach(function(e,a){
 		e.update();
-
 	},this);
-	this.updateScore();
-	this.checkWin();
+	
+	if(this.frameCount % 3 == 1){
+		this.updateScore();
+		this.checkWin();
+	}
+
+	this.frameCount++;
+	if(this.frameCount > 3)
+		this.frameCount = 0;
 }
 
 
 
 UnderAttackedPong.prototype.checkWin = function(){
-	if(this.point1 > this.pointWin){
+	if(this.point1 >= this.pointWin){
 	    this.scorePlayer++;
 		this.reinitGame();
 	}
-	else if(this.point2 > this.pointWin){
+	else if(this.point2 >= this.pointWin){
 		this.scoreComputer++;
 		this.reinitGame();
 	}
@@ -237,18 +250,22 @@ UnderAttackedPong.prototype.reinitGame = function() {
 
 
 UnderAttackedPong.prototype.testOutOfBounds = function(){
-	this.runners.forEach(function(e,a){
-		if(this.isOutOfBounds(e)){
-			this.removeRunner(e);
-			e.destroy();
-		}
-	},this);
-	this.cannonBalls.forEach(function(e,a){
-		if(this.isOutOfBounds(e)){
-			this.removeCannonBall(e);
-			e.destroy();
-		}
-	},this);
+	if(this.frameCount % 2==0){
+		this.runners.forEach(function(e,a){
+			if(this.isOutOfBounds(e)){
+				this.removeRunner(e);
+				e.destroy();
+			}
+		},this);
+	}	
+	else{
+		this.cannonBalls.forEach(function(e,a){
+			if(this.isOutOfBounds(e)){
+				this.removeCannonBall(e);
+				e.destroy();
+			}
+		},this);
+	}
 }
 
 UnderAttackedPong.prototype.isOutOfBounds = function(sprite){
@@ -269,60 +286,64 @@ UnderAttackedPong.prototype.isOutOfBounds = function(sprite){
 
 
 UnderAttackedPong.prototype.testCollision = function(){
-	for(var j = 0 ; j < this.cannonBalls.length ; j++){
-		for(var i = 0 ; i < this.runners.length ; i++){
-			//test runner hit
-			this.game.physics.arcade.collide(this.cannonBalls[j], this.runners[i], function(cannonBall,runner) {
+		for(var j = 0 ; j < this.cannonBalls.length ; j++){
+			if(this.frameCount%3==2){
+				for(var i = 0 ; i < this.runners.length ; i++){
+					//test runner hit
+					this.game.physics.arcade.collide(this.cannonBalls[j], this.runners[i], function(cannonBall,runner) {
 
-		    }, function(cannonBall, runner) {
-		      if(runner.isAlive()){
-		      	runner.pong.createExplosion(cannonBall,runner.pong.explosionRadius);
-		      	runner.takeDamage();
-		      	if(!runner.isAlive()){
-					runner.pong.kill(cannonBall.player,runner.score);
-		      	}
-		      	runner.pong.removeCannonBall(cannonBall);
-		      	cannonBall.destroy();
-		      }
-		      
-		      return false;
-			});
+				    }, function(cannonBall, runner) {
+				      if(runner.isAlive()){
+				      	runner.pong.createExplosion(cannonBall,runner.pong.explosionRadius);
+				      	runner.takeDamage();
+				      	if(!runner.isAlive()){
+							runner.pong.kill(cannonBall.player,runner.score);
+				      	}
+				      	runner.pong.removeCannonBall(cannonBall);
+				      	cannonBall.destroy();
+				      }
+				      
+				      return false;
+					});
+				}
+			}
+			//test player hit
+				if(this.cannonBalls[j] != undefined){
+					this.game.physics.arcade.collide(this.cannonBalls[j], this.playerBet, function(cannonBall,player) {
+						cannonBall.pong.createExplosion(cannonBall,cannonBall.pong.explosionRadius);
+						cannonBall.pong.playerHitByCannonBall(player,20);
+						cannonBall.pong.removeCannonBall(cannonBall);
+						cannonBall.pong.point2 += 25;
+						cannonBall.destroy();
+					});
+					this.game.physics.arcade.collide(this.cannonBalls[j], this.computerBet, function(cannonBall,player) {
+						cannonBall.pong.createExplosion(cannonBall,cannonBall.pong.explosionRadius);
+						cannonBall.pong.playerHitByCannonBall(player,20);
+						cannonBall.pong.removeCannonBall(cannonBall);
+						cannonBall.pong.point1 += 25;
+						cannonBall.destroy();
+					});
+				}
+			
 		}
 
-		//test player hit
-		if(this.cannonBalls[j] != undefined){
-			this.game.physics.arcade.collide(this.cannonBalls[j], this.playerBet, function(cannonBall,player) {
-				cannonBall.pong.createExplosion(cannonBall,cannonBall.pong.explosionRadius);
-				cannonBall.pong.playerHitByCannonBall(player,20);
-				cannonBall.pong.removeCannonBall(cannonBall);
-				cannonBall.destroy();
-			});
-			this.game.physics.arcade.collide(this.cannonBalls[j], this.computerBet, function(cannonBall,player) {
-				cannonBall.pong.createExplosion(cannonBall,cannonBall.pong.explosionRadius);
-				cannonBall.pong.playerHitByCannonBall(player,20);
-				cannonBall.pong.removeCannonBall(cannonBall);
-				cannonBall.destroy();
-			});
-		}
-	}
+	
+		this.ennemyProj.forEach(function(e,i,a){
+			this.game.physics.arcade.collide(e, this.computerBet, function(proj,player) {
+					proj.pong.createExplosion(proj,100);
+					proj.pong.playerHitByCannonBall(player,proj.damage);
+					proj.pong.removeEnnemyProj(proj);
+					proj.destroy();
+				});
+			this.game.physics.arcade.collide(e, this.playerBet, function(proj,player) {
+					proj.pong.createExplosion(proj,100);
+					proj.pong.playerHitByCannonBall(player,proj.damage);
+					proj.pong.removeEnnemyProj(proj);
+					proj.destroy();
+				});
 
-
-	this.ennemyProj.forEach(function(e,i,a){
-		this.game.physics.arcade.collide(e, this.computerBet, function(proj,player) {
-				proj.pong.createExplosion(proj,100);
-				proj.pong.playerHitByCannonBall(player,proj.damage);
-				proj.pong.removeEnnemyProj(proj);
-				proj.destroy();
-			});
-		this.game.physics.arcade.collide(e, this.playerBet, function(proj,player) {
-				proj.pong.createExplosion(proj,100);
-				proj.pong.playerHitByCannonBall(player,proj.damage);
-				proj.pong.removeEnnemyProj(proj);
-				proj.destroy();
-			});
-
-	},this);
-
+		},this);
+	
 }
 
 UnderAttackedPong.prototype.kill = function(player,score){

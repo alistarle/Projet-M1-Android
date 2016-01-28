@@ -57,13 +57,14 @@ LarryPong.prototype.render = function(){
 	//this.game.debug.body(this.ball);
 
 	this.numberWidthCase = 6;
-	this.numberHeightCase = 6;
-	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
+	this.numberHeightCase = 6;*/
+	/*for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
 		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
-			this.game.debug.body(this.playground.get(i,j));
+			//this.game.debug.geom( this.playground.get(i,j), 'rgba(255,0,0,1)' ) ;
+			//this.game.debug.body(this.playground.get(i,j));
 		}
-	}*/
-
+	}
+	this.game.debug.geom(this.larrys[0].tileCurrent);*/
 }
 
 LarryPong.prototype.pushLarry = function(larry){
@@ -84,9 +85,9 @@ LarryPong.prototype.update = function(){
 		this.ball.y=this.game.world.centerY;
 	}
 	
-    if(this.ball.body.velocity.y < 100 && this.ball.body.velocity.y >= 0 && this.ballReleased)
+    if(this.ball.body.velocity.y < 250 && this.ball.body.velocity.y >= 0 && this.ballReleased)
         this.ball.body.velocity.y++;
-    if(this.ball.body.velocity.y > -100 && this.ball.body.velocity.y <= 0 && this.ballReleased)
+    if(this.ball.body.velocity.y > -250 && this.ball.body.velocity.y <= 0 && this.ballReleased)
         this.ball.body.velocity.y--;
 }
 

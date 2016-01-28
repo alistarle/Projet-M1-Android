@@ -32,8 +32,8 @@ Peon.prototype.getHealth = function(){
 }
 
 Peon.prototype.getSpeed = function(){
-	return 250;
+	return 300;
 }
 Peon.prototype.getScore = function(){
-	return 1;
+	return 3;
 }

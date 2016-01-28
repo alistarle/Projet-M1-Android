@@ -25,8 +25,8 @@ Grunt.prototype.getHealth = function(){
 }
 
 Grunt.prototype.getSpeed = function(){
-	return 175;
+	return 200;
 }
 Grunt.prototype.getScore = function(){
-	return 6;
+	return 12;
 }

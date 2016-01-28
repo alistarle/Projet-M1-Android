@@ -1,24 +1,20 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
 var pong;
 
-angular.module('starter', ['ionic'])
-    .run(function($ionicPlatform) {
-        $ionicPlatform.ready(function() {
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
-            if (window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            }
-            if (window.StatusBar) {
-                StatusBar.styleDefault();
-            }
-        });
-        ionic.Platform.fullScreen(true, false);
-    })
+angular.module('starter', ['ionic', 'ionic-native-transitions'])
+
+.run(function($ionicPlatform) {
+    $ionicPlatform.ready(function() {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
+    ionic.Platform.fullScreen(true, false);
+})
 
 .controller('MainCtrl', function($scope, $ionicHistory, $timeout) {
     $scope.modesControle = [{
@@ -85,6 +81,37 @@ angular.module('starter', ['ionic'])
         fichier: "assets/sound/chat.wav"
     }];
 
+    $scope.helps = [{
+        titre: "Normal",
+        description: "Jeux de pong basique."
+    }, {
+        titre: "FlappyPong",
+        description: "Pong basique et la balle devient un FlappyBird."
+    }, {
+        titre: "MultiPong",
+        description: "Pong basique mais il y a plusieurs balles sur le plateau."
+    }, {
+        titre: "LarryPong",
+        description: "Pong basique mais il y a un obstacle, un serpent voulant grandir et qui peut se diviser."
+    }, {
+        titre: "FakeBallsPong",
+        description: "Une seule balle est vraie. Arriverez vous à la suivre ?"
+    }, {
+        titre: "UnderAttackedPong",
+        description: "Le but est de tirer sur les monstres et d'esquiver les tirs ennemies."
+    }, {
+        titre: "Mode de contrôle",
+        description: "Permet de choisir entre le gyroscope et le tactile pour contrôler sa raquette en solo."
+    }, {
+        titre: "Personnalisation du son",
+        description: "Permet de changer le son qui sera joué à chaque rebond de la balle sur les raquettes."
+    }, {
+        titre: "Personnalisation de la barre",
+        description: "Permet de changer la couleur de sa barre."
+    }, {
+        titre: "Multijoueur local",
+        description: "Il suffit de choisir joueur contre joueur dans le menu de création de partie. Le joueur du haut aura la partie haute de l'écran pour jouer, le joueur du bas la partie basse."
+    }]
 
     $scope.getSons = function(type) {
         var listeSons = [];
@@ -105,7 +132,6 @@ angular.module('starter', ['ionic'])
 
 
     $scope.setSons = function(rang) {
-        console.log('appel');
         $scope.rangSons = rang;
         $scope.sonsSelec = $scope.sons[rang].fichier;
         $scope.nomSonsSelec = $scope.sons[parseInt($scope.rangSons)].nom;
@@ -117,7 +143,6 @@ angular.module('starter', ['ionic'])
         setTimeout(function() {
             $scope.playSons();
         }, 100);
-
     }
 
     $scope.playSons = function() {
@@ -557,6 +582,7 @@ angular.module('starter', ['ionic'])
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicHistory.clearHistory();
         $scope.gagnant = $stateParams.gagnant;
+        $scope.solo = $stateParams.solo;
 
         $ionicHistory.nextViewOptions({
             disableAnimate: false,
@@ -637,99 +663,99 @@ angular.module('starter', ['ionic'])
 })
 
 .controller('fakeballs-multilocal', function($scope, $ionicLoading, $stateParams) {
-    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
-        $ionicLoading.show({
-            template: 'Chargement...'
+        $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+            $ionicLoading.show({
+                template: 'Chargement...'
+            });
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var nbPoints = $stateParams.nbPoints;
-        pong = new FakeBallsPong(3, nbPoints);
+        $scope.$parent.$parent.$on("$ionicView.enter", function() {
+            var nbPoints = $stateParams.nbPoints;
+            pong = new FakeBallsPong(3, nbPoints);
 
-        function create() {
-            pong.create();
-        }
+            function create() {
+                pong.create();
+            }
 
-        function preload() {
-            pong.preload();
-        }
+            function preload() {
+                pong.preload();
+            }
 
-        function update() {
-            pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-    });
-    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.hide();
-    });
-    $scope.$parent.$parent.$on("$ionicView.leave", function() {
-        pong.game.destroy();
-    });
-})
-.controller('underattackedpong-multilocal', function($scope, $ionicLoading, $stateParams) {
-    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
-        $ionicLoading.show({
-            template: 'Chargement...'
+            function update() {
+                pong.update();
+            }
+            pong.init(create, preload, update, 'gameArea');
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var nbPoints = $stateParams.nbPoints;
-        pong = new UnderAttackedPong(3, nbPoints);
-
-        function create() {
-            pong.create();
-        }
-
-        function preload() {
-            pong.preload();
-        }
-
-        function update() {
-            pong.update();
-        }
-
-        function render() {
-            pong.render();
-        }
-        pong.init(create, preload, update, 'gameArea', render);
-    });
-    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.hide();
-    });
-    $scope.$parent.$parent.$on("$ionicView.leave", function() {
-        pong.game.destroy();
-    });
-})
-.controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
-    $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
-        $ionicLoading.show({
-            template: 'Chargement...'
+        $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.hide();
         });
-    });
-    $scope.$parent.$parent.$on("$ionicView.enter", function() {
-        var nbPoints = $stateParams.nbPoints;
-        pong = new MultiPong(3, nbPoints);
+        $scope.$parent.$parent.$on("$ionicView.leave", function() {
+            pong.game.destroy();
+        });
+    })
+    .controller('underattackedpong-multilocal', function($scope, $ionicLoading, $stateParams) {
+        $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+            $ionicLoading.show({
+                template: 'Chargement...'
+            });
+        });
+        $scope.$parent.$parent.$on("$ionicView.enter", function() {
+            var nbPoints = $stateParams.nbPoints;
+            pong = new UnderAttackedPong(3, nbPoints);
 
-        function create() {
-            pong.create();
-        }
+            function create() {
+                pong.create();
+            }
 
-        function preload() {
-            pong.preload();
-        }
+            function preload() {
+                pong.preload();
+            }
 
-        function update() {
-            pong.update();
-        }
-        pong.init(create, preload, update, 'gameArea');
-    });
-    $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
-        $ionicLoading.hide();
-    });
-    $scope.$parent.$parent.$on("$ionicView.leave", function() {
-        pong.game.destroy();
-    });
-})
+            function update() {
+                pong.update();
+            }
+
+            function render() {
+                pong.render();
+            }
+            pong.init(create, preload, update, 'gameArea', render);
+        });
+        $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.hide();
+        });
+        $scope.$parent.$parent.$on("$ionicView.leave", function() {
+            pong.game.destroy();
+        });
+    })
+    .controller('multipong-multilocal', function($scope, $ionicLoading, $stateParams) {
+        $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
+            $ionicLoading.show({
+                template: 'Chargement...'
+            });
+        });
+        $scope.$parent.$parent.$on("$ionicView.enter", function() {
+            var nbPoints = $stateParams.nbPoints;
+            pong = new MultiPong(3, nbPoints);
+
+            function create() {
+                pong.create();
+            }
+
+            function preload() {
+                pong.preload();
+            }
+
+            function update() {
+                pong.update();
+            }
+            pong.init(create, preload, update, 'gameArea');
+        });
+        $scope.$parent.$parent.$on("$ionicView.afterEnter", function() {
+            $ionicLoading.hide();
+        });
+        $scope.$parent.$parent.$on("$ionicView.leave", function() {
+            pong.game.destroy();
+        });
+    })
 
 .controller('jeux-config', function($scope) {
     $scope.modes = ["Normal", "FlappyPong", "MultiPong", "LarryPong", "FakeBallsPong", "UnderAttackedPong"];
@@ -739,7 +765,7 @@ angular.module('starter', ['ionic'])
     $scope.joueurBas = 0;
     $scope.nbPoints = 5;
     $scope.mode = 0;
-
+    var scoreMax = 20;
     $scope.url;
 
     var urlBase = "#/jeux/";
@@ -762,7 +788,6 @@ angular.module('starter', ['ionic'])
         } else {
             $scope.url = urlBase + urlJoueurs[j] + "/" + urlModes[$scope.mode] + "?nbPoints=" + $scope.nbPoints;
         }
-        console.log($scope.url);
     }
 
     $scope.clicJoueurMoins = function(pos) {
@@ -772,10 +797,12 @@ angular.module('starter', ['ionic'])
                 $scope.joueurHaut = $scope.joueurs.length - 1;
             }
         } else if (pos == 1) {
+            /*
             $scope.joueurBas -= 1;
             if ($scope.joueurBas < 0) {
                 $scope.joueurBas = $scope.joueurs.length - 1;
             }
+            */
         }
         constructionUrl();
     }
@@ -786,10 +813,12 @@ angular.module('starter', ['ionic'])
                 $scope.joueurHaut = 0;
             }
         } else if (pos == 1) {
+            /*
             $scope.joueurBas += 1;
             if ($scope.joueurBas >= $scope.joueurs.length) {
                 $scope.joueurBas = 0;
             }
+            */
         }
         constructionUrl();
     }
@@ -797,12 +826,18 @@ angular.module('starter', ['ionic'])
     $scope.clicPointsMoins = function() {
         if ($scope.nbPoints > 1) {
             $scope.nbPoints -= 1;
+        } else {
+            $scope.nbPoints = scoreMax;
         }
         constructionUrl();
     }
 
     $scope.clicPointsPlus = function() {
-        $scope.nbPoints += 1;
+        if ($scope.nbPoints + 1 > scoreMax) {
+            $scope.nbPoints = 1;
+        } else {
+            $scope.nbPoints += 1;
+        }
         constructionUrl();
     }
 
@@ -823,13 +858,20 @@ angular.module('starter', ['ionic'])
     }
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicNativeTransitionsProvider) {
+    $ionicNativeTransitionsProvider.setDefaultTransition({
+        type: 'slide',
+        direction: 'left'
+    });
     $stateProvider.state('home', {
         url: '/home',
         templateUrl: 'templates/home.html'
     })
     $stateProvider.state('jeux', {
         url: '/jeux',
+        nativeTransitions: {
+            "type": "fade"
+        },
         templateUrl: 'templates/jeux.html'
     })
     $stateProvider.state('options', {
@@ -841,21 +883,22 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/about.html'
     })
 
+    $stateProvider.state('help', {
+        url: '/help',
+        templateUrl: 'templates/help.html'
+    })
+
     //Jeux
-    $stateProvider.state('jeux-solo', {
-        url: '/jeux/solo',
-        templateUrl: 'templates/jeux/solo.html'
+    $stateProvider.state('solo-config', {
+        url: '/jeux/solo/config',
+        templateUrl: 'templates/jeux/config.html'
     })
     $stateProvider.state('jeux-multi', {
         url: '/jeux/multi',
         templateUrl: 'templates/jeux/multi.html'
     })
-    $stateProvider.state('jeux-multilocal', {
-        url: '/jeux/multilocal',
-        templateUrl: 'templates/jeux/multilocal.html'
-    })
     $stateProvider.state('jeux-fin', {
-        url: '/jeux/fin?:gagnant',
+        url: '/jeux/fin?:gagnant&:solo',
         templateUrl: 'templates/jeux/fin.html'
     })
 
@@ -935,7 +978,7 @@ angular.module('starter', ['ionic'])
         templateUrl: 'templates/options/sons.html'
     })
 
-
+    //Multijoueur serveur
     $stateProvider.state('jeux-heberger', {
         url: '/jeux/heberger',
         templateUrl: 'templates/jeux/multi/heberger.html'
@@ -953,7 +996,6 @@ angular.module('starter', ['ionic'])
         url: '/jeux/solo/config',
         templateUrl: 'templates/jeux/solo/config.html'
     })
-
 
     $urlRouterProvider.otherwise('/home')
 })

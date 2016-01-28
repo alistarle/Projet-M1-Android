@@ -7,6 +7,7 @@ function Pong(mode, nbPoints) {
     this.isHost;
     this.ip;
     this.otherPlayerName;
+    this.otherPlayers = [];
 
     //Variables parties
     if (mode < 3) {
@@ -15,7 +16,7 @@ function Pong(mode, nbPoints) {
         if ((mode == 2) && ((this instanceof LarryPong) || (this instanceof FlappyPong))) {
             this.difficulte = 1;
         }
-    } else if(mode == 3) {
+    } else if (mode == 3) {
         this.multiLocal = true;
         this.pointers = [];
     } else {
@@ -274,7 +275,7 @@ Pong.prototype.releaseBall = function() {
     }
 
     if (this.multiplayer) {
-      NetworkManager.notifyReleaseBall();
+        NetworkManager.notifyReleaseBall();
     }
 }
 
@@ -312,15 +313,25 @@ Pong.prototype.checkIfGoal = function() {
 
 Pong.prototype.checkWin = function() {
     if (!this.endGame) {
-        if (this.scorePlayer >= this.nbPoints) {
-            console.log("you win");
-            window.location = "#/jeux/fin?gagnant=0";
-            this.endGame = true;
-        } else {
-            if (this.scoreComputer >= this.nbPoints) {
-                console.log("you loose");
-                window.location = "#/jeux/fin?gagnant=1";
+        if (!this.multiLocal) {
+            if (this.scorePlayer >= this.nbPoints) {
+                window.location = "#/jeux/fin?gagnant=0&solo=1";
                 this.endGame = true;
+            } else {
+                if (this.scoreComputer >= this.nbPoints) {
+                    window.location = "#/jeux/fin?gagnant=1&solo=1";
+                    this.endGame = true;
+                }
+            }
+        } else {
+            if (this.scorePlayer >= this.nbPoints) {
+                window.location = "#/jeux/fin?gagnant=0&solo=0";
+                this.endGame = true;
+            } else {
+                if (this.scoreComputer >= this.nbPoints) {
+                    window.location = "#/jeux/fin?gagnant=1&solo=0";
+                    this.endGame = true;
+                }
             }
         }
     }
@@ -405,6 +416,13 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
 
 Pong.prototype.update = function() {
     this.trail();
+    this.ia();
+    //check des collisions
+    this.collideCheck();
+    this.checkGoal();
+
+    //debugger;;
+    this.fps.setText('Fps : ' + this.game.time.fps.toString());
 
     if (!this.multiLocal) {
         if (this.modeControle == 0) {
@@ -418,81 +436,7 @@ Pong.prototype.update = function() {
                 this.playerBet.x = this.game.width - playerBetHalfWidth;
             }
         }
-        this.ia();
-        //check des collisions
-        this.collideCheck();
-        this.checkGoal();
-
-        if (this.multiplayer) {
-          NetworkManager.notifyMovement({ x: this.playerBet.x });
-          if(this.isHost) NetworkManager.notifyBallMoved({ x: this.ball.x, y: this.ball.y, speedX: this.ball.body.velocity.x, speedY: this.ball.body.velocity.y });
-        }
-
-        //debugger;;
-        this.fps.setText('Fps : ' + this.game.time.fps.toString());
-
-    }
-}
-
-Pong.prototype.ia = function() {
-
-    if (!this.multiplayer) {
-        if (this.difficulte == 0) {
-
-            if (this.ballReleased) {
-                this.emitter.emitParticle();
-            }
-            if (this.computerBet.x - this.ball.x < -15) {
-                this.computerBet.body.velocity.x = this.computerBetSpeed;
-            } else if (this.computerBet.x - this.ball.x > 15) {
-                this.computerBet.body.velocity.x = -this.computerBetSpeed;
-            } else {
-                this.computerBet.body.velocity.x = 0;
-            }
-
-
-
-        } else {
-            if (this.difficulte == 1) {
-                if (this.ballReleased) {
-                    this.emitter.emitParticle();
-                }
-                if (this.computerBet.x - this.ball.x < -15) {
-                    this.computerBet.body.velocity.x = this.computerBetSpeed * 2;
-                } else if (this.computerBet.x - this.ball.x > 15) {
-                    this.computerBet.body.velocity.x = -this.computerBetSpeed * 2;
-                } else {
-                    this.computerBet.body.velocity.x = 0;
-                }
-
-
-
-            } else {
-                if (this.difficulte == 2) {
-
-
-                    if (this.iaBallIsComplete) {
-
-                        if (this.ballReleased) {
-                            this.emitter.emitParticle();
-                        }
-                        if (this.computerBet.x - this.iaBall.x < -15) {
-                            this.computerBet.body.velocity.x = this.computerBetSpeed;
-                        } else if (this.computerBet.x - this.iaBall.x > 15) {
-                            this.computerBet.body.velocity.x = -this.computerBetSpeed;
-                        } else {
-                            this.computerBet.body.velocity.x = 0;
-                        }
-                    } else {
-                        this.computerBet.body.velocity.x = 0;
-                    }
-
-
-                }
-            }
-        }
-
-    }/* else {
+    } else {
         for (var i = 0; i < this.pointers.length; i++) {
             if (this.pointers[i].isDown) {
                 if (this.pointers[i].y >= (this.game.height / 2)) {
@@ -515,11 +459,68 @@ Pong.prototype.ia = function() {
         } else if (this.computerBet.x > this.game.width - playerBetHalfWidth) {
             this.computerBet.x = this.game.width - playerBetHalfWidth;
         }
-    }*/
 
-    //debugger;;
-    //this.fps.setText('Fps : ' + this.game.time.fps.toString());
+    }
+    if (this.multiplayer) {
+        NetworkManager.notifyMovement({
+            x: this.playerBet.x
+        });
+        if (this.isHost) NetworkManager.notifyBallMoved({
+            x: this.ball.x,
+            y: this.ball.y,
+            speedX: this.ball.body.velocity.x,
+            speedY: this.ball.body.velocity.y
+        });
+    }
 
+}
+
+Pong.prototype.ia = function() {
+    if (this.difficulte == 0) {
+
+        if (this.ballReleased) {
+            this.emitter.emitParticle();
+        }
+        if (this.computerBet.x - this.ball.x < -15) {
+            this.computerBet.body.velocity.x = this.computerBetSpeed;
+        } else if (this.computerBet.x - this.ball.x > 15) {
+            this.computerBet.body.velocity.x = -this.computerBetSpeed;
+        } else {
+            this.computerBet.body.velocity.x = 0;
+        }
+
+
+
+    } else {
+        if (this.difficulte == 1) {
+            if (this.ballReleased) {
+                this.emitter.emitParticle();
+            }
+            if (this.computerBet.x - this.ball.x < -15) {
+                this.computerBet.body.velocity.x = this.computerBetSpeed * 2;
+            } else if (this.computerBet.x - this.ball.x > 15) {
+                this.computerBet.body.velocity.x = -this.computerBetSpeed * 2;
+            } else {
+                this.computerBet.body.velocity.x = 0;
+            }
+
+
+
+        } else {
+            if (this.difficulte == 2) {
+                if (this.iaBallIsComplete) {
+
+                    if (this.ballReleased) {
+                        this.emitter.emitParticle();
+                    }
+                    if (this.computerBet.x - this.iaBall.x < -15) {
+                        this.computerBet.body.velocity.x = this.computerBetSpeed;
+                    } else if (this.computerBet.x - this.iaBall.x > 15) {
+                        this.computerBet.body.velocity.x = -this.computerBetSpeed;
+                    } else {
+                        this.computerBet.body.velocity.x = 0;
+                    }
+    }
 }
 Pong.prototype.controllerStuff = function() {
 
