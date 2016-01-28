@@ -260,33 +260,36 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     $scope.$on("$ionicView.beforeEnter", function() {
         initJXCore(lobby);
         $("#launchGame").click(function() {
-          NetworkManager.notifyLaunch({ nbPoints : $scope.nbPoints, mode : $scope.mode});
+            NetworkManager.notifyLaunch({
+                nbPoints: $scope.nbPoints,
+                mode: $scope.mode
+            });
         });
         //NetworkManager.requestPlayerList();
     });
 
     $scope.clicPointsMoins = function() {
-      if ($scope.nbPoints > 1) {
-        $scope.nbPoints -= 1;
-      }
+        if ($scope.nbPoints > 1) {
+            $scope.nbPoints -= 1;
+        }
     }
 
     $scope.clicPointsPlus = function() {
-      $scope.nbPoints += 1;
+        $scope.nbPoints += 1;
     }
 
     $scope.clicModePlus = function() {
-      $scope.mode += 1;
-      if ($scope.mode >= $scope.modes.length) {
-        $scope.mode = 0;
-      }
+        $scope.mode += 1;
+        if ($scope.mode >= $scope.modes.length) {
+            $scope.mode = 0;
+        }
     }
 
     $scope.clicModeMoins = function() {
-      $scope.mode -= 1;
-      if ($scope.mode < 0) {
-        $scope.mode = $scope.modes.length - 1;
-      }
+        $scope.mode -= 1;
+        if ($scope.mode < 0) {
+            $scope.mode = $scope.modes.length - 1;
+        }
     }
 
 })
@@ -296,7 +299,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     $scope.$on("$ionicView.beforeEnter", function() {
         $("#connectToServeur").click(function() {
             var ip = $("#serveurIp").val();
-            lobby.connectToServer(ip,false);
+            lobby.connectToServer(ip, false);
         });
         //NetworkManager.requestPlayerList();
     });
@@ -305,50 +308,50 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
 .controller('multiplayer-game', function($scope, $ionicLoading, $stateParams) {
     $scope.$parent.$parent.$on("$ionicView.beforeEnter", function() {
         $ionicLoading.show({
-          template: 'Chargement...'
+            template: 'Chargement...'
         });
     });
     $scope.$parent.$parent.$on("$ionicView.enter", function() {
         var nbPoints = $stateParams.nbPoints;
         var isHost = $stateParams.host;
         var ip = $stateParams.ip;
-        var mode  = $stateParams.mode;
+        var mode = $stateParams.mode;
         var playerName = $stateParams.playerName;
 
-        switch(mode) {
+        switch (mode) {
             case '0':
-              pong = new Pong(4, nbPoints);
-            break;
-            case '1' :
-              pong = new FlappyPong(4, nbPoints);
-            break;
-            case '2' :
-              pong = new MultiPong(4, nbPoints);
-            break;
-            case '3' :
-              pong = new LarryPong(4, nbPoints);
-            break;
-            case '4' :
-              pong = new FakeBallsPong(4, nbPoints);
-            break;
-            default :
-              pong = new Pong(4, nbPoints);
-            break;
+                pong = new Pong(4, nbPoints);
+                break;
+            case '1':
+                pong = new FlappyPong(4, nbPoints);
+                break;
+            case '2':
+                pong = new MultiPong(4, nbPoints);
+                break;
+            case '3':
+                pong = new LarryPong(4, nbPoints);
+                break;
+            case '4':
+                pong = new FakeBallsPong(4, nbPoints);
+                break;
+            default:
+                pong = new Pong(4, nbPoints);
+                break;
         }
-        pong.connectToServer(ip,isHost);
+        pong.connectToServer(ip, isHost);
         pong.multiplayer = true;
         pong.otherPlayerName = playerName;
 
         function create() {
-          pong.create();
+            pong.create();
         }
 
         function preload() {
-          pong.preload();
+            pong.preload();
         }
 
         function update() {
-          pong.update();
+            pong.update();
         }
         pong.init(create, preload, update, 'gameArea');
     });
@@ -1028,12 +1031,12 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         templateUrl: 'templates/jeux/multi/heberger.html'
     })
     $stateProvider.state('jeux-rejoindre', {
-            url: '/jeux/rejoindre',
-            templateUrl: 'templates/jeux/multi/rejoindre.html'
+        url: '/jeux/rejoindre',
+        templateUrl: 'templates/jeux/multi/rejoindre.html'
     })
     $stateProvider.state('multijoueur-game', {
-            url: '/jeux/multijoueur/game?:nbPoints&:host&:ip&:mode&:playerName',
-            templateUrl: 'templates/jeux/multi/game.html'
+        url: '/jeux/multijoueur/game?:nbPoints&:host&:ip&:mode&:playerName',
+        templateUrl: 'templates/jeux/multi/game.html'
     })
 
     $urlRouterProvider.otherwise('/home')
