@@ -72,9 +72,6 @@ UnderAttackedPong.prototype.createBetTop = function() {
     bet.body.immovable = true;
     bet.tint = this.BetPlayer2Color;
     bet.angle = 180
-    var skin = this.game.add.sprite(-100, -20, 'skinPlayer2');
-
-    bet.addChild(skin);
     return bet;
 }
 
@@ -87,10 +84,6 @@ UnderAttackedPong.prototype.createBetBot = function() {
     bet.body.bounce.setTo(1, 1);
     bet.body.immovable = true;
     bet.tint = this.BetPlayer1Color;
-
-    var skin = this.game.add.sprite(-100, -20, 'skinPlayer1');
-
-    bet.addChild(skin);
     return bet;
 }
 
