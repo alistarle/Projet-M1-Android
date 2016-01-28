@@ -10,11 +10,14 @@ function Pong(mode, nbPoints) {
 
     this.joueurHautNom = "Ordinateur";
     //Variables parties
+    if(this instanceof UnderAttackedPong){
+        //this.difficulte=4;
+    }
     if (mode < 3) {
         this.difficulte = mode;
         this.multiLocal = false;
         if ((mode == 2) && ((this instanceof LarryPong) || (this instanceof FlappyPong))) {
-            this.difficulte = 1;
+            this.difficulte = 3;
         }
     } else if (mode == 3) {
         this.multiLocal = true;
@@ -430,9 +433,9 @@ Pong.prototype.ballHitsBet = function(_ball, _bet) {
     this.colorEmitter(_ball.tint);
     this.emitter.tint
         //gauche
-    if (_ball.x < _bet.x) {
-        diff = _bet.x - _ball.x;
-        _ball.body.velocity.x = (-10 * diff);
+        if (_ball.x < _bet.x) {
+            diff = _bet.x - _ball.x;
+            _ball.body.velocity.x = (-10 * diff);
         //droite
     } else if (_ball.x > _bet.x) {
         diff = _ball.x - _bet.x;
@@ -458,6 +461,10 @@ Pong.prototype.update = function() {
     //check des collisions
     this.collideCheck();
     this.checkGoal();
+
+    if (this.ballReleased) {
+        this.emitter.emitParticle();
+    }
 
     //debugger;;
     this.fps.setText('Fps : ' + this.game.time.fps.toString());
@@ -515,55 +522,42 @@ Pong.prototype.update = function() {
 }
 
 Pong.prototype.ia = function() {
-    if (this.difficulte == 0) {
-
-        if (this.ballReleased) {
-            this.emitter.emitParticle();
-        }
-        if (this.computerBet.x - this.ball.x < -15) {
-            this.computerBet.body.velocity.x = this.computerBetSpeed;
-        } else if (this.computerBet.x - this.ball.x > 15) {
-            this.computerBet.body.velocity.x = -this.computerBetSpeed;
+    var iaSpeed =1;
+    if (this.difficulte == 1) {
+        iaSpeed=1.5;
+    }
+    if(this.difficulte=3){
+        iaSpeed=2;
+    }
+    if (this.difficulte == 2) {
+        if (this.iaBallIsComplete) {
+            if (this.computerBet.x - this.iaBall.x < -15) {
+                this.computerBet.body.velocity.x = this.computerBetSpeed;
+            } else if (this.computerBet.x - this.iaBall.x > 15) {
+                this.computerBet.body.velocity.x = -this.computerBetSpeed;
+            } else {
+                this.computerBet.body.velocity.x = 0;
+            }
         } else {
             this.computerBet.body.velocity.x = 0;
         }
-
-
-
-    } else {
-        if (this.difficulte == 1) {
-            if (this.ballReleased) {
-                this.emitter.emitParticle();
-            }
-            if (this.computerBet.x - this.ball.x < -15) {
-                this.computerBet.body.velocity.x = this.computerBetSpeed * 2;
-            } else if (this.computerBet.x - this.ball.x > 15) {
-                this.computerBet.body.velocity.x = -this.computerBetSpeed * 2;
+    }else{
+        if(this.difficulte==4){
+            if (this.computerBet.x - this.playerBet.x < -15) {
+                this.computerBet.body.velocity.x = this.computerBetSpeed;
+            } else if (this.computerBet.x - this.playerBet.x > 15) {
+                this.computerBet.body.velocity.x = -this.computerBetSpeed;
             } else {
                 this.computerBet.body.velocity.x = 0;
             }
 
-
-
-        } else {
-            if (this.difficulte == 2) {
-                if (this.iaBallIsComplete) {
-
-                    if (this.ballReleased) {
-                        this.emitter.emitParticle();
-                    }
-                    if (this.computerBet.x - this.iaBall.x < -15) {
-                        this.computerBet.body.velocity.x = this.computerBetSpeed;
-                    } else if (this.computerBet.x - this.iaBall.x > 15) {
-                        this.computerBet.body.velocity.x = -this.computerBetSpeed;
-                    } else {
-                        this.computerBet.body.velocity.x = 0;
-                    }
-                } else {
-                    this.computerBet.body.velocity.x = 0;
-                }
-
-
+        }else{
+            if (this.computerBet.x - this.ball.x < -15) {
+                this.computerBet.body.velocity.x = this.computerBetSpeed * iaSpeed;
+            } else if (this.computerBet.x - this.ball.x > 15) {
+                this.computerBet.body.velocity.x = -this.computerBetSpeed * iaSpeed;
+            } else {
+                this.computerBet.body.velocity.x = 0;
             }
         }
     }
