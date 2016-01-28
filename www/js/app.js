@@ -778,6 +778,11 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     });
     $stateProvider.state('home', {
         url: '/home',
+        nativeTransitionsBack: {
+            "type": "fade",
+            "direction": "left"
+        },
+
         templateUrl: 'templates/home.html'
     })
     $stateProvider.state('jeux', {
