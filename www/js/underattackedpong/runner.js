@@ -119,21 +119,30 @@ Runner.prototype.normalizeHealth = function(){
 }
 
 Runner.prototype.locate = function(){
-	for(var i = 0 ; i < this.playground.numberWidthCase ; i++){
-		for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
-			if(this.playground.get(i,j).contains(this.x,this.y)){
-				this.tileCurrent =this.playground.get(i,j);
+	if(this.tileCurrent != undefined){
+		var posX = this.tileCurrent.posX-1;
+		var posY = this.tileCurrent.posY-1;
+		for(var i = posX ; i < posX+3 ; i++){
+			for(var j = posY ; j < posY+3 ; j++){
+				if(this.playground.get(i,j) != undefined){
+					if(this.playground.get(i,j).contains(this.x,this.y)){
+						this.tileCurrent = this.playground.get(i,j);
+					}
+				}
 			}
-			/*this.game.physics.arcade.collide(this, this.playground.get(i,j), function(runner,tile) {
-
-		    }, function(runner, tile) {
-		      runner.tileCurrent = tile;
-		      return false;
-			});*/
-			 /*if(this.playground.get(i,j).getBounds().contains(this.x,this.y)){
-			 	this.tileCurrent = this.playground.get(i,j);
-			 }*/
 		}
+	}
+	else if(this.x > 0 && this.x < this.game.width){
+		var i1 = 0, i2 = this.playground.numberWidthCase-1;
+			for(var j = 0 ; j < this.playground.numberHeightCase ; j++){
+				if(this.playground.get(i1,j).contains(this.x,this.y)){
+					this.tileCurrent =this.playground.get(i1,j);
+				}
+				if(this.playground.get(i2,j).contains(this.x,this.y)){
+					this.tileCurrent =this.playground.get(i2,j);
+				}
+			}
+		
 	}
 }
 
@@ -202,7 +211,8 @@ Runner.prototype.goTop = function(){
 
 	this.body.velocity.x = 0;
 	this.body.velocity.y = -this.speed;
-	this.animations.play('walkup', 5, true);
+	if(this.animations.name != "walkup")
+		this.animations.play('walkup', 5, true);
 	return false;
 }
 Runner.prototype.goBot = function(){
@@ -220,7 +230,8 @@ Runner.prototype.goBot = function(){
 	}
 	this.body.velocity.x = 0;
 	this.body.velocity.y = this.speed;
-	this.animations.play('walkdown', 5, true);
+	if(this.animations.name != "walkdown")
+		this.animations.play('walkdown', 5, true);
 	return false;
 }
 
@@ -236,8 +247,10 @@ Runner.prototype.goLeft = function(){
 	}
 	this.body.velocity.x = -this.speed;
 	this.body.velocity.y = 0;
+	if(this.animations.name != "walkleft")
 	this.animations.play('walkleft', 5, true);
-	this.scale.setTo(-Math.abs(this.scale.x),this.scale.y);
+	if(this.scale.x > 0)
+		this.scale.setTo(-Math.abs(this.scale.x),this.scale.y);
 	return false;
 }
 
@@ -253,7 +266,8 @@ Runner.prototype.goRight = function() {
 	}
 	this.body.velocity.x = this.speed;
 	this.body.velocity.y = 0;
-	this.animations.play('walkright', 5, true);
+	if(this.animations.name != "walkright")
+		this.animations.play('walkright', 5, true);
 	this.scale.setTo(Math.abs(this.scale.x),this.scale.y);
 	return false;
 }

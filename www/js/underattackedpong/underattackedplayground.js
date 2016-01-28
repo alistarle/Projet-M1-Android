@@ -42,3 +42,17 @@ UnderAttackedPlayground.prototype.spawnBot= function(runner){
 	runner.y = tile.y;
 	runner.tileObjective = tile;
 }
+
+
+UnderAttackedPlayground.prototype.init = function(create, preload, update, id, render) {
+    $('#gameArea').css('max-height', $(window).height());
+    $('#gameArea').css('max-width', $(window).width());
+    this.game = new Phaser.Game(720, 1280, Phaser.AUTO, id, {
+        preload: preload,
+        create: create,
+        update: update,
+        pong: this,
+        render: render
+    });
+    this.game.pong = this;
+}

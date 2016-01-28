@@ -1,6 +1,6 @@
 function TimerFire(pong,rate){
 	Timer.call(this, pong,rate);
-	this.speedCannonBall = 900;
+	this.speedCannonBall = 800;
 }
 
 TimerFire.prototype = Object.create(Timer.prototype);

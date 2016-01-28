@@ -15,7 +15,7 @@ function UnderAttackedPong(mode,nbPoints){
 
 	this.explosionRadius = 350;
 	this.explosionRadiusEnnemy = 125;
-	this.frameCount = 0;
+
 }
 
 UnderAttackedPong.prototype = $.extend(true, {}, Pong.prototype);  
@@ -117,7 +117,7 @@ UnderAttackedPong.prototype.create = function(){
 	
 
 	this.playground = new UnderAttackedPlayground(this);
-	this.timers.push(new TimerFire(this,1000));
+	this.timers.push(new TimerFire(this,1500));
 	this.timers.push(new TimerPeon(this,5000));
 	this.timers[1].accum= 6000;
 	this.timers.push(new TimerCatapulte(this,40000));
@@ -134,12 +134,22 @@ UnderAttackedPong.prototype.create = function(){
 	this.updateScore();
 
 }
+UnderAttackedPong.prototype.collideCheck = function() {
+    //override empty
+}
+UnderAttackedPong.prototype.trail = function() {
+	//override empty
+}
+UnderAttackedPong.prototype.checkGoal = function() {
+	//override empty
+}
 
 UnderAttackedPong.prototype.update = function(){
 	this.super.update.call(this);
-	
 	this.testOutOfBounds();
 	this.testCollision();
+	
+	
 	this.timers.forEach(function(e,i,a){
 		e.update();
 	},this);
@@ -147,14 +157,10 @@ UnderAttackedPong.prototype.update = function(){
 		e.update();
 	},this);
 	
-	if(this.frameCount % 3 == 1){
-		this.updateScore();
-		this.checkWin();
-	}
+	this.updateScore();
+	this.checkWin();
+	
 
-	this.frameCount++;
-	if(this.frameCount > 3)
-		this.frameCount = 0;
 }
 
 
@@ -244,28 +250,27 @@ UnderAttackedPong.prototype.reinitGame = function() {
 	});
 	this.point1 = 0;
 	this.point2 = 0;
+	this.timers[1].accum= 6000;
 	this.updateScore();
 }
 
 
 
 UnderAttackedPong.prototype.testOutOfBounds = function(){
-	if(this.frameCount % 2==0){
 		this.runners.forEach(function(e,a){
 			if(this.isOutOfBounds(e)){
 				this.removeRunner(e);
 				e.destroy();
 			}
 		},this);
-	}	
-	else{
+		
 		this.cannonBalls.forEach(function(e,a){
 			if(this.isOutOfBounds(e)){
 				this.removeCannonBall(e);
 				e.destroy();
 			}
 		},this);
-	}
+	
 }
 
 UnderAttackedPong.prototype.isOutOfBounds = function(sprite){
@@ -287,7 +292,6 @@ UnderAttackedPong.prototype.isOutOfBounds = function(sprite){
 
 UnderAttackedPong.prototype.testCollision = function(){
 		for(var j = 0 ; j < this.cannonBalls.length ; j++){
-			if(this.frameCount%3==2){
 				for(var i = 0 ; i < this.runners.length ; i++){
 					//test runner hit
 					this.game.physics.arcade.collide(this.cannonBalls[j], this.runners[i], function(cannonBall,runner) {
@@ -306,7 +310,7 @@ UnderAttackedPong.prototype.testCollision = function(){
 				      return false;
 					});
 				}
-			}
+			
 			//test player hit
 				if(this.cannonBalls[j] != undefined){
 					this.game.physics.arcade.collide(this.cannonBalls[j], this.playerBet, function(cannonBall,player) {
@@ -395,4 +399,19 @@ UnderAttackedPong.prototype.createExplosion = function(spriteSrc,power){
 UnderAttackedPong.prototype.releaseBall = function() {
 
     
+}
+
+
+
+UnderAttackedPong.prototype.init = function(create, preload, update, id, render) {
+    $('#gameArea').css('max-height', $(window).height());
+    $('#gameArea').css('max-width', $(window).width());
+    this.game = new Phaser.Game(720, 1280, Phaser.AUTO, id, {
+        preload: preload,
+        create: create,
+        update: update,
+        pong: this,
+        render: render
+    });
+    this.game.pong = this;
 }
