@@ -70,7 +70,10 @@ function onClientConnected(client){
   }
 
   function onNotifyGoal(score) {
-    client.broadcast.emit('SERVER_GOAL',{player1 : score.player2, player2 : score.player1 });
+    var temp = score.player1;
+    score.player1 = score.player2;
+    score.player2 = temp;
+    client.broadcast.emit('SERVER_GOAL',score);
   }
 
   function onNotifyPlayerMovement(movementInfo){
@@ -98,10 +101,10 @@ function onClientConnected(client){
   }
 
   function onDisconnected(){
-    if(client.id == idHost) {
+    /*if(client.id == idHost) {
       client.broadcast.emit("SERVER_ROOM_CLOSED");
       return;
-    }
+    }*/
     listPlayers = removeElementById(listPlayers, client.id);
     if(listPlayers.length < minPlayer) client.broadcast.to(idHost).emit("SERVER_CANNOT_LAUNCH");
     client.broadcast.emit('SERVER_PLAYER_LIST', listPlayers);

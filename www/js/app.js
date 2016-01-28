@@ -233,7 +233,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
         $("#launchGame").click(function() {
           NetworkManager.notifyLaunch({ nbPoints : $scope.nbPoints, mode : $scope.mode});
         });
-        NetworkManager.requestPlayerList();
+        //NetworkManager.requestPlayerList();
     });
 
     $scope.clicPointsMoins = function() {
@@ -269,7 +269,7 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
             var ip = $("#serveurIp").val();
             lobby.connectToServer(ip,false);
         });
-        NetworkManager.requestPlayerList();
+        //NetworkManager.requestPlayerList();
     });
 })
 
@@ -990,11 +990,6 @@ angular.module('starter', ['ionic', 'ionic-native-transitions'])
     $stateProvider.state('multijoueur-game', {
             url: '/jeux/multijoueur/game?:nbPoints&:host&:ip&:mode&:playerName',
             templateUrl: 'templates/jeux/multi/game.html'
-    })
-        //config partie
-    $stateProvider.state('solo-config', {
-        url: '/jeux/solo/config',
-        templateUrl: 'templates/jeux/solo/config.html'
     })
 
     $urlRouterProvider.otherwise('/home')

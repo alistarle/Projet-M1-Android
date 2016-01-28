@@ -21,7 +21,7 @@ Lobby.prototype.connectToServer = function(ip,isHost) {
   });
 
   NetworkManager.onServerLaunch(function(gameInfo) {
-    var url = '#/jeux/multijoueur/game?nbPoints='+gameInfo.nbPoints+'&host='+this.isHost+'&ip='+this.ip+'&mode='+gameInfo.mode+'&playerName='+this.otherPlayers[0].name;
+    var url = '#/jeux/multijoueur/game?nbPoints='+gameInfo.nbPoints+'&host='+isHost+'&ip='+ip+'&mode='+gameInfo.mode+'&playerName='+this.otherPlayers[0].name;
     window.location = url;
   });
 
@@ -35,5 +35,10 @@ Lobby.prototype.connectToServer = function(ip,isHost) {
 
   NetworkManager.onServerRoomFull(function() {
     alert("Serveur plein");
+  });
+
+  NetworkManager.onServerRoomClosed(function() {
+    alert("Serveur fermé");
+    window.location = "#/jeux/multi";
   });
 }
