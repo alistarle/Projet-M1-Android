@@ -3,6 +3,7 @@
 
 .DS_Store
 /*
+!/server
 !/www
 !/resources
 /www/jxcore/node_modules
